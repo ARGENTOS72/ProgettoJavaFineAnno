@@ -1,7 +1,7 @@
 # Kiriko and punches
 
 Un progetto di java per fine anno con i miei bro.
-Per sapere come usare la libreria LibGDX seguire il seguente [file](DocumentazioneLibreria.md)
+Kiriko ma il 2: ora va su amazon e cerca i ciambelloni da papparsi
 
 ## Gioco
 
