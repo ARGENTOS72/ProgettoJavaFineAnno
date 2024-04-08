@@ -1,4 +1,4 @@
-# Kiriko and punches
+# Kiriko and Amazon
 
 Un progetto di java per fine anno con i miei bro.
 Kiriko ma il 2: ora va su amazon e cerca i ciambelloni da papparsi
