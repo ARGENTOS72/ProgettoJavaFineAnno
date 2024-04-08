@@ -9,12 +9,14 @@ public class Finestra extends JFrame {
 	private Pannello contentPane;
 
 	public Finestra() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//TODO: jhonnyArm pls metti confirm exit
+		
 		contentPane = new Pannello();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
+				
+		setVisible(true);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 
 }
