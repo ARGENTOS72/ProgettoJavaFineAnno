@@ -24,12 +24,13 @@ public class Loader implements Runnable {
 	public void run() {
 		//to load
 		try {
-			Thread.sleep(5000);
+			Thread.sleep(2500);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		//notify finish
-		
+		s.release();
 	}
+	
 }
