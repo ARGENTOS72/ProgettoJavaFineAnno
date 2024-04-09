@@ -1,20 +1,22 @@
 package view;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class Pannello extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField textField;
+	private JTextField barraDiRicerca;
 
 	public Pannello() {
-		setLayout(null);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		setLayout(gridBagLayout);
 		
-		textField = new JTextField();
-		textField.setBounds(43, 46, 967, 20);
-		add(textField);
-		textField.setColumns(10);
-		
+		barraDiRicerca = new JTextField();
+		add(barraDiRicerca);
 	}
 }

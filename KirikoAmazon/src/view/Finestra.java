@@ -10,7 +10,6 @@ public class Finestra extends JFrame {
 
 	public Finestra() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//TODO: jhonnyArm pls metti confirm exit
-		
 		contentPane = new Pannello();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
