@@ -5,21 +5,35 @@ import com.raylib.java.core.Color;
 import com.raylib.java.core.rCore;
 
 public class Finestra {
-    private static Raylib ray = new Raylib(0, 0, "Kiriko Amazon");
-    private static Pannello pannello = new Pannello(ray);
+	public static int screenWidth, screenHeight;
+	
+    private static Raylib ray;
+    private Pannello pannello;
     
-    public Finestra(){
+    public Finestra() {
+    	ray = new Raylib(0, 0, "Kiriko Amazon");
+    	
         ray.core.ToggleFullscreen();
-        int screenWidth = rCore.GetScreenWidth();
-        int screenHeight = rCore.GetScreenHeight();
-
-        while (!ray.core.WindowShouldClose()) {
-            ray.core.BeginDrawing();
-            ray.core.ClearBackground(Color.WHITE);
-            pannello.draw();
-            ray.core.EndDrawing();
-        }
+        screenWidth = rCore.GetScreenWidth();
+        screenHeight = rCore.GetScreenHeight();
+        
+        pannello = new Pannello();
     }
 
+    public void draw() {
+    	ray.core.BeginDrawing();
+        ray.core.ClearBackground(Color.WHITE);
+        
+        pannello.draw();
+        
+        ray.core.EndDrawing();
+    }
     
+    public static Raylib getRaylib() {
+		return ray;
+	}
+    
+    public Pannello getPannello() {
+		return pannello;
+	}
 }
