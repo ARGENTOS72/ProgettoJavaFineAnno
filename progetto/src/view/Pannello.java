@@ -2,72 +2,31 @@ package view;
 
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
-import com.raylib.java.core.rCore;
-import com.raylib.java.core.input.Keyboard;
-import com.raylib.java.raymath.Vector2;
-import com.raylib.java.text.rText;
+
+import controller.Controller;
 
 public class Pannello {
     private Raylib ray;
-    final byte MAX_INPUT_CHARS;
-    char[] nome;
-    int key, contaFrame, back;
-    byte nLettere;
 
-    public Pannello(Raylib ray) {
-        this.ray = ray;
-        MAX_INPUT_CHARS=50;
+    private Button btn1;
+    private SearchBar searchBar;
+
+    public Pannello() {
+        this.ray = Finestra.getRaylib();
         
-        nome = new char[MAX_INPUT_CHARS];
-
-        for (int i = 0; i < MAX_INPUT_CHARS; i++) {
-            nome[i] = ' ';
-        }
-
-        key = 0;
-        contaFrame=0;
-        back = 0;
-        nLettere=0;
+        searchBar = new SearchBar(50, 10, 10, 20);
+        btn1 = new Button(Color.BLACK, true, 5, 20, 60, "Sono un bottone", Color.ORANGE, 20);
     }
-
+    
     public void draw() {
-        ray.shapes.DrawRectangle(25, 25, 100, 100, Color.BLUE);
-        ray.text.DrawTextEx(rText.GetFontDefault(), String.valueOf(nome), new Vector2(25, 25), 32, 2, Color.BLACK);
-        key= ray.core.GetCharPressed();
-            while (key > 0){
-                if ((key >= 32) && (key <= 125) && (nLettere < MAX_INPUT_CHARS)){
-                    nome[nLettere] = (char)key;
-                    nLettere++;
-                }
-                if(key==32){
-                    contaFrame=0;
-                }
-
-                key = ray.core.GetCharPressed();
-            }
-
-            if (rCore.IsKeyDown(Keyboard.KEY_BACKSPACE) && ((contaFrame)%5) == 0) {
-                nLettere--;
-                if (nLettere < 0){ nLettere = 0; }
-                nome[nLettere]=' ';
-                if(nLettere< MAX_INPUT_CHARS-1){ nome[nLettere+1]=' '; }
-                contaFrame = 0;
-            }
-            
-            if(ray.core.IsKeyPressed(Keyboard.KEY_ENTER)){
-                if(nLettere<MAX_INPUT_CHARS && ((contaFrame/50)%2) == 0){
-                    nome[nLettere]=' ';
-                }
-                if(!String.copyValueOf(nome).replaceAll(" +", "").equals("")){
-                    // Premi invio e controlla se ha spazi vuoti
-                }
-            }else{
-                if(nLettere<MAX_INPUT_CHARS && ((contaFrame/50)%2) == 0){
-                    nome[nLettere]='_';
-                }else if(nLettere<MAX_INPUT_CHARS){
-                    nome[nLettere]=' ';
-                }
-                contaFrame++;
-            }
+    	btn1.draw();
+    	searchBar.draw();
+    }
+    
+    public void registraEventi(Controller c) {
+    	btn1.setName("btn");
+    	c.addListenerTo(btn1);
+    	searchBar.setName("search bar");
+    	c.addListenerTo(searchBar);
     }
 }
