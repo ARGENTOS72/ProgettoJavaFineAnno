@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 
+import com.raylib.java.core.Color;
 import com.raylib.java.core.rCore;
 import com.raylib.java.raymath.Vector2;
 
@@ -14,28 +15,46 @@ import view.SearchBar;
 public class Controller {
 	private Pannello p;
 	private ArrayList<GraphicComponent> components;//GraphicComponents that has added action listener
-	private GraphicComponent focusedComponent;
+	private GraphicComponent hoveredComponent, lastHoveredComponent, focusedComponent, lastFocusedComponent;
 	private Vector2 mousePos;
 	
 	public Controller(Pannello p) {
 		this.components = new ArrayList<>();
+		this.lastHoveredComponent = null;
+		this.hoveredComponent = null;
 		this.focusedComponent = null;
+		this.lastFocusedComponent = null;
 		this.p = p;
 		p.registraEventi(this);
 	}
 	
 	//Fundamental methods ----------------------------------------------------------------
-	public void update() {//check events
-		checkAllComponents();
-		handleFocusedComponent();
+	//update controler
+	public void update() {
+		mousePos = rCore.GetMousePosition();//update mouse position
+		
+		handleComponentsActions();//do smth when a component is hovered or clicked
+		handleOutOfHover();//do smth when a component is not anymore hovered
+		handleOutOfFocus();//do smth when a component is not anymore on focus
+		
+		//update hovered & focused components
+		lastHoveredComponent = hoveredComponent;
+		hoveredComponent = null;
+		if(focusedComponent != null) lastFocusedComponent = focusedComponent;
+		focusedComponent = null;
+		
+		handleFocusedComponent();//do smth when a component is on focus
 	}
 	
-	public void checkAllComponents() {//check collision of the array 'components'
-		mousePos = rCore.GetMousePosition();
-		
+	//onHover, onFocus
+	private void handleComponentsActions() {
 		for(GraphicComponent gc : components) {
 			if(gc.isHovered(mousePos)) {//is Hovered
-				if(gc.getName().equals("btn")) {//get who is it
+				hoveredComponent = gc;
+				
+				//get who is it
+				if(gc.getName().equals("btn")) {
+					((Button) gc).setBackgroundColor(Color.PINK);
 					
 					if(Finestra.getRaylib().core.IsMouseButtonPressed(0)) {//is Clicked
 						((Button) gc).setText(
@@ -55,16 +74,34 @@ public class Controller {
 		}
 	}
 	
-	public void handleFocusedComponent() {
-		if(focusedComponent == null) return;
+	//out of hover
+	private void handleOutOfHover() {
+		if(lastHoveredComponent == null || lastHoveredComponent.equals(hoveredComponent)) return;
 		
-		if(focusedComponent.getName().equals("search bar")) {
-			System.out.println("aaa");
-			((SearchBar) focusedComponent).handleKeyBoardEvents();
+		//who is it
+		if(lastHoveredComponent.getName().equals("btn")) {
+			((Button) lastHoveredComponent).setBackgroundColor(Color.BLACK);
 		}
 	}
 	
-	// --------------------------------------------------------------------------------
+	//out of focus
+	private void handleOutOfFocus() {
+		if(lastFocusedComponent == null || lastFocusedComponent.equals(focusedComponent)) return;
+		
+		//who is it
+		//...
+	}
+	
+	//onFocus
+	private void handleFocusedComponent() {
+		if(lastFocusedComponent == null) return;
+		
+		if(lastFocusedComponent.getName().equals("search bar")) {
+			((SearchBar) lastFocusedComponent).handleKeyBoardEvents();
+		}
+	}
+	
+	//external utilities --------------------------------------------------------------------------------
 	public void addListenerTo(GraphicComponent gc) throws ControllerException {
 		if(gc == null) 
 			throw new ControllerException(
@@ -86,7 +123,7 @@ public class Controller {
 		for(int i=0; i<components.size(); i++) {
 			if(components.get(i).getName().equals(gcName)) {
 				components.remove(i);
-				return;
+				break;
 			}
 		}
 	}
