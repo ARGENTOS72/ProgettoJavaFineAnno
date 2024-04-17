@@ -49,36 +49,43 @@ public class Controller {
 	
 	//onHover, onFocus
 	private void handleComponentsActions() {
-		for(GraphicComponent gc : components) {
-			if(gc.isHovered(mousePos)) {//is Hovered
+		for (GraphicComponent gc : components) {
+			if (gc.isHovered(mousePos)) {//is Hovered
 				hoveredComponent = gc;
 				
 				//get who is it
-				if(gc.getName().equals("btn")) {
+				if (gc.getName().equals("btn")) {
 					((Button) gc).setBackgroundColor(Color.PINK);
 					
-					if(Finestra.getRaylib().core.IsMouseButtonPressed(0)) {//is Clicked
+					if(Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {//is Clicked
 						((Button) gc).setText(
 								(((Button) gc).getText().equals("Sono un bottone") ? "Mi hai sbottonato!"
 										: "Sono un bottone"));
 						this.focusedComponent = gc;// when clicking it gains focus
 					}
 
+				} else if (gc.getName().equals("btnsex")) {
+					((Button) gc).setBackgroundColor(Color.DARKGRAY);
+
+					if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
+
+					}
 				} else if (gc.getName().equals("search bar")) {
 					if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {// is Clicked
 						this.focusedComponent = gc;// when clicking it gains focus
 					}
 
 				}
-			} else {
-                if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
-                    if (this.focusedComponent instanceof SearchBar) {
-                        ((SearchBar) this.focusedComponent).resetSearchBar();
-                    }
+			}
+			// else {
+            //     if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
+            //         if (this.focusedComponent instanceof SearchBar) {
+            //             ((SearchBar) this.focusedComponent).resetSearchBar();
+            //         }
                     
-                    this.focusedComponent = null;
-                }
-            }
+            //         this.focusedComponent = null;
+            //     }
+            // }
 		}
 	}
 	
@@ -89,6 +96,8 @@ public class Controller {
 		//who is it
 		if(lastHoveredComponent.getName().equals("btn")) {
 			((Button) lastHoveredComponent).setBackgroundColor(Color.BLACK);
+		} else if (lastHoveredComponent.getName().equals("btnsex")) {
+			((Button) lastHoveredComponent).setBackgroundColor(Color.GRAY);
 		}
 	}
 	

@@ -32,6 +32,19 @@ public class Button extends GraphicComponent {
 				fontSize + (padding * 2));
 	}
 
+	// Bottone con width e height a scelta
+	public Button(Color backgroundColor, boolean borderVisible, Rectangle borderRectangle, int padding, String text, Color foregroundColor, int fontSize) {
+		super();
+		this.backgroundColor = backgroundColor;
+		this.borderVisible = borderVisible;
+		this.padding = padding;
+		this.text = text;
+		this.foregroundColor = foregroundColor;
+		this.fontSize = fontSize;
+
+		border = new Rectangle(borderRectangle.x, borderRectangle.y, borderRectangle.width + (padding * 2), borderRectangle.height + (padding * 2));
+	}
+
 	public Button(Color backgroundColor, boolean borderVisible, int padding, Vector2 pos, String text,
 			Color foregroundColor, int fontSize) {
 		this(backgroundColor, borderVisible, padding, (int) (pos.x), (int) (pos.y), text, foregroundColor, fontSize);

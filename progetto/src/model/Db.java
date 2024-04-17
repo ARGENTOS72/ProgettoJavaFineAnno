@@ -5,30 +5,22 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 public class Db {
     private static Db instance;
-    private static String fileName = "data.db";
+    private static String fileName = "data.ser";
 
     private Db() {
-        File file = new File(fileName);
+        User user = new User("Nega");
 
         try {
-            if (file.createNewFile()) { // Inizializza DB
-                FileOutputStream outputStream = new FileOutputStream(fileName);
-
-                String stringa = "Test{\nRecords 3 {int,int,int}\nColumns 0\nTable{\nRecord 1 {1,2,3}\nRecord 2 {1,2,3}\n}\n}";
-                byte[] data = new byte[stringa.length()];
-
-                for (int i = 0; i < stringa.length(); i++) {
-                    data[i] = (byte) stringa.charAt(i);
-                }
-
-                outputStream.write(data);
-                
-
-                outputStream.close();
-            }
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(user);
+            out.close();
+            fileOut.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,50 +34,23 @@ public class Db {
         return instance;
     }
 
-    public String getValue(String dbName, String selectedItems) {
-        String stringa = "";
-        String finalString = "";
-        boolean inDatabase = false;
-
+    public String getValue() {
+        User user = null;
+        
         try {
-            FileInputStream inputStream = new FileInputStream(fileName);
-
-            int inputByte;
-            while ((inputByte = inputStream.read()) != -1) {
-                char character = (char) inputByte;
-                
-                if (inDatabase) {
-                    finalString += character;
-                } else {
-                    if (character == '\n') {
-                        if (stringa.equals(dbName)) { // In database
-                            inDatabase = true;
-                        }
-                        
-                        stringa = "";
-                    } else {
-                        stringa += character;
-                    }
-                }
-            }
-
-            inputStream.close();
+            FileInputStream fileIn = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            user = (User) in.readObject();
+            in.close();
+            fileIn.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         
-        int counter = 0;
-
-        for (char c : finalString.toCharArray()) {
-            if (c == ',') {
-                counter++;
-            }
-        }
-
-        System.out.println(counter);
-
-        return finalString;
+        return user.toString();
     }
 }

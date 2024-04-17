@@ -8,6 +8,8 @@ import com.raylib.java.shapes.Rectangle;
 import com.raylib.java.text.rText;
 import com.raylib.java.textures.Texture2D;
 
+import controller.Controller;
+
 public class SearchBar extends GraphicComponent {
     private Rectangle rec;
     private Color recColor;
@@ -24,6 +26,7 @@ public class SearchBar extends GraphicComponent {
     private int frameCounter;
     private boolean cancel;
     private Texture2D icon;
+    private Button sendButton;
 
     public SearchBar(int xPos, int yPos, int width, int borderThickness, float borderRadius, int leftPadding, byte maxChars,
             int fontSize, int fontSpacing, Color recColor,
@@ -46,6 +49,7 @@ public class SearchBar extends GraphicComponent {
         this.frameCounter = 0;
         this.cancel = true;
         this.icon = new Texture2D("textures/SearchIcon.png");
+        this.sendButton = new Button(Color.GRAY, true, new Rectangle((int) (rec.x + rec.width - 100), (int) rec.y, 100, rec.height), 0, "", Color.BLACK, 0);
     }
 
     public void draw() {
@@ -55,8 +59,9 @@ public class SearchBar extends GraphicComponent {
                 new Vector2(rec.x + leftPadding, rec.y + 10),
                 fontSize, fontSpacing, textColor);
 
-        Finestra.getRaylib().shapes.DrawRectangleRounded(new Rectangle(rec.x + rec.width - 100, rec.y, 100, rec.height), borderRadius, 4, Color.GRAY);
-        Finestra.getRaylib().textures.DrawTextureEx(icon, new Vector2(rec.x + rec.width - 50, rec.y + rec.height / 2), 0f, 0.08f, Color.WHITE);
+        //Finestra.getRaylib().shapes.DrawRectangleRounded(new Rectangle(rec.x + rec.width - 100, rec.y, 100, rec.height), borderRadius, 4, Color.GRAY);
+        sendButton.draw();
+        Finestra.getRaylib().textures.DrawTextureEx(icon, new Vector2(rec.x + rec.width - 50 - ((icon.width * 0.08f) / 2), rec.y + rec.height / 2 - ((icon.height * 0.08f) / 2)), 0f, 0.08f, Color.WHITE);
         Finestra.getRaylib().shapes.DrawRectangleRoundedLines(rec, borderRadius, 4, borderThickness, Color.BLACK);
     }
 
@@ -126,134 +131,13 @@ public class SearchBar extends GraphicComponent {
         frameCounter = 0;
     }
 
+    public void setListener(Controller c) {
+        sendButton.setName("btnsex");
+        c.addListenerTo(sendButton);
+    }
+
     @Override
     public boolean isHovered(Vector2 mousePos) {
-        return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, rec);
+        return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, new Rectangle(rec.x, rec.y, rec.width - 100, rec.height));
     }
 }
-
-/*
-package view;
-
-import com.raylib.java.core.Color;
-import com.raylib.java.core.rCore;
-import com.raylib.java.core.input.Keyboard;
-import com.raylib.java.raymath.Vector2;
-import com.raylib.java.shapes.Rectangle;
-import com.raylib.java.shapes.rShapes;
-
-public class SearchBar extends GraphicComponent {
-	private int MAX_INPUT_CHARS;
-	private Color backgroundColor, foregroundColor;
-	private Rectangle border;
-	private int fontSize;
-	
-	private char[] nome;
-	int key, contaFrame, back;
-    byte nLettere;
-    
-    
-    //Constructors -----------------------------------------
-    public SearchBar(int max_input_chars, Color backgroundColor, Rectangle bounds, Color foregroundColor, int fontSize) {
-    	this.MAX_INPUT_CHARS = max_input_chars;
-    	this.backgroundColor = backgroundColor;
-    	this.foregroundColor = foregroundColor;
-    	this.border = bounds;
-    	this.fontSize = fontSize;
-    	
-    	key = 0;
-    	contaFrame = 0;
-    	back = 0;
-    	nLettere = 0;
-    	nome = new char[MAX_INPUT_CHARS];
-        for (int i = 0; i < MAX_INPUT_CHARS; i++) nome[i] = ' ';
-    }
-    
-    public SearchBar(int max_input_chars, Color backgroundColor, int x, int y, int width, int height, Color foregroundColor, int fontSize) {
-    	this(max_input_chars, backgroundColor, new Rectangle(x, y, width, height), foregroundColor, fontSize);
-    }
-    
-	public SearchBar(int max_input_chars, int x, int y, int fontSize) {
-        this.MAX_INPUT_CHARS = max_input_chars;
-        this.key = 0;
-        this.contaFrame = 0;
-        this.back = 0;
-        this.nLettere = 0;
-        this.fontSize = fontSize;
-        
-        nome = new char[MAX_INPUT_CHARS];
-        for (int i = 0; i < MAX_INPUT_CHARS; i++) nome[i] = ' ';
-        
-        border = new Rectangle(x, y, Finestra.getRaylib().text.MeasureText(String.valueOf(nome), fontSize), fontSize);
-	}
-	
-	//draw -----------------------------------------
-	public void draw() {
-		rShapes.DrawRectangleRec(border, backgroundColor);
-		Finestra.getRaylib().text.DrawText(getDisplayedText(), (int)(border.x), (int)(border.y), fontSize, foregroundColor);
-//		Finestra.getRaylib().text.DrawText(String.valueOf(nome), contaFrame, back, MAX_INPUT_CHARS, null);
-	}
-	
-	//
-	private String getDisplayedText() {
-		int maxCharW = Finestra.getRaylib().text.MeasureText("oo", fontSize)-Finestra.getRaylib().text.MeasureText("o", fontSize);
-		int maxCharDisplayed = (int)(border.width / maxCharW);
-		
-		System.out.print(border.width +" / ");
-		System.out.print(maxCharW +" = ");
-		System.out.println(maxCharDisplayed);
-		
-		int i=1;
-		for(;i<nome.length && nome[i] != ' ' && nome[i] != '_';i++);
-		
-		return String.valueOf(nome).substring(Math.max(0, i-maxCharDisplayed), maxCharDisplayed);
-	}
-	
-	//-----------------------------------------
-	public void handleKeyBoardEvents() {
-		key = Finestra.getRaylib().core.GetCharPressed();
-        
-        while (key > 0) {
-            if ((key >= 32) && (key <= 125) && (nLettere < MAX_INPUT_CHARS)){
-                nome[nLettere] = (char)key;
-                nLettere++;
-            }
-            if(key==32) {
-                contaFrame=0;
-            }
-
-            key = Finestra.getRaylib().core.GetCharPressed();
-        }
-
-        if (rCore.IsKeyDown(Keyboard.KEY_BACKSPACE) && ((contaFrame)%5) == 0) {
-            nLettere--;
-            if (nLettere < 0){ nLettere = 0; }
-            nome[nLettere]=' ';
-            if(nLettere< MAX_INPUT_CHARS-1){ nome[nLettere+1]=' '; }
-            contaFrame = 0;
-        }
-        
-        if(Finestra.getRaylib().core.IsKeyPressed(Keyboard.KEY_ENTER)) {
-            if(nLettere<MAX_INPUT_CHARS && ((contaFrame/50)%2) == 0){
-                nome[nLettere]=' ';
-            }
-            if(!String.copyValueOf(nome).replaceAll(" +", "").equals("")){
-                // Premi invio e controlla se ha spazi vuoti
-            }
-        }else{
-            if(nLettere<MAX_INPUT_CHARS && ((contaFrame/50)%2) == 0) {
-                nome[nLettere]='_';
-            }else if(nLettere<MAX_INPUT_CHARS){
-                nome[nLettere]=' ';
-            }
-            contaFrame++;
-        }
-	}
-	
-	//superclass overrides
-	@Override
-	public boolean isHovered(Vector2 mousePos) {
-		return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, border);
-	}
-}
-*/

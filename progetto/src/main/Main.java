@@ -6,17 +6,17 @@ import view.Finestra;
 
 public class Main {
     public static void main(String[] args) {
-        Finestra finestra = new Finestra();
-        Controller controller = new Controller(finestra.getPannello());
+        // Finestra finestra = new Finestra();
+        // Controller controller = new Controller(finestra.getPannello());
 
-        while (!Finestra.getRaylib().core.WindowShouldClose()) {
-            finestra.draw();
-            controller.update();
-        }
+        // while (!Finestra.getRaylib().core.WindowShouldClose()) {
+        //     finestra.draw();
+        //     controller.update();
+        // }
 
-        // Db db = Db.getInstace();
+        Db db = Db.getInstace();
 
-        // System.out.println(db.getValue("Test", ""));
+        System.out.println(db.getValue());
 
     
     }

@@ -14,7 +14,7 @@ public class Pannello {
     public Pannello() {
         this.ray = Finestra.getRaylib();
 
-        searchBar = new SearchBar(50, 10, 1000, 4, 0.06f, 10, (byte) 50, 32, 2, Color.LIGHTGRAY, Color.BLACK);
+        searchBar = new SearchBar(50, 10, 1000, 4, 0.06f, 10, (byte) 40, 32, 2, Color.LIGHTGRAY, Color.BLACK);
         btn1 = new Button(Color.BLACK, true, 5, 20, 60, "Sono un bottone", Color.ORANGE, 20);
     }
 
@@ -28,5 +28,6 @@ public class Pannello {
         c.addListenerTo(btn1);
         searchBar.setName("search bar");
         c.addListenerTo(searchBar);
+        searchBar.setListener(c);
     }
 }
