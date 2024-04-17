@@ -3,144 +3,219 @@ package view;
 import com.raylib.java.core.Color;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
-import com.raylib.java.shapes.rShapes;
 
 public class Button extends GraphicComponent {
-	// border
-	private Rectangle border;
-	private Color backgroundColor;
-	private boolean borderVisible;
-	private int padding;
-
-	// label
-	private String text;
-	private Color foregroundColor;
-	private int fontSize;
+	private Rectangle bounds;
+	private boolean visible;
+	private float roundness;
+	private Color color, hoveredColor, clickedColor, currentColor;
 
 	// Constructors -----------------------------------------
-	public Button(Color backgroundColor, boolean borderVisible, int padding, int x, int y, String text,
-			Color foregroundColor, int fontSize) {
+	public Button(Button btn) {
 		super();
-		this.backgroundColor = backgroundColor;
-		this.borderVisible = borderVisible;
-		this.padding = padding;
-		this.text = text;
-		this.foregroundColor = foregroundColor;
-		this.fontSize = fontSize;
-
-		border = new Rectangle(x, y, Finestra.getRaylib().text.MeasureText(text, fontSize) + (padding * 2),
-				fontSize + (padding * 2));
+		this.bounds = new Rectangle(btn.getX(), btn.getY(), btn.getWidth(), btn.getHeight());
+		this.visible = btn.isVisible();
+		this.roundness = btn.getRoundness();
+		this.color = btn.getColor();
+		this.hoveredColor = btn.getHoveredColor();
+		this.clickedColor = btn.getClickedColor();
+		this.currentColor = color;
 	}
-
-	// Bottone con width e height a scelta
-	public Button(Color backgroundColor, boolean borderVisible, Rectangle borderRectangle, int padding, String text, Color foregroundColor, int fontSize) {
+	
+	public Button(Rectangle bounds, boolean visible, float roundness, Color color, Color hoveredColor, Color clickedColor) {
 		super();
-		this.backgroundColor = backgroundColor;
-		this.borderVisible = borderVisible;
-		this.padding = padding;
-		this.text = text;
-		this.foregroundColor = foregroundColor;
-		this.fontSize = fontSize;
-
-		border = new Rectangle(borderRectangle.x, borderRectangle.y, borderRectangle.width + (padding * 2), borderRectangle.height + (padding * 2));
+		this.bounds = bounds;
+		this.visible = visible;
+		this.roundness = roundness;
+		this.color = color;
+		this.hoveredColor = hoveredColor;
+		this.clickedColor = clickedColor;
+		this.currentColor = color;
 	}
-
-	public Button(Color backgroundColor, boolean borderVisible, int padding, Vector2 pos, String text,
-			Color foregroundColor, int fontSize) {
-		this(backgroundColor, borderVisible, padding, (int) (pos.x), (int) (pos.y), text, foregroundColor, fontSize);
+	
+	public Button(int x, int y, int width, int height, boolean visible, float roundness, Color color, Color hoveredColor, Color clickedColor) {
+		super();
+		this.bounds = new Rectangle(x, y, width, height);
+		this.visible = visible;
+		this.roundness = roundness;
+		this.color = color;
+		this.hoveredColor = hoveredColor;
+		this.clickedColor = clickedColor;
+		this.currentColor = color;
 	}
-
-	public Button(String text, int fontSize, int padding, int x, int y) {
-		this(Color.WHITE, true, padding, new Vector2(x, y), text, Color.BLACK, fontSize);
+	
+	public Button(Rectangle bounds, boolean visible, float roundness, Color color) {
+		this(bounds, visible, roundness, color, null, null);
 	}
-
-	public Button(String text, int fontSize, int x, int y) {
-		this(Color.WHITE, true, 0, x, y, text, Color.BLACK, fontSize);
+	
+	public Button(int x, int y, int width, int height, float roundness, boolean visible, Color color) {
+		this(new Rectangle(x, y, width, height), visible, roundness, color, null, null);
 	}
-
-	public Button(int padding, int x, int y) {
-		this(Color.WHITE, true, padding, x, y, "", Color.BLACK, 12);
+	
+	public Button(int x, int y, int width, int height, Color color) {
+		this(new Rectangle(x, y, width, height), true, 0, color, null, null);
 	}
 
 	// Draw -----------------------------------------------------------------
 	public void draw() {
-		if (borderVisible)
-			rShapes.DrawRectangleRec(border, backgroundColor);
-		Finestra.getRaylib().text.DrawText(text, (int) (border.x) + padding, (int) (border.y) + padding, fontSize,
-				foregroundColor);
+		if (visible) Finestra.getRaylib().shapes.DrawRectangleRounded(bounds, roundness, 5, currentColor);
 	}
 
-	// getters + setters + superclass overrides
-	// ------------------------------------------
-	public Color getBackgroundColor() {
-		return backgroundColor;
+	// getters + setters ----------------------------------------------------
+	public Rectangle getBounds() {
+		return bounds;
+	}
+	
+	public Vector2 getLocation() {
+		return new Vector2(bounds.x, bounds.y);
+	}
+	
+	public Vector2 getSize() {
+		return new Vector2(bounds.width, bounds.height);
+	}
+	
+	public int getX() {
+		return (int) bounds.x;
+	}
+	
+	public int getY() {
+		return (int) bounds.y;
+	}
+	
+	public int getWidth() {
+		return (int) bounds.width;
+	}
+	
+	public int getHeight() {
+		return (int) bounds.height;
 	}
 
-	public void setBackgroundColor(Color backgroundColor) {
-		this.backgroundColor = backgroundColor;
+	public boolean isVisible() {
+		return visible;
 	}
 
-	public boolean isBorderVisible() {
-		return borderVisible;
+	public float getRoundness() {
+		return roundness;
 	}
 
-	public void setBorderVisible(boolean borderVisible) {
-		this.borderVisible = borderVisible;
+	public Color getColor() {
+		return color;
 	}
 
-	public int getPadding() {
-		return padding;
+	public Color getHoveredColor() {
+		return hoveredColor;
 	}
 
-	public void setPadding(int padding) {
-		// recalc border
-		border.width = (border.width - (this.padding * 2)) + (padding * 2);
-		border.height = fontSize + padding + padding;
-
-		this.padding = padding;
+	public Color getClickedColor() {
+		return clickedColor;
 	}
 
-	public String getText() {
-		return text;
+	public Color getCurrentColor() {
+		return currentColor;
+	}
+	
+	public Color[] getColors() {
+		return new Color[] {color, hoveredColor, clickedColor};
 	}
 
-	public void setText(String text) {
-		this.text = text;
-
-		// recalc rectangle
-		border.width = Finestra.getRaylib().text.MeasureText(text, fontSize) + (padding * 2);
+	public void setBounds(Rectangle bounds) {
+		this.bounds = bounds;
+	}
+	
+	public void setBounds(int x, int y, int width, int height) {
+		bounds.x = x;
+		bounds.y = y;
+		bounds.width = width;
+		bounds.height = height;
+	}
+	
+	public void setLocation(int x, int y) {
+		bounds.x = x;
+		bounds.y = y;
+	}
+	
+	public void setSize(int width, int height) {
+		bounds.width = width;
+		bounds.height = height;
+	}
+	
+	public void setX(int x) {
+		bounds.x = x;
+	}
+	
+	public void setY(int y) {
+		bounds.y = y;
+	}
+	
+	public void setWidth(int width) {
+		bounds.width = width;
+	}
+	
+	public void setHeight(int height) {
+		bounds.height = height;
 	}
 
-	public Color getForegroundColor() {
-		return foregroundColor;
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
-	public void setForegroundColor(Color foregroundColor) {
-		this.foregroundColor = foregroundColor;
+	public void setRoundness(float roundness) {
+		this.roundness = roundness;
 	}
 
-	public int getFontSize() {
-		return fontSize;
+	public void setColor(Color color) {
+		this.color = color;
+		this.currentColor = color;
 	}
 
-	public void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
-
-		// recalc rectangle
-		border.width = Finestra.getRaylib().text.MeasureText(text, fontSize) + (padding * 2);
-		border.height = fontSize + padding + padding;
+	public void setHoveredColor(Color hoveredColor) {
+		this.hoveredColor = hoveredColor;
 	}
 
-	public Rectangle getBorder() {
-		return border;
+	public void setClickedColor(Color clickedColor) {
+		this.clickedColor = clickedColor;
 	}
-
-	public void setBorder(Rectangle border) {
-		this.border = border;
+	
+	public void setCurrentColor(Color curentColor) {
+		this.currentColor = curentColor;
 	}
-
+	
+	public void setColors(Color color, Color hoveredColor, Color clickedColor) {
+		this.color = color;
+		this.hoveredColor = hoveredColor;
+		this.clickedColor = clickedColor;
+		this.currentColor = color;
+	}
+	
+	//superclass overrides ---------------------------------------------------
+	@Override
+	public void onHover() {
+		if(hoveredColor != null) currentColor = hoveredColor;
+	}
+	
+	@Override
+	public void outOfHover() {
+		currentColor = color;
+	}
+	
+	@Override
+	public void onClick(int modality) {
+		if(clickedColor != null && modality == GraphicComponent.DOWN) currentColor = clickedColor;
+	}
+	
 	@Override
 	public boolean isHovered(Vector2 mousePos) {
-		return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, border);
+		return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, bounds);
+	}
+	
+	//toString ---------------------------------------------------
+	@Override
+	public String toString() {
+		return "Button {" +
+				"\n\tbounds [" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() +
+				"]\n\tvisible: " + visible +
+				"\n\troundness: " + roundness +
+				"\n\tcolors [normal: " + color + ", hovered: " + hoveredColor + ", clicked: " + clickedColor +
+				"]\n}";
 	}
 }
