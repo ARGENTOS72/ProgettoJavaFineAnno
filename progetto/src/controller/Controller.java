@@ -12,6 +12,7 @@ import view.Finestra;
 import view.GraphicComponent;
 import view.Pannello;
 import view.SearchBar;
+import view.TextButton;
 
 public class Controller {
 	private Pannello p;
@@ -52,26 +53,28 @@ public class Controller {
 		for (GraphicComponent gc : components) {
 			if (gc.isHovered(mousePos)) {//is Hovered
 				hoveredComponent = gc;
+				gc.onHover();//do default operations when hovered
 				
 				//get who is it
-				if (gc.getName().equals("btn")) {
-					((Button) gc).setBackgroundColor(Color.PINK);
-					
-					if(Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {//is Clicked
-						((Button) gc).setText(
-								(((Button) gc).getText().equals("Sono un bottone") ? "Mi hai sbottonato!"
-										: "Sono un bottone"));
+				if (gc instanceof Button) {
+					if(rCore.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT)) {
+						gc.onClick(GraphicComponent.DOWN);
+						
+					}
+					if(Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
+						if(gc.getName().equals("textBtn")) {
+							((TextButton) gc).setText(
+								(((TextButton) gc).getText().equals("ciao")) ?
+								"addio" : "ciao"
+							);
+						}
+						
 						this.focusedComponent = gc;// when clicking it gains focus
+						
 					}
 
-				} else if (gc.getName().equals("btnsex")) {
-					((Button) gc).setBackgroundColor(Color.DARKGRAY);
-
-					if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
-
-					}
 				} else if (gc.getName().equals("search bar")) {
-					if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {// is Clicked
+					if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
 						this.focusedComponent = gc;// when clicking it gains focus
 					}
 
@@ -87,24 +90,30 @@ public class Controller {
             //     }
             // }
 		}
+		
+		//lose focus when clicking out of any GraphicComponent
+		if(hoveredComponent == null && Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
+			lastFocusedComponent = null;
 	}
 	
 	//out of hover
 	private void handleOutOfHover() {
 		if(lastHoveredComponent == null || lastHoveredComponent.equals(hoveredComponent)) return;
 		
+		//use default method outOfHover
+		lastHoveredComponent.outOfHover();
+		
 		//who is it
-		if(lastHoveredComponent.getName().equals("btn")) {
-			((Button) lastHoveredComponent).setBackgroundColor(Color.BLACK);
-		} else if (lastHoveredComponent.getName().equals("btnsex")) {
-			((Button) lastHoveredComponent).setBackgroundColor(Color.GRAY);
-		}
+		// ...
 	}
 	
 	//out of focus
 	private void handleOutOfFocus() {
 		if(lastFocusedComponent == null || lastFocusedComponent.equals(focusedComponent)) return;
 		
+		//use default method outOfFocus
+		lastFocusedComponent.outOfFocus();
+				
 		//who is it
 		//...
 	}
@@ -113,9 +122,11 @@ public class Controller {
 	private void handleFocusedComponent() {
 		if(lastFocusedComponent == null) return;
 		
-		if(lastFocusedComponent.getName().equals("search bar")) {
-			((SearchBar) lastFocusedComponent).handleKeyBoardEvents();
-		}
+		//use default method onFocus
+		lastFocusedComponent.onFocus();
+		
+		//who is it
+		// ...
 	}
 	
 	//external utilities --------------------------------------------------------------------------------
