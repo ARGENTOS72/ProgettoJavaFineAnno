@@ -49,7 +49,7 @@ public class SearchBar extends GraphicComponent {
         this.frameCounter = 0;
         this.cancel = true;
         this.icon = new Texture2D("textures/SearchIcon.png");
-        this.sendButton = new Button(Color.GRAY, true, new Rectangle((int) (rec.x + rec.width - 100), (int) rec.y, 100, rec.height), 0, "", Color.BLACK, 0);
+        this.sendButton = new Button(new Rectangle((int) (rec.x + rec.width - 100), (int) rec.y, 100, rec.height), true, borderRadius, Color.GRAY, Color.DARKGRAY, Color.BEIGE);
     }
 
     public void draw() {
@@ -65,7 +65,29 @@ public class SearchBar extends GraphicComponent {
         Finestra.getRaylib().shapes.DrawRectangleRoundedLines(rec, borderRadius, 4, borderThickness, Color.BLACK);
     }
 
-    public void handleKeyBoardEvents() {
+    public void resetSearchBar() {
+        if (nCurrenteLetters < maxChars) {
+            if (text[nCurrenteLetters] == '_') {
+                text[nCurrenteLetters] = ' ';
+            }
+        }
+
+        frameCounter = 0;
+    }
+
+    public void setListener(Controller c) {
+        sendButton.setName("btnsex");
+        c.addListenerTo(sendButton);
+    }
+    
+    //superclass overrides ------------------------------------
+    @Override
+    public boolean isHovered(Vector2 mousePos) {
+        return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, new Rectangle(rec.x, rec.y, rec.width - 100, rec.height));
+    }
+    
+    @Override
+    public void onFocus() {
         key = Finestra.getRaylib().core.GetCharPressed();
 
         while (key > 0) {
@@ -119,25 +141,5 @@ public class SearchBar extends GraphicComponent {
             
             frameCounter++;
         }
-    }
-
-    public void resetSearchBar() {
-        if (nCurrenteLetters < maxChars) {
-            if (text[nCurrenteLetters] == '_') {
-                text[nCurrenteLetters] = ' ';
-            }
-        }
-
-        frameCounter = 0;
-    }
-
-    public void setListener(Controller c) {
-        sendButton.setName("btnsex");
-        c.addListenerTo(sendButton);
-    }
-
-    @Override
-    public boolean isHovered(Vector2 mousePos) {
-        return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, new Rectangle(rec.x, rec.y, rec.width - 100, rec.height));
     }
 }
