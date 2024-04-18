@@ -2,6 +2,9 @@ package view;
 
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
+import com.raylib.java.core.rCore;
+import com.raylib.java.shapes.Rectangle;
+import com.raylib.java.shapes.rShapes;
 import com.raylib.java.textures.Texture2D;
 
 import controller.Controller;
@@ -14,48 +17,56 @@ public class Pannello {
     private Texture2D texture;
     private TextureButton textureBtn;
     private SearchBar searchBar;
-
+    private int screenWidth;
+    private int screenHeight;
+    private TextButton[] categorie;
+    private int headerWidth;
+    private int headerHeight;
+    private int barPosX;
+    private int barPosY;
+    private int nCategorie;
+    
     public Pannello() {
         this.ray = Finestra.getRaylib();
-
-        searchBar = new SearchBar(50, 10, 1000, 4, 0.06f, 10, (byte) 40, 32, 2, Color.LIGHTGRAY, Color.BLACK);
-        btn1 = new Button(100, 100, 100, 30, true, 0.3f, Color.GRAY, Color.BLACK, Color.ORANGE);
         
-        btn2 = new Button(btn1);
-        btn2.setLocation(210, 100);
-        btn2.setColors(Color.GREEN, Color.RED, Color.BLACK);
+        screenWidth = rCore.GetScreenWidth();
+        screenHeight = rCore.GetScreenHeight();
+        headerWidth = screenWidth;
+        headerHeight = screenHeight / 6;
+        barPosX = screenWidth/30;
+        barPosY = screenHeight/14;
+       
+        categorie = new TextButton[5];
+      
+        searchBar = new SearchBar(barPosX, barPosY, screenWidth-(screenWidth/30*2), 4, 0.06f, 10, (byte) 80, 32, 2, Color.WHITE, Color.BLACK);
+        txtBtn = new TextButton(barPosX, barPosY - searchBar.getHeight(), true, 0, Color.PINK, Color.PINK, Color.PINK, 0, 40, "Kirizon", Color.WHITE, Color.RED, Color.DARKGREEN);
         
-        txtBtn = new TextButton(btn2, 10, 20, "ciao", Color.WHITE, Color.YELLOW, Color.GOLD);
-        txtBtn.setLocation(320, 100);
-        
-        texture = new Texture2D();
-        
-        textureBtn = new TextureButton(texture, 300, 300, 100, 100, true, 0, 0, Color.BLACK, Color.DARKGRAY, Color.GRAY);
+        for (int i = 0; i < 5; i++) {
+			categorie[i] = new TextButton(i*(screenWidth/5) ,headerHeight , true, 0, Color.VIOLET, Color.PINK, Color.PINK, 10, 30, "Kirizon", Color.WHITE, Color.RED, Color.DARKGREEN);
+		}
     }
 
     public void draw() {
-        btn1.draw();
-        btn2.draw();
+    	rShapes.DrawRectangleRec(new Rectangle(0, 0, headerWidth, headerHeight), Color.PINK);
+    	searchBar.draw();
         txtBtn.draw();
-        textureBtn.draw();
-        searchBar.draw();
+        
+        for (int i = 0; i < categorie.length; i++) {
+			categorie[i].draw();
+        }
+        rShapes.DrawRectangleRec(new Rectangle(0, headerHeight+(categorie[0].getHeight()), screenWidth, screenHeight/4), Color.GOLD);
     }
 
     public void registraEventi(Controller c) {
-        btn1.setName("btn");
-        c.addListenerTo(btn1);
-        
-        btn2.setName("btn2");
-        c.addListenerTo(btn2);
-        
         txtBtn.setName("textBtn");
         c.addListenerTo(txtBtn);
-        
-        textureBtn.setName("btn texture");
-        c.addListenerTo(textureBtn);
         
         searchBar.setName("search bar");
         c.addListenerTo(searchBar);
         searchBar.setListener(c);
+        
+        /*for (int i = 0; i < categorie.length; i++) {
+			categorie[i];
+        }*/
     }
 }
