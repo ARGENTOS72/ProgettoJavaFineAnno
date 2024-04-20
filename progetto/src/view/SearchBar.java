@@ -29,8 +29,7 @@ public class SearchBar extends GraphicComponent {
     private Button sendButton;
 
     public SearchBar(int xPos, int yPos, int width, int borderThickness, float borderRadius, int leftPadding, byte maxChars,
-            int fontSize, int fontSpacing, Color recColor,
-            Color textColor) {
+            int fontSize, int fontSpacing, Color recColor, Color textColor) {
         this.rec = new Rectangle(xPos, yPos, width, fontSize + 20);
         this.recColor = recColor;
         this.borderThickness = borderThickness;
