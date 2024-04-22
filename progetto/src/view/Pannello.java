@@ -1,8 +1,13 @@
 package view;
 
+import java.util.Iterator;
+
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
 import com.raylib.java.core.rCore;
+import com.raylib.java.core.camera.Camera2D;
+import com.raylib.java.core.ray.Ray;
+import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
 import com.raylib.java.shapes.rShapes;
 import com.raylib.java.textures.Texture2D;
@@ -28,10 +33,17 @@ public class Pannello {
     private int sumW;
     private int totPadding;
     private int padding;
+    private int prodottoConsigliatoY;
+    private int prodottoConsigliatoHeight;
+    private int prodottoHeight;
+    private Camera2D camera;
+    private int scrollSpeed;
     
     public Pannello() {
         this.ray = Finestra.getRaylib();
-        sumW=0; totPadding=0; padding=0;
+        sumW=0; totPadding=0; padding=0; scrollSpeed=10;
+        
+        camera = new Camera2D(new Vector2(0,0), new Vector2(0,0), 0, 0);
         
         screenWidth = rCore.GetScreenWidth();
         screenHeight = rCore.GetScreenHeight();
@@ -56,17 +68,31 @@ public class Pannello {
         for (int i = 0; i < 5; i++) {
 			categorie[i].setWidth(padding);
         }
+        
+        prodottoConsigliatoY = headerHeight+(categorie[0].getHeight());
+        prodottoConsigliatoHeight = screenHeight/4;
+        prodottoHeight = screenHeight/6;
+        
+        
     }
 
     public void draw() {
-    	rShapes.DrawRectangleRec(new Rectangle(0, 0, headerWidth, headerHeight), Color.PINK);
+    	//camera.target.y=scrollSpeed*rCore.GetMouseWheelMove();
+		ray.core.BeginMode2D(camera);
+    	
+		rShapes.DrawRectangleRec(new Rectangle(0, 0, headerWidth, headerHeight), Color.PINK);
     	searchBar.draw();
         txtBtn.draw();
         
         for (int i = 0; i < categorie.length; i++) {
 			categorie[i].draw();
         }
-        rShapes.DrawRectangleRec(new Rectangle(0, headerHeight+(categorie[0].getHeight()), screenWidth, screenHeight/4), Color.GOLD);
+        rShapes.DrawRectangleRec(new Rectangle(0, prodottoConsigliatoY, screenWidth, prodottoConsigliatoHeight), Color.GOLD);
+        for (int i = 0; i < 10; i++) {
+        	rShapes.DrawRectangleRec(new Rectangle(0, (prodottoConsigliatoY+prodottoConsigliatoHeight)+(i*prodottoHeight) , screenWidth, prodottoHeight), Color.MAROON);
+		}
+        
+        //ray.core.EndMode2D();
     }
 
     public void registraEventi(Controller c) {
@@ -81,9 +107,5 @@ public class Pannello {
 			categorie[i].setName(categorie[i].getText());
 			c.addListenerTo(categorie[i]);
         }
-        
-        /*for (int i = 0; i < categorie.length; i++) {
-			categorie[i];
-        }*/
     }
 }
