@@ -11,6 +11,7 @@ import view.Button;
 import view.Finestra;
 import view.GraphicComponent;
 import view.Pannello;
+import view.Prodotto;
 import view.SearchBar;
 import view.TextButton;
 
@@ -38,14 +39,16 @@ public class Controller {
 		handleComponentsActions();//do smth when a component is hovered or clicked
 		handleOutOfHover();//do smth when a component is not anymore hovered
 		handleOutOfFocus();//do smth when a component is not anymore on focus
-		
+
 		//update hovered & focused components
 		lastHoveredComponent = hoveredComponent;
 		hoveredComponent = null;
-		if(focusedComponent != null) lastFocusedComponent = focusedComponent;
-		focusedComponent = null;
+		if((lastFocusedComponent == null && focusedComponent != null) ||
+			(lastFocusedComponent != null && !lastFocusedComponent.equals(focusedComponent)))
+			lastFocusedComponent = focusedComponent;
 		
 		handleFocusedComponent();//do smth when a component is on focus
+		
 	}
 	
 	//onHover, onFocus
@@ -56,44 +59,22 @@ public class Controller {
 				gc.onHover();//do default operations when hovered
 				
 				//get who is it
-				if (gc instanceof Button) {
+				if (gc instanceof Button || gc instanceof SearchBar || gc instanceof Prodotto) {
+					if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
+						this.focusedComponent = gc;// when clicking it gains focus
+					}
 					if(rCore.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT)) {
 						gc.onClick(GraphicComponent.DOWN);
 						
 					}
-					if(Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
-						if(gc.getName().equals("textBtn")) {
-							((TextButton) gc).setText(
-								(((TextButton) gc).getText().equals("ciao")) ?
-								"addio" : "ciao"
-							);
-						}
-						
-						this.focusedComponent = gc;// when clicking it gains focus
-						
-					}
-
-				} else if (gc.getName().equals("search bar")) {
-					if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
-						this.focusedComponent = gc;// when clicking it gains focus
-					}
 
 				}
 			}
-			// else {
-            //     if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
-            //         if (this.focusedComponent instanceof SearchBar) {
-            //             ((SearchBar) this.focusedComponent).resetSearchBar();
-            //         }
-                    
-            //         this.focusedComponent = null;
-            //     }
-            // }
 		}
 		
 		//lose focus when clicking out of any GraphicComponent
 		if(hoveredComponent == null && Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
-			lastFocusedComponent = null;
+			focusedComponent = null;
 	}
 	
 	//out of hover
