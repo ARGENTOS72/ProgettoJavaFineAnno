@@ -25,9 +25,13 @@ public class Pannello {
     private int barPosX;
     private int barPosY;
     private int nCategorie;
+    private int sumW;
+    private int totPadding;
+    private int padding;
     
     public Pannello() {
         this.ray = Finestra.getRaylib();
+        sumW=0; totPadding=0; padding=0;
         
         screenWidth = rCore.GetScreenWidth();
         screenHeight = rCore.GetScreenHeight();
@@ -43,7 +47,15 @@ public class Pannello {
         
         for (int i = 0; i < 5; i++) {
 			categorie[i] = new TextButton(i*(screenWidth/5) ,headerHeight , true, 0, Color.VIOLET, Color.PINK, Color.PINK, 10, 30, "Kirizon", Color.WHITE, Color.RED, Color.DARKGREEN);
-		}
+			sumW += categorie[i].getWidth();
+        }
+        
+        totPadding = screenWidth-sumW;
+        padding = totPadding/categorie.length;
+        
+        for (int i = 0; i < 5; i++) {
+			categorie[i].setWidth(padding);
+        }
     }
 
     public void draw() {
@@ -64,6 +76,11 @@ public class Pannello {
         searchBar.setName("search bar");
         c.addListenerTo(searchBar);
         searchBar.setListener(c);
+        
+        for (int i = 0; i < categorie.length; i++) {
+			categorie[i].setName(categorie[i].getText());
+			c.addListenerTo(categorie[i]);
+        }
         
         /*for (int i = 0; i < categorie.length; i++) {
 			categorie[i];
