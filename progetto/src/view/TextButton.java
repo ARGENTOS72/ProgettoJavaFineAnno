@@ -4,6 +4,8 @@ import com.raylib.java.core.Color;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
 
+import controller.Controller;
+
 public class TextButton extends Button {
 	// label
 	private String text;
@@ -19,7 +21,7 @@ public class TextButton extends Button {
 		this.textColor = txtBtn.getTextColor();
 		this.hoveredTextColor = txtBtn.getHoveredTextColor();
 		this.clickedTextColor = txtBtn.getClickedTextColor();
-		this.currentTextColor = txtBtn.getCurrentColor();
+		this.currentTextColor = textColor;
 	}
 	
 	public TextButton(Button btn, int padding, int fontSize, String text, Color textColor, Color hoverdTextColor, Color clickedTextColor) {
@@ -167,6 +169,16 @@ public class TextButton extends Button {
 	@Override
 	public boolean isHovered(Vector2 mousePos) {
 		return super.isHovered(mousePos);
+	}
+	
+	@Override
+	public void addListener(Controller c) {
+		c.addListenerTo(this);
+	}
+	
+	@Override
+	public void removeListener(Controller c) {
+		c.removeListenerTo(this);
 	}
 	
 	//toString ---------------------------------------------------
