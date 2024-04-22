@@ -4,6 +4,8 @@ import com.raylib.java.core.Color;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
 
+import controller.Controller;
+
 public class Button extends GraphicComponent {
 	private Rectangle bounds;
 	private boolean visible;
@@ -206,6 +208,16 @@ public class Button extends GraphicComponent {
 	@Override
 	public boolean isHovered(Vector2 mousePos) {
 		return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, bounds);
+	}
+	
+	@Override
+	public void addListener(Controller c) {
+		c.addListenerTo(this);
+	}
+	
+	@Override
+	public void removeListener(Controller c) {
+		c.removeListenerTo(this);
 	}
 	
 	//toString ---------------------------------------------------
