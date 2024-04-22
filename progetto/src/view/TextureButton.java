@@ -6,6 +6,8 @@ import com.raylib.java.shapes.Rectangle;
 import com.raylib.java.textures.Texture2D;
 import com.raylib.java.textures.rTextures;
 
+import controller.Controller;
+
 public class TextureButton extends Button {
 	private Texture2D texture;
 	private Rectangle textureBounds;
@@ -56,7 +58,7 @@ public class TextureButton extends Button {
 	//draw ------------------------------------------------------
 	public void draw() {
 		super.draw();
-		rTextures.DrawTexturePro(texture, textureBounds, getBounds(), origin, 0, Color.WHITE);
+		rTextures.DrawTexturePro(texture, textureBounds, new Rectangle(getX()+padding, getY()+padding, getWidth()-(padding*2), getHeight()-(padding*2)), origin, 0, Color.WHITE);
 	}
 	
 	//getters & setters ------------------------------------------
@@ -108,6 +110,16 @@ public class TextureButton extends Button {
 	@Override
 	public boolean isHovered(Vector2 mousePos) {
 		return super.isHovered(mousePos);
+	}
+	
+	@Override
+	public void addListener(Controller c) {
+		c.addListenerTo(this);
+	}
+	
+	@Override
+	public void removeListener(Controller c) {
+		c.removeListenerTo(this);
 	}
 	
 	//toString ---------------------------------------------------
