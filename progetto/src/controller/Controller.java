@@ -1,3 +1,40 @@
+/*
+private Vector2 mousePos;
+	private int scrollMultiplier;
+	
+	public Controller(Pannello p) {
+		this.components = new ArrayList<>();
+		this.lastHoveredComponent = null;
+		this.hoveredComponent = null;
+		this.focusedComponent = null;
+		this.lastFocusedComponent = null;
+		this.p = p;
+		scrollMultiplier=50;
+		p.registraEventi(this);
+	}
+	
+	//Fundamental methods ----------------------------------------------------------------
+	//update controller
+	public void update() {
+		//Finestra.getRaylib().core.GetScreenToWorld2D(mousePos, null)
+		mousePos = rCore.GetMousePosition();//update mouse position
+		p.aggiornaCameraY(scrollMultiplier*rCore.GetMouseWheelMove());
+		
+		handleComponentsActions();//do smth when a component is hovered or clicked
+		handleOutOfHover();//do smth when a component is not anymore hovered
+		handleOutOfFocus();//do smth when a component is not anymore on focus
+
+		//update hovered & focused components
+		lastHoveredComponent = hoveredComponent;
+		hoveredComponent = null;
+		if((lastFocusedComponent == null && focusedComponent != null) ||
+			(lastFocusedComponent != null && !lastFocusedComponent.equals(focusedComponent)))
+			lastFocusedComponent = focusedComponent;
+		
+		handleFocusedComponent();//do smth when a component is on focus
+		
+	}
+*/
 package controller;
 
 import java.util.ArrayList;
