@@ -14,7 +14,7 @@ public class Prodotto extends GraphicComponent {
 	private Rectangle bounds, imgBounds;
 	private Vector2 origin;
 	private float roundness;
-	private int textFontSize, priceFontSize;
+	private int textFontSize, priceFontSize, padding;
 	private Color color, hoveredColor, clickedColor, currentColor;
 	
 	//product
@@ -22,8 +22,8 @@ public class Prodotto extends GraphicComponent {
 	private Product p;
 	
 	//Constructor ---------------------------
-	public Prodotto(int x, int y, int width, int height, float roundness, Texture2D img, Product p, int textFontSize, int priceFontSize, Color color, Color hoveredColor, Color clickedColor) {
-		this.bounds = new Rectangle(x, y, width, height);
+	public Prodotto(int x, int y, int width, float roundness, Texture2D img, Product p, int textFontSize, int priceFontSize, int padding, Color color, Color hoveredColor, Color clickedColor) {
+		this.bounds = new Rectangle(x, y, width, width+textFontSize+priceFontSize+(padding*2));
 		this.imgBounds = new Rectangle(0, 0, img.getWidth(), img.getHeight());
 		this.origin = new Vector2(0, 0);
 		this.roundness = roundness;
@@ -40,7 +40,7 @@ public class Prodotto extends GraphicComponent {
 	//draw ----------------------------------------------
 	public void draw() {//TODO
 		Finestra.getRaylib().shapes.DrawRectangleRounded(bounds, roundness, 5, currentColor);//background
-		rTextures.DrawTexturePro(img, imgBounds, new Rectangle((int) bounds.x, (int) bounds.y, (int) bounds.width, (int) bounds.width), origin, 0, Color.WHITE);//img
+		rTextures.DrawTexturePro(img, imgBounds, new Rectangle((int) bounds.x+padding, (int) bounds.y+padding, (int) bounds.width-(padding*2), (int) bounds.width-(padding*2)), origin, 0, Color.WHITE);//img
 		Finestra.getRaylib().text.DrawText(
 			p.getNome(),
 			(int) (bounds.x+((bounds.width/2)-(Finestra.getRaylib().text.MeasureText(p.getNome(), textFontSize)/2))),
@@ -50,7 +50,7 @@ public class Prodotto extends GraphicComponent {
 		Finestra.getRaylib().text.DrawText(
 			String.valueOf(p.getPrezzo()+"$"),
 			(int) (bounds.x+((bounds.width/2)-(Finestra.getRaylib().text.MeasureText(String.valueOf(p.getPrezzo()+"$"), priceFontSize)/2))),
-			(int) (bounds.y+bounds.width+textFontSize+5),
+			(int) (bounds.y+bounds.width+textFontSize+padding),
 			priceFontSize, Color.BLACK
 		);//price
 	}
