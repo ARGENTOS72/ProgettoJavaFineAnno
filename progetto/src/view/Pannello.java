@@ -32,10 +32,11 @@ public class Pannello {
     private int barPosY;
     private int nCategorie;
     private Prodotto p;//TEMP TODO
+    private Prodotto[] prodotti;
     private Camera2D camera;
     private int prodottoConsigliatoY;
     private int prodottoConsigliatoHeight;
-    private int prodottoHeight;
+    private int prodottoWidth;
     
     public Pannello() {
     	//init vars
@@ -46,9 +47,12 @@ public class Pannello {
         headerHeight = screenHeight / 6;
         barPosX = screenWidth/30;
         barPosY = screenHeight/14;
+        prodottoWidth = screenWidth/4;
         int sumW = 0;
         int totPadding = 0;
         int padding = 0;
+        
+        prodotti = new Prodotto[8];
         
         camera = new Camera2D(new Vector2(0,0), new Vector2(0,0), 0f, 1f);
         
@@ -85,14 +89,23 @@ public class Pannello {
 		}
         
         prodottoConsigliatoY = headerHeight+(categorie[0].getHeight());
-        prodottoConsigliatoHeight = screenHeight/4;
-        prodottoHeight = screenHeight/6;
+        prodottoConsigliatoHeight = screenHeight/3;
         
-        //TEMP TODO
-        Product pp = new Product(911.01, "Kiriko 2", "semplice carta da sedere", 0, 10101);
-        p = new Prodotto(300, 300, 200, 300, 0.2f, texture, pp, 20, 15, Color.WHITE, Color.YELLOW, Color.GOLD);
+        //TEMP TODO prodotti temp
+        Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", 0);
+        //p = new Prodotto(0, (prodottoConsigliatoY+prodottoConsigliatoHeight), prodottoWidth, 0f, texture, pp, 20, 15, 10, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
         
+        for (int i = 0; i < 8; i++) {
+        		prodotti[i] = new Prodotto(0, 0, prodottoWidth, 0f, texture, pp, 20, 15, 10, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+        }
         
+        int g=0;
+        for (int i = 0; i < 4; i++) {
+        	for(int j = 0; j < 2; j++) {
+        		prodotti[g].setLocation(0+(i*prodottoWidth), (prodottoConsigliatoY+prodottoConsigliatoHeight)+(j*prodotti[g].getHeight()));
+        		g++;
+        	}
+        }
     }
 
     public void draw() {
@@ -107,11 +120,11 @@ public class Pannello {
         for (TextButton b : categorie) b.draw();
         
         //TEMP TODO
-        p.draw();
+        //p.draw();
         
-        /*for (int i = 0; i < 10; i++) {
-        	rShapes.DrawRectangleRec(new Rectangle(0, (prodottoConsigliatoY+prodottoConsigliatoHeight)+(i*prodottoHeight) , screenWidth, prodottoHeight), Color.MAROON);
-		}*/
+        for (int i = 0; i < 8; i++) {
+        	prodotti[i].draw();
+		}
         
         ray.core.EndMode2D();
     }
@@ -134,7 +147,12 @@ public class Pannello {
         }
         
         //TODO
-        p.setName("prodotto");
-        p.addListener(c);
+        //p.setName("prodotto");
+        //p.addListener(c);
+        for (int i = 0; i < 8; i++) {
+        	prodotti[i].setName("prodotto"+(i+1));
+        	prodotti[i].addListener(c);
+		}
     }
 }
+
