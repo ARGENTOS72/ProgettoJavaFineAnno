@@ -167,11 +167,6 @@ public class TextButton extends Button {
 	}
 	
 	@Override
-	public boolean isHovered(Vector2 mousePos) {
-		return super.isHovered(mousePos);
-	}
-	
-	@Override
 	public void addListener(Controller c) {
 		c.addListenerTo(this);
 	}
