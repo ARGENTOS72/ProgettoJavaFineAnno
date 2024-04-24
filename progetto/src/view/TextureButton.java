@@ -55,6 +55,15 @@ public class TextureButton extends Button {
 		this(texture, x, y, width, height, visible, roundness, 0, null, null, null);
 	}
 	
+	//use only for sponsored product (keep aspect ratio of a wide img)
+	public TextureButton(int x, int y, int width, Texture2D texture) {
+		super(new Rectangle(x, y, width, texture.height*(width / texture.width)), false, 0f, Color.WHITE);
+		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
+		this.origin = new Vector2(0, 0);
+		this.padding = 0;
+		this.texture = texture;
+	}
+	
 	//draw ------------------------------------------------------
 	public void draw() {
 		super.draw();
