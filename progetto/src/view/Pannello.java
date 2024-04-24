@@ -1,8 +1,5 @@
 package view;
 
-import java.lang.annotation.Target;
-import java.util.Vector;
-
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
 import com.raylib.java.core.rCore;
@@ -48,9 +45,6 @@ public class Pannello {
         barPosX = screenWidth/30;
         barPosY = screenHeight/14;
         prodottoWidth = screenWidth/4;
-        int sumW = 0;
-        int totPadding = 0;
-        int padding = 0;
         
         prodotti = new Prodotto[8];
         
@@ -70,23 +64,13 @@ public class Pannello {
         for (int i = 0; i < 5; i++) {
 			categorie[i] = new TextButton(txtBtn);
 			categorie[i].setPadding(5);
-			categorie[i].setColors(Color.VIOLET, Color.DARKPURPLE, Color.PINK);
-			sumW+=categorie[i].getWidth();
-			
-			if(i == 0) categorie[i].setLocation(0, headerHeight);
-			else categorie[i].setLocation(categorie[i-1].getX()+categorie[i-1].getWidth()+10, headerHeight);
+			categorie[i].setColors(Color.VIOLET, Color.DARKPURPLE, Color.PINK, null);
+			categorie[i].setLocation(0, headerHeight);
 		}
         
-        totPadding = screenWidth - sumW;
-        padding = totPadding/ (categorie.length-1);
-        
-        categorie[0].setX(0);
-        
-        for (int i = 1; i < categorie.length; i++) {
-        	int precedentX = categorie[i - 1].getX();
-        	int precedentWidth = categorie[i - 1].getWidth();
-        	categorie[i].setX(precedentX + precedentWidth + padding);
-		}
+        //center-grow alignment of categories btn 
+        GraphicComponentAligner.alignX(categorie, GraphicComponentAligner.CENTER,
+        		GraphicComponentAligner.GROW, 0, screenWidth, -1);
         
         prodottoConsigliatoY = headerHeight+(categorie[0].getHeight());
         prodottoConsigliatoHeight = screenHeight/3;
@@ -110,6 +94,7 @@ public class Pannello {
 
     public void draw() {
     	ray.core.BeginMode2D(camera);
+    	
     	//header
     	rShapes.DrawRectangleRec(new Rectangle(0, 0, headerWidth, headerHeight), Color.PINK);
     	txtBtn.draw();
@@ -123,7 +108,7 @@ public class Pannello {
         //p.draw();
         
         for (int i = 0; i < 8; i++) {
-        	prodotti[i].draw();
+//        	prodotti[i].draw();
 		}
         
         ray.core.EndMode2D();
@@ -149,10 +134,10 @@ public class Pannello {
         //TODO
         //p.setName("prodotto");
         //p.addListener(c);
+        
         for (int i = 0; i < 8; i++) {
         	prodotti[i].setName("prodotto"+(i+1));
         	prodotti[i].addListener(c);
-		}
+	}
     }
 }
-
