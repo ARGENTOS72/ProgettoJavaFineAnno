@@ -3,144 +3,217 @@ package view;
 import com.raylib.java.core.Color;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
-import com.raylib.java.textures.Texture2D;
-import com.raylib.java.textures.rTextures;
+import com.raylib.java.shapes.rShapes;
 
 import controller.Controller;
 
-public class TextureButton extends Button {
-	private Texture2D texture;
-	private Rectangle textureBounds;
-	private Vector2 origin;
-	private int padding;
+public class GraphicComponent {// has an hitbox, isHovered
+	public static final int PRESSED = 0, DOWN = 1, RELEASED = 2, UP = 3;
 	
-	//Constructor --------------------------------------------
-	public TextureButton(TextureButton textureBtn) {
-		super(textureBtn);
-		setSize(getWidth()+(textureBtn.getPadding()*2), getHeight()+(textureBtn.getPadding()*2));
-		this.padding = textureBtn.getPadding();
-		this.texture = textureBtn.getTexture();
-		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
-		this.origin = new Vector2(textureBtn.getOrigin().x, textureBtn.getOrigin().y);
+	private Rectangle bounds;
+	private Color color, hoveredColor, clickedColor, focussedColor, currentColor;
+	private String name;
+	
+	//Constructor -------------------------------
+	public GraphicComponent(Rectangle bounds, String name, Color color, Color hoveredColor, Color clickedColor, Color focussedColor) {
+		this.bounds = bounds;
+		this.name = name;
+		this.color = color;
+		this.hoveredColor = hoveredColor;
+		this.clickedColor = clickedColor;
+		this.focussedColor = focussedColor;
+		this.currentColor = color;
 	}
 	
-	public TextureButton(Button btn, Texture2D texture, int padding, Vector2 origin) {
-		super(btn);
-		setSize(getWidth()+(padding*2), getHeight()+(padding*2));
-		this.padding = padding;
-		this.texture = texture;
-		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
-		this.origin = origin;
+	public GraphicComponent(int x, int y, int width, int height, String name, Color color, Color hoveredColor, Color clickedColor, Color focussedColor) {
+		this(new Rectangle(x, y, width, height), name, color, hoveredColor, clickedColor, focussedColor);
+	}
+
+	public GraphicComponent(int x, int y, int width, int height, Color color) {
+		this.bounds = new Rectangle(x, y, width, height);
+		this.color = color;
+		this.currentColor = color;
 	}
 	
-	public TextureButton(Texture2D texture, Rectangle bounds, boolean visible, float roundness, int padding, Color color, Color hoveredColor, Color clickedColor) {
-		super(bounds, visible, roundness, color, hoveredColor, clickedColor);
-		setSize(getWidth()+(padding*2), getHeight()+(padding*2));
-		this.padding = padding;
-		this.texture = texture;
-		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
-		this.origin = new Vector2(0, 0);
-	}
-	
-	public TextureButton(Texture2D texture, int x, int y, int width, int height, boolean visible, float roundness, int padding, Color color, Color hoveredColor, Color clickedColor) {
-		super(x, y, width, height, visible, roundness, color, hoveredColor, clickedColor);
-		setSize(getWidth()+(padding*2), getHeight()+(padding*2));
-		this.padding = padding;
-		this.texture = texture;
-		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
-		this.origin = new Vector2(0, 0);
-	}
-	
-	public TextureButton(Texture2D texture, int x, int y, int width, int height, boolean visible, float roundness, Color color) {
-		this(texture, x, y, width, height, visible, roundness, 0, null, null, null);
-	}
-	
-	//use only for sponsored product (keep aspect ratio of a wide img)
-	public TextureButton(int x, int y, int width, Texture2D texture) {
-		super(new Rectangle(x, y, width, texture.height*(width / texture.width)), false, 0f, Color.WHITE);
-		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
-		this.origin = new Vector2(0, 0);
-		this.padding = 0;
-		this.texture = texture;
-	}
-	
-	//draw ------------------------------------------------------
+	//draw ------------------------------------------
 	public void draw() {
-		super.draw();
-		rTextures.DrawTexturePro(texture, textureBounds, new Rectangle(getX()+padding, getY()+padding, getWidth()-(padding*2), getHeight()-(padding*2)), origin, 0, Color.WHITE);
+		rShapes.DrawRectangleRec(bounds, currentColor);
 	}
 	
-	//getters & setters ------------------------------------------
-	public Texture2D getTexture() {
-		return texture;
+	//getters & setters -------------------------
+	public Rectangle getBounds() {
+		return bounds;
+	}
+	
+	public Vector2 getLocation() {
+		return new Vector2(bounds.x, bounds.y);
+	}
+	
+	public Vector2 getSize() {
+		return new Vector2(bounds.width, bounds.height);
+	}
+	
+	public int getX() {
+		return (int) bounds.x;
+	}
+	
+	public int getY() {
+		return (int) bounds.y;
+	}
+	
+	public int getWidth() {
+		return (int) bounds.width;
+	}
+	
+	public int getHeight() {
+		return (int) bounds.height;
+	}
+	
+	public Color[] getColors() {
+		return new Color[] {color, hoveredColor, clickedColor, focussedColor};
+	}
+	
+	public Color getColor() {
+		return color;
 	}
 
-	public int getPadding() {
-		return padding;
-	}
-	
-	public Vector2 getOrigin() {
-		return origin;
+	public Color getHoveredColor() {
+		return hoveredColor;
 	}
 
-	public void setTexture(Texture2D texture) {
-		this.texture = texture;
-		this.textureBounds.width = texture.width;
-		this.textureBounds.height = texture.height;
+	public Color getClickedColor() {
+		return clickedColor;
 	}
 
-	public void setPadding(int padding) {
-		setSize(getWidth()-(this.padding*2)+(padding*2), getHeight()-(this.padding*2)+(padding*2));
-		this.padding = padding;
+	public Color getFocussedColor() {
+		return focussedColor;
 	}
 	
-	public void setOrigin(int x, int y) {
-		this.origin = new Vector2(x, y);
+	public Color getCurrentColor() {
+		return currentColor;
+	}
+
+	public String getName() {
+		return name;
 	}
 	
-	//superclass overrides ---------------------------------------------
-	@Override
+	public void setBounds(Rectangle bounds) {
+		this.bounds = bounds;
+	}
+	
+	public void setBounds(int x, int y, int width, int height) {
+		bounds.x = x;
+		bounds.y = y;
+		bounds.width = width;
+		bounds.height = height;
+	}
+	
+	public void setLocation(int x, int y) {
+		bounds.x = x;
+		bounds.y = y;
+	}
+	
+	public void setSize(int width, int height) {
+		bounds.width = width;
+		bounds.height = height;
+	}
+	
+	public void setX(int x) {
+		bounds.x = x;
+	}
+	
+	public void setY(int y) {
+		bounds.y = y;
+	}
+	
+	public void setWidth(int width) {
+		bounds.width = width;
+	}
+	
+	public void setHeight(int height) {
+		bounds.height = height;
+	}
+	
+	public void setColors(Color color, Color hoveredColor, Color clickedColor, Color focussedColor) {
+		this.color = color;
+		this.hoveredColor = hoveredColor;
+		this.clickedColor = clickedColor;
+		this.focussedColor = focussedColor;
+		this.currentColor = color;
+	}
+	
+	public void setColor(Color color) {
+		this.color = color;
+	}
+
+	public void setHoveredColor(Color hoveredColor) {
+		this.hoveredColor = hoveredColor;
+	}
+
+	public void setClickedColor(Color clickedColor) {
+		this.clickedColor = clickedColor;
+	}
+
+	public void setFocussedColor(Color focussedColor) {
+		this.focussedColor = focussedColor;
+	}
+	
+	public void setCurrentColor(Color currentColor) {
+		this.currentColor = currentColor;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	//change state methods ---------------------------
+	//default operations to do intra-class when component is on hover
 	public void onHover() {
-		super.onHover();
+		if(hoveredColor != null) currentColor = hoveredColor;
 	}
 	
-	@Override
+	//default operations to do intra-class when component is out of hover
 	public void outOfHover() {
-		super.outOfHover();
+		currentColor = color;
 	}
 	
-	@Override
+	//default operations to do intra-class when component is on focus
+	public void onFocus() {
+		if(focussedColor != null) currentColor = focussedColor;
+	}
+	
+	//default operations to do intra-class when component is out of focus
+	public void outOfFocus() {
+		currentColor = color;
+	}
+	
+	//default operations to do intra-class when component is clicked either pressed, down, released or up
 	public void onClick(int modality) {
-		if(modality == GraphicComponent.DOWN) {
-			super.onClick(modality);
-		}
+		if(clickedColor != null && modality == GraphicComponent.DOWN) currentColor = clickedColor;
 	}
 	
-	@Override
+	//method to check wheter mouse is over the component or not
 	public boolean isHovered(Vector2 mousePos) {
-		return super.isHovered(mousePos);
+		return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, bounds);
 	}
 	
-	@Override
+	//default operations to do when this GraphicComponent need to add a listener
 	public void addListener(Controller c) {
 		c.addListenerTo(this);
 	}
 	
-	@Override
+	//default operations to do when this GraphicComponent need to remove a listener
 	public void removeListener(Controller c) {
 		c.removeListenerTo(this);
 	}
 	
-	//toString ---------------------------------------------------
+	//toString --------------------------------------------
 	@Override
 	public String toString() {
-		return "Button {" +
+		return this.getClass().getSimpleName() + " {" +
 				"\n\tbounds [" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() +
-				"]\n\tvisible: " + isVisible() +
-				"\n\troundness: " + getRoundness() +
-				"\n\tcolors [normal: " + getColor() + ", hovered: " + getHoveredColor() + ", clicked: " + getClickedColor() +
-				"]\n\ttexture: " + texture +
-				"\n\tpadding: " + padding +
-				"\n}";
+				"]\n\tcolors [normal: " + color + ", hovered: " + hoveredColor + ", clicked: " + clickedColor +
+				"focussed: " + focussedColor +
+				"]\n}";
 	}
 }
