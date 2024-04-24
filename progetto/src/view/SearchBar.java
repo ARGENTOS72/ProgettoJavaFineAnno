@@ -11,13 +11,10 @@ import com.raylib.java.textures.Texture2D;
 
 import controller.Controller;
 
-public class SearchBar extends GraphicComponent {//TODO also addActionListener
-	private Rectangle bounds;//textfield + btn
-	
+public class SearchBar extends GraphicComponent {
 	//text field
 	private Rectangle txtFieldBounds;
 	private Color borderColor;
-	private Color color, hoveredColor, clikcedColor, focussedColor, currentColor;
 	private Color textColor, hoveredTextColor, clikcedTextColor, focussedTextColor, currentTextColor;
 	private float roundness;
 	private int borderThickness;
@@ -35,16 +32,12 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
     //Constructor -----------------------------------------------
     public SearchBar(int x, int y, int width, int height, float roundness, int borderThickness, byte maxChars, int fontSize,
     		Texture2D textureSendBtn)  {
-    	this.bounds = new Rectangle(x, y, width, height);
-    	this.txtFieldBounds = bounds;
-    	this.txtFieldBounds.setWidth(bounds.getWidth()-bounds.getHeight());
+    	super(x, y, width, height, null, Color.YELLOW, Color.BEIGE, null, Color.RED);
+    	
+    	this.txtFieldBounds = getBounds();
+    	this.txtFieldBounds.setWidth(getWidth()-getHeight());
     	
     	this.borderColor = Color.BLACK;
-    	this.color = Color.YELLOW;
-    	this.hoveredColor = Color.BEIGE;
-    	this.clikcedColor = null;
-    	this.focussedColor = Color.RED;
-    	this.currentColor = color;
     	this.textColor = Color.GRAY;
     	this.hoveredTextColor = Color.DARKGRAY;
     	this.clikcedTextColor = null;
@@ -72,13 +65,14 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
     }
     
     //draw -------------------------------------------------------
+    @Override
     public void draw() {
-    	Finestra.getRaylib().shapes.DrawRectangleRounded(bounds, roundness, 5, currentColor);//text field background
-    	Finestra.getRaylib().shapes.DrawRectangle(sendBtn.getX()-getHeight(), getY(), (int) (getHeight()*1.5), getHeight(), currentColor);
+    	Finestra.getRaylib().shapes.DrawRectangleRounded(getBounds(), roundness, 5, getCurrentColor());//text field background
+    	Finestra.getRaylib().shapes.DrawRectangle(sendBtn.getX()-getHeight(), getY(), (int) (getHeight()*1.5), getHeight(), getCurrentColor());
     	//...
     	
     	Finestra.getRaylib().text.DrawTextEx(rText.GetFontDefault(), String.valueOf(text),
-    			new Vector2(bounds.getX()+padding, bounds.getY()+padding), fontSize, fontSpacing, currentTextColor);
+    			new Vector2(getX()+padding, getY()+padding), fontSize, fontSpacing, currentTextColor);
     	
     	sendBtn.draw();
     	
@@ -107,35 +101,7 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
     }
     
     //getters & setters ----------------------------------------------------
-    public Rectangle getBounds() {
-		return bounds;
-	}
-	
-	public Vector2 getLocation() {
-		return new Vector2(bounds.x, bounds.y);
-	}
-	
-	public Vector2 getSize() {
-		return new Vector2(bounds.width, bounds.height);
-	}
-	
-	public int getX() {
-		return (int) bounds.x;
-	}
-	
-	public int getY() {
-		return (int) bounds.y;
-	}
-	
-	public int getWidth() {
-		return (int) bounds.width;
-	}
-	
-	public int getHeight() {
-		return (int) bounds.height;
-	}
-	
-	public Rectangle getTextFieldBounds() {
+    public Rectangle getTextFieldBounds() {
 		return txtFieldBounds;
 	}
 	
@@ -195,17 +161,19 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
 		return sendBtn;
 	}
 	
-	public Color[] getAllColors() {
+	@Override
+	public Color[] getColors() {
 		return new Color[] {
 			borderColor,
-			color, hoveredColor, clikcedColor, focussedColor,
+			getColor(), getHoveredColor(), getClickedColor(), getFocussedColor(),
 			textColor, hoveredTextColor, clikcedTextColor, focussedTextColor,
 			sendBtn.getColor(), sendBtn.getHoveredColor(), sendBtn.getClickedColor()
 		};
 	}
-
+	
+	@Override
 	public void setBounds(Rectangle bounds) {
-		this.bounds = bounds;
+		setBounds(bounds);
 		
 		txtFieldBounds.x = bounds.x;
 		txtFieldBounds.y = bounds.y;
@@ -217,11 +185,9 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
 		padding = (int) ((bounds.height - fontSize) / 2);
 	}
 	
+	@Override
 	public void setBounds(int x, int y, int width, int height) {
-		bounds.x = x;
-		bounds.y = y;
-		bounds.width = width;
-		bounds.height = height;
+		setBounds(x, y, width, height);
 		
 		txtFieldBounds.x = x;
 		txtFieldBounds.y = y;
@@ -233,9 +199,9 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
 		padding = (height - fontSize) / 2;
 	}
 	
+	@Override
 	public void setLocation(int x, int y) {
-		bounds.x = x;
-		bounds.y = y;
+		setLocation(x, y);
 		
 		txtFieldBounds.x = x;
 		txtFieldBounds.y = y;
@@ -243,45 +209,49 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
 		sendBtn.setLocation((int) (x+txtFieldBounds.getWidth()), y);
 	}
 	
+	@Override
 	public void setSize(int width, int height) {
-		bounds.width = width;
-		bounds.height = height;
+		setSize(width, height);
 		
 		txtFieldBounds.width = width - height;
 		txtFieldBounds.height = height;
 		
-		sendBtn.setBounds((int)(bounds.x+txtFieldBounds.width), (int) bounds.y, height, height);
+		sendBtn.setBounds((int)(getX()+txtFieldBounds.width), getY(), height, height);
 		
 		padding = (height - fontSize) / 2;
 	}
 	
+	@Override
 	public void setX(int x) {
-		bounds.x = x;
+		setX(x);
 		
 		txtFieldBounds.x = x;
 		
 		sendBtn.setX((int) (x+txtFieldBounds.getWidth()));
 	}
 	
+	@Override
 	public void setY(int y) {
-		bounds.y = y;
+		setY(y);
 		
 		txtFieldBounds.y = y;
 		
 		sendBtn.setY(y);
 	}
 	
+	@Override
 	public void setWidth(int width) {
-		bounds.width = width;
+		setWidth(width);
 		
-		txtFieldBounds.width = width - bounds.height;
-		txtFieldBounds.height = bounds.height;
+		txtFieldBounds.width = width - getHeight();
+		txtFieldBounds.height = getHeight();
 		
-		sendBtn.setX((int)(bounds.x+txtFieldBounds.width));
+		sendBtn.setX((int)(getX()+txtFieldBounds.width));
 	}
 	
+	@Override
 	public void setHeight(int height) {
-		bounds.height = height;
+		setHeight(height);
 		
 		txtFieldBounds.height = height;
 		
@@ -293,9 +263,9 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
 	public void setTextFieldPercWidth(float perc) {//0 < percentage < 1
 		if(perc == 0 || perc >= 1) return;
 		
-		txtFieldBounds.width = bounds.width * perc;
-		sendBtn.setX((int) (bounds.x+txtFieldBounds.width));
-		sendBtn.setWidth((int) (bounds.width - txtFieldBounds.width));
+		txtFieldBounds.width = getWidth() * perc;
+		sendBtn.setX((int) (getX()+txtFieldBounds.width));
+		sendBtn.setWidth((int) (getWidth() - txtFieldBounds.width));
 	}
 
 	public void setRoundness(float roundness) {
@@ -312,21 +282,18 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
 
 	public void setFontSize(int fontSize) {
 		this.fontSize = fontSize;
-		this.padding = (int) ((bounds.height - fontSize) / 2);
+		this.padding = (int) ((getHeight() - fontSize) / 2);
 	}
 
 	public void setFontSpacing(int fontSpacing) {
 		this.fontSpacing = fontSpacing;
 	}
-	
+		
 	public void setAllColors(Color[] arr12Cols) {
 		if(arr12Cols.length != 12) return;
 		
 		borderColor = arr12Cols[0];
-		color = arr12Cols[1];
-		hoveredColor = arr12Cols[2];
-		clikcedColor = arr12Cols[3];
-		focussedColor = arr12Cols[4];
+		setColors(arr12Cols[1], arr12Cols[2], arr12Cols[3], arr12Cols[4]);
 		textColor = arr12Cols[5];
 		hoveredTextColor = arr12Cols[6];
 		clikcedTextColor = arr12Cols[7];
@@ -345,19 +312,19 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
 
 	@Override
 	public void onHover() {
-    	if(hoveredColor != null) currentColor = hoveredColor;
+    	super.onHover();
     	if(hoveredTextColor != null) currentTextColor = hoveredTextColor;
 	}
     
     @Override
 	public void outOfHover() {
-		currentColor = color;
+		super.outOfHover();
 		currentTextColor = textColor;
 	}
     
     @Override
     public void onFocus() {
-    	if(focussedColor != null) currentColor = focussedColor;
+    	super.onFocus();
     	if(focussedTextColor != null) currentTextColor = focussedTextColor;
     	
         key = Finestra.getRaylib().core.GetCharPressed();
@@ -417,14 +384,14 @@ public class SearchBar extends GraphicComponent {//TODO also addActionListener
     
     @Override
 	public void outOfFocus() {
-    	currentColor = color;
+    	super.outOfFocus();
 		currentTextColor = textColor;
 	}
     
     @Override
 	public void onClick(int modality) {
     	if(modality == GraphicComponent.DOWN) {
-			if(clikcedColor != null) currentColor = clikcedColor;
+			if(getClickedColor() != null) setCurrentColor(getClickedColor());
 			if(clikcedTextColor != null) currentTextColor = clikcedTextColor;
 		}
 	}
