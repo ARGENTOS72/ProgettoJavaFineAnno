@@ -1,5 +1,7 @@
 package view;
 
+import java.util.Iterator;
+
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
 import com.raylib.java.core.rCore;
@@ -40,13 +42,17 @@ public class Header {
 			categorie[i] = new TextButton(txtBtn);
 			categorie[i].setPadding(5);
 			categorie[i].setColors(Color.VIOLET, Color.DARKPURPLE, Color.PINK, null);
-			categorie[i].setLocation(0, headerHeight);
+		}
+        
+        for (int i = 0; i < nCategorie; i++) {
+        	categorie[i].setLocation(0, headerHeight-categorie[0].getHeight());
 		}
         
         //center-grow alignment of categories btn 
         GraphicComponentAligner.alignX(categorie, GraphicComponentAligner.CENTER,
-        		GraphicComponentAligner.GROW, 0, screenWidth, -1);
-	}
+        		GraphicComponentAligner.DISTRIBUTE, 0, screenWidth, -1);
+	
+    }
     
     public void draw() {
     	rShapes.DrawRectangleRec(new Rectangle(0, 0, headerWidth, headerHeight), Color.PINK);
@@ -73,7 +79,7 @@ public class Header {
 	}
 
 	public int getHeaderHeight() {
-		return headerHeight+categorie[0].getHeight();
+		return headerHeight;
 	}
 
 	public int getnCategorie() {
