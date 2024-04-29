@@ -160,7 +160,7 @@ public class TextButton extends Button {
 	
 	@Override
 	public void onClick(int modality) {
-		if(modality == GraphicComponent.DOWN) {
+		if(modality == DOWN) {
 			if(getClickedColor() != null) setCurrentColor(getClickedColor());
 			if(clickedTextColor != null) currentTextColor = clickedTextColor;
 		}
