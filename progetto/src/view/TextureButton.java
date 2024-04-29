@@ -111,7 +111,7 @@ public class TextureButton extends Button {
 	
 	@Override
 	public void onClick(int modality) {
-		if(modality == GraphicComponent.DOWN) {
+		if(modality == ListenableGraphicComponent.DOWN) {
 			super.onClick(modality);
 		}
 	}
