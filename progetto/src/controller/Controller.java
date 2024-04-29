@@ -9,21 +9,27 @@ import com.raylib.java.raymath.Vector2;
 
 import view.Button;
 import view.Finestra;
+import view.GraphicAnimation;
 import view.GraphicComponent;
+import view.ListenableGraphicComponent;
 import view.Pannello;
 import view.Prodotto;
 import view.SearchBar;
 import view.TextButton;
+import view.TextureAnimation;
 
 public class Controller {
 	private Pannello p;
-	private ArrayList<GraphicComponent> components;//GraphicComponents that has added action listener
-	private GraphicComponent hoveredComponent, lastHoveredComponent, focusedComponent, lastFocusedComponent;
+	private ArrayList<ListenableGraphicComponent> components;//GraphicComponents that has added  listener
+	private ArrayList<GraphicAnimation> animations;//GraphicAnimation that has added updater
+	private ListenableGraphicComponent hoveredComponent, lastHoveredComponent, focusedComponent, lastFocusedComponent;
 	private Vector2 mousePos;
+	private float deltaTime;
 	private int scrollMultiplier;
 	
 	public Controller(Pannello p) {
 		this.components = new ArrayList<>();
+		this.animations = new ArrayList<>();
 		this.lastHoveredComponent = null;
 		this.hoveredComponent = null;
 		this.focusedComponent = null;
@@ -38,6 +44,7 @@ public class Controller {
 	//update controler
 	public void update() {
 		mousePos = rCore.GetMousePosition();//update mouse position
+		deltaTime = rCore.GetFrameTime();
 		p.aggiornaCameraY(scrollMultiplier*rCore.GetMouseWheelMove()); //update scroll
 		
 		handleComponentsActions();//do smth when a component is hovered or clicked
@@ -53,22 +60,23 @@ public class Controller {
 		
 		handleFocusedComponent();//do smth when a component is on focus
 		
+		updateAnimations();//update all animations
 	}
 	
 	//onHover, onFocus
 	private void handleComponentsActions() {
-		for (GraphicComponent gc : components) {
-			if (gc.isHovered(mousePos)) {//is Hovered
-				hoveredComponent = gc;
-				gc.onHover();//do default operations when hovered
+		for (ListenableGraphicComponent lgc : components) {
+			if (lgc.isHovered(mousePos)) {//is Hovered
+				hoveredComponent = lgc;
+				lgc.onHover();//do default operations when hovered
 				
 				//get who is it
-				if (gc instanceof Button || gc instanceof SearchBar || gc instanceof Prodotto) {
+				if (lgc instanceof Button || lgc instanceof SearchBar || lgc instanceof Prodotto) {
 					if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
-						this.focusedComponent = gc;// when clicking it gains focus
+						this.focusedComponent = lgc;// when clicking it gains focus
 					}
 					if(rCore.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT)) {
-						gc.onClick(GraphicComponent.DOWN);
+						lgc.onClick(ListenableGraphicComponent.DOWN);
 						
 					}
 
@@ -114,26 +122,57 @@ public class Controller {
 		// ...
 	}
 	
+	public void updateAnimations() {
+		for(GraphicAnimation ga : animations) {
+			ga.update(deltaTime);
+			System.out.println(ga.getName()+" rot: "+((TextureAnimation) ga).getRotation());
+		}
+	}
+	
 	//external utilities --------------------------------------------------------------------------------
-	public void addListenerTo(GraphicComponent gc) throws ControllerException {
-		if (gc == null)
+	public void addListenerTo(ListenableGraphicComponent lgc) throws ControllerException {
+		if (lgc == null)
 			throw new ControllerException(
 					"Cannot add listener to null " + GraphicComponent.class.getSimpleName());
-		if (gc.getName() == null)
+		if (lgc.getName() == null)
 			throw new ControllerException(
 					"Cannot add listener to " + GraphicComponent.class.getSimpleName() + " with null name");
 
-		components.add(gc);
+		components.add(lgc);
 	}
 
-	public void removeListenerTo(GraphicComponent gc) {
-		components.remove(gc);
+	public void removeListenerTo(ListenableGraphicComponent lgc) {
+		components.remove(lgc);
 	}
 
-	public void removeListenerTo(String gcName) {
+	public void removeListenerTo(String lgcName) {
 		for (int i = 0; i < components.size(); i++) {
-			if (components.get(i).getName().equals(gcName)) {
+			if (components.get(i).getName().equals(lgcName)) {
 				components.remove(i);
+				break;
+			}
+		}
+	}
+	
+	public void addUpdaterTo(GraphicAnimation ga) throws ControllerException {
+		if (ga == null)
+			throw new ControllerException(
+					"Cannot add updater to null " + GraphicComponent.class.getSimpleName());
+		if (ga.getName() == null)
+			throw new ControllerException(
+					"Cannot add updater to " + GraphicComponent.class.getSimpleName() + " with null name");
+
+		animations.add(ga);
+	}
+
+	public void removeUpdaterTo(GraphicAnimation ga) {
+		animations.remove(ga);
+	}
+
+	public void removeUpdaterTo(String gaName) {
+		for (int i = 0; i < animations.size(); i++) {
+			if (animations.get(i).getName().equals(gaName)) {
+				animations.remove(i);
 				break;
 			}
 		}
