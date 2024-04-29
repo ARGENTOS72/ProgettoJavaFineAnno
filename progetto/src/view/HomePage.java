@@ -1,5 +1,9 @@
 package view;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import com.raylib.java.core.Color;
 import com.raylib.java.shapes.Rectangle;
 import com.raylib.java.shapes.rShapes;
@@ -15,6 +19,7 @@ public class HomePage {
     private int prodottoWidth;
     private int screenWidth;
     private int screenHeight;
+    private TextureButton prodottoConsigliato;
     
     private Texture2D texture;
 	
@@ -22,7 +27,7 @@ public class HomePage {
 		super();
 		this.prodottoConsigliatoY = prodottoConsigliatoY;
 		this.prodottoConsigliatoHeight = prodottoConsigliatoHeight;
-		this.prodottoWidth = screenWidth/5;
+		this.prodottoWidth = screenWidth/4;
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
 		
@@ -30,44 +35,44 @@ public class HomePage {
 		
 		texture = new Texture2D("textures/SearchIcon.png");
 		
+		prodottoConsigliato = new TextureButton(texture, 0, prodottoConsigliatoY, screenWidth, prodottoConsigliatoHeight, true, 0f, Color.GOLD);
+		
 		Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", 0);
 		
-		for (int i = 0; i < 5; i++) {
-    		prodotti[0][i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, pp, 20, 15, 10, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 5; j++) {
+				prodotti[i][j] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, pp, 20, 15, 10, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+			}
+			GraphicComponentAligner.alignY(prodotti[i], GraphicComponentAligner.UP, GraphicComponentAligner.PADDING,
+					(prodottoConsigliatoY+prodottoConsigliatoHeight+screenHeight/30), 10, screenHeight/30);
 		}
-		
-		GraphicComponentAligner.alignY(prodotti[0], GraphicComponentAligner.UP, GraphicComponentAligner.PADDING,
-				(prodottoConsigliatoY+prodottoConsigliatoHeight+screenHeight/30), 10, screenHeight/30);
-		
-//		int g=0;
-//        for (int i = 0; i < 2; i++) {
-//        	for(int j = 0; j < 5; j++) {
-//        		prodotti[g].setLocation((i*prodottoWidth), (prodottoConsigliatoY+prodottoConsigliatoHeight)+(j*prodotti[g].getHeight()));
-//        		g++;
-//        	}
-//        }
-		
 		
 	}
     
     
     
     public void draw() {
-    	 rShapes.DrawRectangleRec(new Rectangle(0, prodottoConsigliatoY, screenWidth, prodottoConsigliatoHeight), Color.GOLD);
-    	 for (int i = 0; i < 5; i++) {
-         	prodotti[0][i].draw();
-		}
+    	prodottoConsigliato.draw();
+    	for (int i = 0; i < 2; i++) {
+     		for(int j = 0; j < 5; j++) {
+ 	        	prodotti[i][j].draw();
+     		}
+         }
     }
     
     public void registraEventiHome(Controller c) {
-    	/*for (int i = 0; i < 5; i++) {
-        	prodotti[i].setName("prodotto"+(i+1));
-        	prodotti[i].addListener(c);
-        }*/
+    	prodottoConsigliato.setName("ProdottoConsigliato");
+    	prodottoConsigliato.addListener(c);
+    	
+    	for (int i = 0; i < 2; i++) {
+    		for(int j = 0; j < 5; j++) {
+	        	prodotti[i][j].setName("prodotto"+(i+1));
+				prodotti[i][j].addListener(c);
+    		}
+        }
     }
 
     public int getHomePageHeight() {
-		return prodottoConsigliatoHeight+(prodotti[0][0].getHeight()*2);
-    	
+		return prodottoConsigliatoHeight;
     }
 }
