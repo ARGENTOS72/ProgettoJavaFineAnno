@@ -98,29 +98,7 @@ public class TextureButton extends Button {
 		this.origin = new Vector2(x, y);
 	}
 	
-	//superclass overrides ---------------------------------------------
-	@Override
-	public void onHover() {
-		super.onHover();
-	}
-	
-	@Override
-	public void outOfHover() {
-		super.outOfHover();
-	}
-	
-	@Override
-	public void onClick(int modality) {
-		if(modality == ListenableGraphicComponent.DOWN) {
-			super.onClick(modality);
-		}
-	}
-	
-	@Override
-	public boolean isHovered(Vector2 mousePos) {
-		return super.isHovered(mousePos);
-	}
-	
+	//add & remove listener---------------------------------------------
 	@Override
 	public void addListener(Controller c) {
 		c.addListenerTo(this);
@@ -134,7 +112,7 @@ public class TextureButton extends Button {
 	//toString ---------------------------------------------------
 	@Override
 	public String toString() {
-		return "Button {" +
+		return "TextureButton {" +
 				"\n\tbounds [" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() +
 				"]\n\tvisible: " + isVisible() +
 				"\n\troundness: " + getRoundness() +
