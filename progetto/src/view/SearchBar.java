@@ -5,7 +5,6 @@ import com.raylib.java.core.rCore;
 import com.raylib.java.core.input.Keyboard;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
-import com.raylib.java.shapes.rShapes;
 import com.raylib.java.text.rText;
 import com.raylib.java.textures.Texture2D;
 
@@ -290,7 +289,7 @@ public class SearchBar extends ListenableGraphicComponent {
 		sendBtn.setHoveredColor(arr12Cols[10]);
 		sendBtn.setClickedColor(arr12Cols[11]);
 	}
-    
+	
     //superclass overrides ---------------------------------------------------
     @Override
 	public void setName(String name) {
