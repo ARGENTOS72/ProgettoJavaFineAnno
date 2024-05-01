@@ -5,8 +5,6 @@ import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
 import com.raylib.java.shapes.rShapes;
 
-import controller.Controller;
-
 public class GraphicComponent {// has an hitbox, isHovered
 	private Rectangle bounds;
 	private Color color;
@@ -26,7 +24,6 @@ public class GraphicComponent {// has an hitbox, isHovered
 	//draw ------------------------------------------
 	public void draw() {
 		rShapes.DrawRectangleRec(bounds, color);
-		System.out.println("bounds: "+bounds.x+", "+bounds.y+", "+bounds.width+", "+bounds.height);
 	}
 	
 	//getters & setters -------------------------
