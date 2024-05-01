@@ -17,6 +17,7 @@ public class Pannello {
 
     private Header header;
     private HomePage homePage;
+    private SinglePoduct singlePoduct;
     
     private Texture2D texture;
     private TextureButton textureBtn;
@@ -30,8 +31,13 @@ public class Pannello {
         screenWidth = rCore.GetScreenWidth();
         screenHeight = rCore.GetScreenHeight();
     
-        header = new Header(screenWidth, screenHeight, screenWidth, screenHeight/6, screenWidth/30, screenHeight/14, 5);
-        homePage = new HomePage(screenWidth, screenHeight, header.getHeaderHeight(), screenHeight/3);
+        texture = new Texture2D("textures/SearchIcon.png");
+        
+        Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", 0);
+        
+        header = new Header(screenWidth, screenHeight, screenWidth, screenHeight/5, screenWidth/30, screenHeight/14, 6);
+        homePage = new HomePage(screenWidth, screenHeight, header.getHeight(), screenHeight/2);
+        singlePoduct = new SinglePoduct(texture, pp, screenWidth, screenHeight, header.getHeight());
         
         camera = new Camera2D(new Vector2(0,0), new Vector2(0,0), 0f, 1f);
         
@@ -40,10 +46,9 @@ public class Pannello {
     //Draw Panel
     public void draw() {
     	ray.core.BeginMode2D(camera);
-   
     	header.draw();
-    	homePage.draw();
-        
+    	//homePage.draw();
+        singlePoduct.draw();
         ray.core.EndMode2D();
     }
     
@@ -51,11 +56,11 @@ public class Pannello {
     public void aggiornaCameraY(float y) {
 		camera.target.y -= y;
 		camera.target.y = Math.max(0, camera.target.y);
-		camera.target.y = Math.min(screenHeight, camera.target.y);
     }
 
     public void registraEventi(Controller c) {
     	header.registraEventiHeader(c);
         homePage.registraEventiHome(c);
+    	//singlePoduct.registraEventiProdotto(c);
     }
 }
