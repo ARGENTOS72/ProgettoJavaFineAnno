@@ -1,7 +1,6 @@
 package view;
 
 import com.raylib.java.core.Color;
-import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
 
 import controller.Controller;
@@ -12,8 +11,7 @@ public class Button extends ListenableGraphicComponent {
 
 	// Constructors -----------------------------------------
 	public Button(Button btn) {
-		super(btn.getX(), btn.getY(), btn.getWidth(), btn.getHeight(), btn.getColor(),
-			btn.getHoveredColor(), btn.getClickedColor(), btn.getFocussedColor());
+		super(btn);
 		
 		this.visible = btn.isVisible();
 		this.roundness = btn.getRoundness();
@@ -74,7 +72,7 @@ public class Button extends ListenableGraphicComponent {
 		this.roundness = roundness;
 	}
 	
-	//superclass overrides ---------------------------------------------------
+	//add & remove listener ---------------------------------------------------
 	@Override
 	public void addListener(Controller c) {
 		c.addListenerTo(this);
