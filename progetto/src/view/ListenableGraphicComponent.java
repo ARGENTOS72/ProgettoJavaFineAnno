@@ -8,15 +8,42 @@ import com.raylib.java.shapes.rShapes;
 import controller.Controller;
 
 public class ListenableGraphicComponent extends GraphicComponent implements Listenable {
+	private Listenable listener;//in oreder to have settable Listenable methods
 	private Color hoveredColor, clickedColor, focussedColor, currentColor;
 	
 	//Constructor -------------------------------
+	public ListenableGraphicComponent(ListenableGraphicComponent lgc) {
+		super(lgc.getX(), lgc.getY(), lgc.getWidth(), lgc.getHeight(), lgc.getColor());
+		
+		this.listener = new Listenable() {
+			@Override
+			public void outOfHover() { lgc.getInterationActions().outOfHover(); }
+			@Override
+			public void outOfFocus() { lgc.getInterationActions().outOfFocus(); }
+			@Override
+			public void onHover() { lgc.getInterationActions().onHover(); }			
+			@Override
+			public void onFocus() { lgc.getInterationActions().onFocus(); }
+			@Override
+			public void onClick(int modality) { lgc.getInterationActions().onClick(modality); }
+			@Override
+			public boolean isHovered(Vector2 mousePos) { return lgc.getInterationActions().isHovered(mousePos); }
+		};
+		
+		this.hoveredColor = lgc.getHoveredColor();
+		this.clickedColor = lgc.getClickedColor();
+		this.focussedColor = lgc.focussedColor;
+		this.currentColor = getColor();
+	}
+	
 	public ListenableGraphicComponent(Rectangle bounds, Color color, Color hoveredColor, Color clickedColor, Color focussedColor) {
 		super(bounds, color);
 		this.currentColor = getColor();
 		this.hoveredColor = hoveredColor;
 		this.clickedColor = clickedColor;
 		this.focussedColor = focussedColor;
+		
+		this.listener = getDefaultInterationAction();
 	}
 	
 	public ListenableGraphicComponent(int x, int y, int width, int height, Color color, Color hoveredColor, Color clickedColor, Color focussedColor) {
@@ -54,6 +81,10 @@ public class ListenableGraphicComponent extends GraphicComponent implements List
 		return new Color[] {getColor(), hoveredColor, clickedColor, focussedColor};
 	}
 	
+	public Listenable getInterationActions() {
+		return listener;
+	}
+	
 	public void setHoveredColor(Color hoveredColor) {
 		this.hoveredColor = hoveredColor;
 	}
@@ -78,43 +109,83 @@ public class ListenableGraphicComponent extends GraphicComponent implements List
 		this.currentColor = color;
 	}
 	
+	public void setInterationAction(Listenable listener) {
+		this.listener = listener;
+	}
+	
 	//implements --------------------------------------------------------------
 	@Override
 	public void onHover() {
-		if(getHoveredColor() != null) setCurrentColor(getHoveredColor());
+		listener.onHover();
 	}
 	
 	@Override
 	public void outOfHover() {
-		setCurrentColor(getColor());
+		listener.outOfHover();
 	}
 	
 	@Override
 	public void onFocus() {
-		if(getFocussedColor() != null) setCurrentColor(getFocussedColor());
+		listener.onFocus();
 	}
 	
 	@Override
 	public void outOfFocus() {
-		setCurrentColor(getColor());
+		listener.outOfFocus();
 	}
 	
 	@Override
 	public void onClick(int modality) {
-		if(getClickedColor() != null && modality == DOWN) setCurrentColor(getClickedColor());
+		listener.onClick(modality);
 	}
 	
 	@Override
 	public boolean isHovered(Vector2 mousePos) {
-		return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, getBounds());
+		return listener.isHovered(mousePos);
 	}
 	
-	@Override
+	//default Listenable -------------------------------------
+	public Listenable getDefaultInterationAction() {
+		return new Listenable() {
+			@Override
+			public void onHover() {
+				if(getHoveredColor() != null) setCurrentColor(getHoveredColor());
+			}
+			
+			@Override
+			public void outOfHover() {
+				setCurrentColor(getColor());
+			}
+			
+			@Override
+			public void onFocus() {
+				if(getFocussedColor() != null) setCurrentColor(getFocussedColor());
+			}
+			
+			@Override
+			public void outOfFocus() {
+				setCurrentColor(getColor());
+			}
+			
+			@Override
+			public void onClick(int modality) {
+				if(getClickedColor() != null && modality == DOWN) setCurrentColor(getClickedColor());
+			}
+			
+			@Override
+			public boolean isHovered(Vector2 mousePos) {
+				return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, getBounds());
+			}
+		};
+	}
+	
+	//add & remove listener ----------------------------------
+	//default operations to do when this Listenable Object need to add a listener
 	public void addListener(Controller c) {
 		c.addListenerTo(this);
 	}
-	
-	@Override
+
+	//default operations to do when this Listenable Object need to remove a listener
 	public void removeListener(Controller c) {
 		c.removeListenerTo(this);
 	}
