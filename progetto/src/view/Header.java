@@ -73,18 +73,17 @@ public class Header {
 			categorie[i].addListener(c);
         }
     }
-
-	public int getHeaderWidth() {
+    
+	public int getWidth() {
 		return headerWidth;
 	}
 
-	public int getHeaderHeight() {
+	public int getHeight() {
 		return headerHeight;
 	}
 
 	public int getnCategorie() {
 		return nCategorie;
 	}
-    
     
 }
