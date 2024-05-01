@@ -45,6 +45,8 @@ public class TextButton extends Button {
 		this.hoveredTextColor = hoverdTextColor;
 		this.clickedTextColor = clickedTextColor;
 		this.currentTextColor = textColor;
+		
+		setInterationAction(getDefaultInterationAction());
 	}
 	
 	public TextButton(int x, int y, boolean visible, float roundness, Color color, int padding, int fontSize, String text, Color textColor) {
@@ -145,27 +147,39 @@ public class TextButton extends Button {
 		setHeight(fontSize+(padding*2));
 	}
 	
-	//superclass overrides ---------------------------------------------------
+	//default Listenable ------------------------------------------
 	@Override
-	public void onHover() {
-		super.onHover();
-		if(hoveredTextColor != null) currentTextColor = hoveredTextColor;
+	public Listenable getDefaultInterationAction() {//TODO
+		Listenable superDefault = super.getDefaultInterationAction();
+		
+		return new Listenable() {
+			@Override
+			public void onHover() {
+				superDefault.onHover();
+				if(hoveredTextColor != null) currentTextColor = hoveredTextColor;
+			}
+			@Override
+			public void outOfHover() {
+				superDefault.outOfHover();
+				currentTextColor = textColor;
+			}
+			@Override
+			public void onClick(int modality) {
+				if(modality == DOWN) {
+					if(getClickedColor() != null) setCurrentColor(getClickedColor());
+					if(clickedTextColor != null) currentTextColor = clickedTextColor;
+				}
+			}
+			@Override
+			public void onFocus() { superDefault.onFocus(); }
+			@Override
+			public void outOfFocus() { superDefault.outOfFocus(); }
+			@Override
+			public boolean isHovered(Vector2 mousePos) { return superDefault.isHovered(mousePos); }
+		};
 	}
 	
-	@Override
-	public void outOfHover() {
-		super.outOfHover();
-		currentTextColor = textColor;
-	}
-	
-	@Override
-	public void onClick(int modality) {
-		if(modality == DOWN) {
-			if(getClickedColor() != null) setCurrentColor(getClickedColor());
-			if(clickedTextColor != null) currentTextColor = clickedTextColor;
-		}
-	}
-	
+	//add & remove listener ---------------------------------------------------
 	@Override
 	public void addListener(Controller c) {
 		c.addListenerTo(this);
