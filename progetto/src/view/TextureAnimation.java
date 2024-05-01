@@ -4,6 +4,7 @@ import com.raylib.java.core.Color;
 import com.raylib.java.core.rCore;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
+import com.raylib.java.shapes.rShapes;
 import com.raylib.java.textures.Texture2D;
 import com.raylib.java.textures.rTextures;
 
@@ -14,7 +15,8 @@ public class TextureAnimation extends GraphicAnimation {
 	private Rectangle textureBounds;
 	private Vector2 origin;
 	private int padding;
-	private float rotation, roundPerSecond = 40f;
+	private float rotation, roundsPerSecond;
+	private boolean backgroundVisible;
 	
 	//Constructor --------------------------------------------
 	public TextureAnimation(TextureAnimation textureAnimation) {
@@ -23,7 +25,8 @@ public class TextureAnimation extends GraphicAnimation {
 		
 		setSize(getWidth()+(textureAnimation.getPadding()*2), getHeight()+(textureAnimation.getPadding()*2));
 		
-		this.roundPerSecond = textureAnimation.getRoundPerSecond();
+		this.backgroundVisible = textureAnimation.isBackgroundVisible();
+		this.roundsPerSecond = textureAnimation.getRoundsPerSecond();
 		this.rotation = 0;
 		this.padding = textureAnimation.getPadding();
 		this.texture = textureAnimation.getTexture();
@@ -31,12 +34,14 @@ public class TextureAnimation extends GraphicAnimation {
 		this.origin = new Vector2(textureAnimation.getOrigin().x, textureAnimation.getOrigin().y);
 	}
 	
-	public TextureAnimation(Rectangle bounds, Color color, Texture2D texture, int padding, Vector2 origin) {
+	public TextureAnimation(Rectangle bounds, Color color, Texture2D texture, int padding, Vector2 origin, float roundsPerSecond, boolean backgroundVisible) {
 		super((int) bounds.getX(), (int) bounds.getY(), (int) bounds.getWidth(),
 				(int) bounds.getHeight(), color);
 		
 		setSize(getWidth()+(padding*2), getHeight()+(padding*2));
 		
+		this.backgroundVisible = backgroundVisible;
+		this.roundsPerSecond = roundsPerSecond;
 		this.rotation = 0;
 		this.padding = padding;
 		this.texture = texture;
@@ -44,48 +49,27 @@ public class TextureAnimation extends GraphicAnimation {
 		this.origin = origin;
 	}
 	
-	public TextureAnimation(int x, int y, int width, int height, Texture2D texture) {
-		super(x, y, width, height, Color.WHITE);
+	public TextureAnimation(int x, int y, int width, int height, Texture2D texture, float roundsPerSecond, boolean backgroundVisible) {
+		super(x+(width/2), y+(height/2), width, height, Color.WHITE);
 		
-		this.roundPerSecond = 30f;
+		this.backgroundVisible = backgroundVisible;
+		this.roundsPerSecond = roundsPerSecond;
 		this.rotation = 0f;
-		this.padding = 0;
+		this.padding = 10;
 		this.texture = texture;
 		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
-
-		float scaleX = width / textureBounds.width; 
-		float scaleY = height / textureBounds.height; 
-
-		// Choose the minimum scale to fit the texture within the bounds while maintaining aspect ratio
-		float scale = Math.min(scaleX, scaleY);
-
-		// Calculate the scaled texture size
-		float scaledWidth = textureBounds.width * scale;
-		float scaledHeight = textureBounds.height * scale;
-
-		// Calculate the origin to center the texture within the bounds
-		float originX = x + width / 2;
-		float originY = y + height / 2;
 		
-		setBounds((int)(originX - scaledWidth / 2), (int)(originY - scaledHeight / 2), (int)scaledWidth, (int)scaledHeight);
-	    origin = new Vector2(scaledWidth/2 , scaledHeight/2);
+		origin = new Vector2(width/2 , height/2);//origin has to be the center of bounds
 
 	}
 	
 	//draw -----------------------------------
 	@Override
 	public void draw() {
-		super.draw();
-//		rTextures.DrawTexturePro(texture, textureBounds,
-//			new Rectangle(getX()+padding, getY()+padding, getWidth()-(padding*2), getHeight()-(padding*2)),
-//			origin, rotation, getColor());
-		rTextures.DrawTexturePro(texture,
-			textureBounds,
-			getBounds(),
-			origin,
-			rotation, getColor());
+		if(backgroundVisible) Finestra.getRaylib().shapes.DrawRectangle(getX()-(getWidth()/2),
+				getY()-(getHeight()/2), getWidth(), getHeight(), getColor());
 		
-		System.out.println("origin: "+origin.getX()+", "+origin.getY());
+		rTextures.DrawTexturePro(texture, textureBounds, getBounds(), origin, rotation, getColor());
 	}
 	
 	//getters & setters -----------------------------
@@ -109,8 +93,12 @@ public class TextureAnimation extends GraphicAnimation {
 		return rotation;
 	}
 	
-	public float getRoundPerSecond() {
-		return roundPerSecond;
+	public float getRoundsPerSecond() {
+		return roundsPerSecond;
+	}
+	
+	public boolean isBackgroundVisible() {
+		return backgroundVisible;
 	}
 
 	public void setOrigin(Vector2 origin) {
@@ -121,14 +109,20 @@ public class TextureAnimation extends GraphicAnimation {
 		this.rotation = rotation;
 	}
 	
-	public void setRoundPerSecond(float roundPerSecond) {
-		this.roundPerSecond = roundPerSecond;
+	public void setRoundsPerSecond(float roundPerSecond) {
+		this.roundsPerSecond = roundPerSecond;
+	}
+	
+	public void setBackgroundVisible(boolean backgroundsVisible) {
+		this.backgroundVisible = backgroundsVisible;
 	}
 	
 	//implements ------------------------------------
 	@Override
 	public void update(float deltaTime) {
-		this.rotation+= (float)(roundPerSecond*deltaTime);
+		System.out.println("rps: "+roundsPerSecond+", deltaTime: "+deltaTime+
+			" = "+(float)(roundsPerSecond*deltaTime));
+		this.rotation+= (float)(roundsPerSecond*deltaTime);
 	}
 	
 	@Override
