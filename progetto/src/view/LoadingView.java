@@ -16,7 +16,7 @@ public class LoadingView {
 	private int loadingAnimationDim = rCore.GetScreenWidth()/6;
 	
 	//loading text
-	private TextButton loadingText;
+	private TextAnimation loadingText;
 	
 	//Constructor -----------------------------------------------
 	public LoadingView(int screenWidth, int screenHeight) {
@@ -30,8 +30,9 @@ public class LoadingView {
         		loadingTexture, 300f, false);
         loadingAnimation.setName("loadingAnimation");
         
-        this.loadingText = new TextButton(100, loadingAnimation.getY()+loadingAnimation.getHeight()+30, false,
-        	0f, null, null, null, 0, 30, "Loading ...", Color.ORANGE, null, null);
+        this.loadingText = new TextAnimation(100, loadingAnimation.getY()+loadingAnimation.getHeight()+30,
+        		Color.WHITE, false, "Loading", 30, 10, Color.BLACK);
+        
         loadingText.setName("loadingText");
         GraphicComponentAligner.centerX(loadingText, 0, screenWidth);
 	}
@@ -43,11 +44,11 @@ public class LoadingView {
 	
 	public void registraEventi(Controller c) {
 		loadingAnimation.addUpdater(c);
-		loadingText.addListener(c);
+		loadingText.addUpdater(c);
 	}
 	
 	public void cancellaEventi(Controller c) {
 		loadingAnimation.removeUpdater(c);
-		loadingText.removeListener(c);
+		loadingText.removeUpdater(c);
 	}
 }
