@@ -52,7 +52,7 @@ public class TextureButton extends Button {
 	}
 	
 	public TextureButton(Texture2D texture, int x, int y, int width, int height, boolean visible, float roundness, Color color) {
-		this(texture, x, y, width, height, visible, roundness, 0, null, null, null);
+		this(texture, x, y, width, height, visible, roundness, 0, color, null, null);
 	}
 	
 	//use only for sponsored product (keep aspect ratio of a wide img)
@@ -98,29 +98,7 @@ public class TextureButton extends Button {
 		this.origin = new Vector2(x, y);
 	}
 	
-	//superclass overrides ---------------------------------------------
-	@Override
-	public void onHover() {
-		super.onHover();
-	}
-	
-	@Override
-	public void outOfHover() {
-		super.outOfHover();
-	}
-	
-	@Override
-	public void onClick(int modality) {
-		if(modality == GraphicComponent.DOWN) {
-			super.onClick(modality);
-		}
-	}
-	
-	@Override
-	public boolean isHovered(Vector2 mousePos) {
-		return super.isHovered(mousePos);
-	}
-	
+	//add & remove listener---------------------------------------------
 	@Override
 	public void addListener(Controller c) {
 		c.addListenerTo(this);
@@ -134,7 +112,7 @@ public class TextureButton extends Button {
 	//toString ---------------------------------------------------
 	@Override
 	public String toString() {
-		return "Button {" +
+		return "TextureButton {" +
 				"\n\tbounds [" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() +
 				"]\n\tvisible: " + isVisible() +
 				"\n\troundness: " + getRoundness() +

@@ -10,7 +10,7 @@ import com.raylib.java.textures.Texture2D;
 
 import controller.Controller;
 
-public class SearchBar extends GraphicComponent {
+public class SearchBar extends ListenableGraphicComponent {
 	//text field
 	private Rectangle txtFieldBounds;
 	private Color borderColor;
@@ -31,7 +31,7 @@ public class SearchBar extends GraphicComponent {
     //Constructor -----------------------------------------------
     public SearchBar(int x, int y, int width, int height, float roundness, int borderThickness, byte maxChars, int fontSize,
     		Texture2D textureSendBtn)  {
-    	super(x, y, width, height, null, Color.YELLOW, Color.BEIGE, null, Color.RED);
+    	super(x, y, width, height, Color.YELLOW, Color.BEIGE, null, Color.RED);
     	
     	this.txtFieldBounds = getBounds();
     	this.txtFieldBounds.setWidth(getWidth()-getHeight());
@@ -74,18 +74,6 @@ public class SearchBar extends GraphicComponent {
     			new Vector2(getX()+padding, getY()+padding), fontSize, fontSpacing, currentTextColor);
     	
     	sendBtn.draw();
-    	
-    	//old
-//        Finestra.getRaylib().shapes.DrawRectangleRounded(rec, borderRadius, 4, recColor);
-//
-//        Finestra.getRaylib().text.DrawTextEx(rText.GetFontDefault(), String.valueOf(text),
-//                new Vector2(rec.x + leftPadding, rec.y + 10),
-//                fontSize, fontSpacing, textColor);
-//
-//        //Finestra.getRaylib().shapes.DrawRectangleRounded(new Rectangle(rec.x + rec.width - 100, rec.y, 100, rec.height), borderRadius, 4, Color.GRAY);
-//        sendButton.draw();
-//        Finestra.getRaylib().textures.DrawTextureEx(icon, new Vector2(rec.x + rec.width - 50 - ((icon.width * 0.08f) / 2), rec.y + rec.height / 2 - ((icon.height * 0.08f) / 2)), 0f, 0.08f, Color.WHITE);
-//        Finestra.getRaylib().shapes.DrawRectangleRoundedLines(rec, borderRadius, 4, borderThickness, Color.BLACK);
     }
     
     //class methods ------------------------------------------------------
@@ -301,7 +289,7 @@ public class SearchBar extends GraphicComponent {
 		sendBtn.setHoveredColor(arr12Cols[10]);
 		sendBtn.setClickedColor(arr12Cols[11]);
 	}
-    
+	
     //superclass overrides ---------------------------------------------------
     @Override
 	public void setName(String name) {
@@ -389,7 +377,7 @@ public class SearchBar extends GraphicComponent {
     
     @Override
 	public void onClick(int modality) {
-    	if(modality == GraphicComponent.DOWN) {
+    	if(modality == DOWN) {
 			if(getClickedColor() != null) setCurrentColor(getClickedColor());
 			if(clikcedTextColor != null) currentTextColor = clikcedTextColor;
 		}

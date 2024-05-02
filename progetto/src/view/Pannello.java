@@ -15,129 +15,52 @@ import model.Product;
 public class Pannello {
     private Raylib ray;
 
-    private Button btn1, btn2;
-    private TextButton txtBtn;
+    private Header header;
+    private HomePage homePage;
+    private SinglePoduct singlePoduct;
+    
     private Texture2D texture;
     private TextureButton textureBtn;
-    private SearchBar searchBar;
     private int screenWidth;
     private int screenHeight;
-    private TextButton[] categorie;
-    private int headerWidth;
-    private int headerHeight;
-    private int barPosX;
-    private int barPosY;
-    private int nCategorie;
-    private Prodotto p;//TEMP TODO
-    private Prodotto[] prodotti;
     private Camera2D camera;
-    private int prodottoConsigliatoY;
-    private int prodottoConsigliatoHeight;
-    private int prodottoWidth;
     
     public Pannello() {
     	//init vars
         this.ray = Finestra.getRaylib();
         screenWidth = rCore.GetScreenWidth();
         screenHeight = rCore.GetScreenHeight();
-        headerWidth = screenWidth;
-        headerHeight = screenHeight / 6;
-        barPosX = screenWidth/30;
-        barPosY = screenHeight/14;
-        prodottoWidth = screenWidth/4;
+    
+        texture = new Texture2D("textures/SearchIcon.png");
         
-        prodotti = new Prodotto[8];
+        Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", 0);
+        
+        header = new Header(screenWidth, screenHeight, screenWidth, screenHeight/5, screenWidth/30, screenHeight/14, 6);
+        homePage = new HomePage(screenWidth, screenHeight, header.getHeight(), screenHeight/2);
+        singlePoduct = new SinglePoduct(texture, pp, screenWidth, screenHeight, header.getHeight());
         
         camera = new Camera2D(new Vector2(0,0), new Vector2(0,0), 0f, 1f);
         
-        //search bar
-        texture = new Texture2D("textures/SearchIcon.png");
-        searchBar = new SearchBar(barPosX, barPosY, screenWidth-(screenWidth/30)*2, 60, 0.5f, 3, (byte) 80, 
-        		32, texture);
-        
-        //sample button
-        txtBtn = new TextButton(10, 10, true, 0f, Color.PINK, Color.PINK,
-        		Color.PINK, 0, 40, "Kirizon", Color.WHITE, Color.RED, Color.DARKGREEN);
-        
-        //array of the buttons' categories
-        categorie = new TextButton[5];
-        for (int i = 0; i < 5; i++) {
-			categorie[i] = new TextButton(txtBtn);
-			categorie[i].setPadding(5);
-			categorie[i].setColors(Color.VIOLET, Color.DARKPURPLE, Color.PINK, null);
-			categorie[i].setLocation(0, headerHeight);
-		}
-        
-        //center-grow alignment of categories btn 
-        GraphicComponentAligner.alignX(categorie, GraphicComponentAligner.CENTER,
-        		GraphicComponentAligner.GROW, 0, screenWidth, -1);
-        
-        prodottoConsigliatoY = headerHeight+(categorie[0].getHeight());
-        prodottoConsigliatoHeight = screenHeight/3;
-        
-        //TEMP TODO prodotti temp
-        Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", "test", 0);
-        //p = new Prodotto(0, (prodottoConsigliatoY+prodottoConsigliatoHeight), prodottoWidth, 0f, texture, pp, 20, 15, 10, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
-        
-        for (int i = 0; i < 8; i++) {
-        		prodotti[i] = new Prodotto(0, 0, prodottoWidth, 0f, texture, pp, 20, 15, 10, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
-        }
-        
-        int g=0;
-        for (int i = 0; i < 4; i++) {
-        	for(int j = 0; j < 2; j++) {
-        		prodotti[g].setLocation(0+(i*prodottoWidth), (prodottoConsigliatoY+prodottoConsigliatoHeight)+(j*prodotti[g].getHeight()));
-        		g++;
-        	}
-        }
     }
-
+    
+    //Draw Panel
     public void draw() {
     	ray.core.BeginMode2D(camera);
-    	
-    	//header
-    	rShapes.DrawRectangleRec(new Rectangle(0, 0, headerWidth, headerHeight), Color.PINK);
-    	txtBtn.draw();
-    	searchBar.draw();
-        
-        //body
-        rShapes.DrawRectangleRec(new Rectangle(0, prodottoConsigliatoY, screenWidth, prodottoConsigliatoHeight), Color.GOLD);
-        for (TextButton b : categorie) b.draw();
-        
-        //TEMP TODO
-        //p.draw();
-        
-        for (int i = 0; i < 8; i++) {
-//        	prodotti[i].draw();
-		}
-        
+    	header.draw();
+    	//homePage.draw();
+        singlePoduct.draw();
         ray.core.EndMode2D();
     }
     
+    //Update Scroll
     public void aggiornaCameraY(float y) {
-    		camera.target.y -= y;
-    		camera.target.y = Math.max(0, camera.target.y);
+		camera.target.y -= y;
+		camera.target.y = Math.max(0, camera.target.y);
     }
 
     public void registraEventi(Controller c) {
-        txtBtn.setName("textBtn");
-        txtBtn.addListener(c);
-        
-        searchBar.setName("searchBar");
-        searchBar.addListener(c);
-        
-        for (int i = 0; i < categorie.length; i++) {
-        	categorie[i].setName("categoria "+(i+1));
-			categorie[i].addListener(c);
-        }
-        
-        //TODO
-        //p.setName("prodotto");
-        //p.addListener(c);
-        
-        for (int i = 0; i < 8; i++) {
-        	prodotti[i].setName("prodotto"+(i+1));
-        	prodotti[i].addListener(c);
-	}
+    	header.registraEventiHeader(c);
+        homePage.registraEventiHome(c);
+    	//singlePoduct.registraEventiProdotto(c);
     }
 }

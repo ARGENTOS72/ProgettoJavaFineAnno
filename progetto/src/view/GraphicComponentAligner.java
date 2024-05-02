@@ -51,7 +51,7 @@ public interface GraphicComponentAligner {
 		int totGapW = width - sumW;
 		int gapW = totGapW / gcArr.length;
 		
-		gcArr[0].setX(0);
+		gcArr[0].setX(offset);
 		
 		for(int i=1; i<gcArr.length; i++) {
 			gcArr[i].setX(gcArr[i-1].getX()+gcArr[i-1].getWidth()+gapW);
@@ -62,7 +62,7 @@ public interface GraphicComponentAligner {
 	public static void leftX(GraphicComponent[] gcArr, int offset, int width, int padding) {
 		if(gcArr.length == 0) return;
 		
-		gcArr[0].setX(0);
+		gcArr[0].setX(offset);
 		
 		for(int i=1; i<gcArr.length; i++) {
 			gcArr[i].setX(gcArr[i-1].getX()+gcArr[i-1].getWidth()+(padding*2));
@@ -80,7 +80,7 @@ public interface GraphicComponentAligner {
 		int totGapH = height - sumH;
 		int gapH = totGapH / gcArr.length;
 		
-		gcArr[0].setY(0);
+		gcArr[0].setY(offset);
 		
 		for(int i=1; i<gcArr.length; i++) {
 			gcArr[i].setY(gcArr[i-1].getY()+gcArr[i-1].getHeight()+gapH);
@@ -91,7 +91,7 @@ public interface GraphicComponentAligner {
 	public static void upY(GraphicComponent[] gcArr, int offset, int height, int padding) {
 		if(gcArr.length == 0) return;
 		
-		gcArr[0].setY(0);
+		gcArr[0].setY(offset);
 		
 		for(int i=1; i<gcArr.length; i++) {
 			gcArr[i].setY(gcArr[i-1].getY()+gcArr[i-1].getHeight()+(padding*2));

@@ -5,21 +5,20 @@ import com.raylib.java.shapes.Rectangle;
 
 import controller.Controller;
 
-public class Button extends GraphicComponent {
+public class Button extends ListenableGraphicComponent {
 	private boolean visible;
 	private float roundness;
 
 	// Constructors -----------------------------------------
 	public Button(Button btn) {
-		super(new Rectangle(btn.getX(), btn.getY(), btn.getWidth(), btn.getHeight()), null,
-			btn.getColor(), btn.getHoveredColor(), btn.getClickedColor(), null);
+		super(btn);
 		
 		this.visible = btn.isVisible();
 		this.roundness = btn.getRoundness();
 	}
 	
 	public Button(Rectangle bounds, boolean visible, float roundness, Color color, Color hoveredColor, Color clickedColor) {
-		super(bounds, null, color, hoveredColor, clickedColor, null);
+		super(bounds, color, hoveredColor, clickedColor, null);
 		
 		this.visible = visible;
 		this.roundness = roundness;
@@ -73,7 +72,7 @@ public class Button extends GraphicComponent {
 		this.roundness = roundness;
 	}
 	
-	//superclass overrides ---------------------------------------------------
+	//add & remove listener ---------------------------------------------------
 	@Override
 	public void addListener(Controller c) {
 		c.addListenerTo(this);
