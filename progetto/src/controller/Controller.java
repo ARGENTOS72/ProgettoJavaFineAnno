@@ -45,9 +45,12 @@ public class Controller {
 	//Fundamental methods ----------------------------------------------------------------
 	//update controler
 	public void update() {
-		mousePos = rCore.GetMousePosition();//update mouse position
+		//update mouse position
+		mousePos = Finestra.getRaylib().core.GetScreenToWorld2D(rCore.GetMousePosition(), p.getCamera());
+		//get deltatime
 		deltaTime = rCore.GetFrameTime();
-		p.aggiornaCameraY(scrollMultiplier*rCore.GetMouseWheelMove()); //update scroll
+		//update scroll
+		p.aggiornaCameraY(scrollMultiplier*rCore.GetMouseWheelMove());
 		
 		handleComponentsActions();//do smth when a component is hovered or clicked
 		handleOutOfHover();//do smth when a component is not anymore hovered
@@ -68,8 +71,10 @@ public class Controller {
 	//onHover, onFocus
 	private void handleComponentsActions() {
 		for (ListenableGraphicComponent lgc : components) {
+			System.out.println(lgc.getName()+" checking...");
 			if (lgc.isHovered(mousePos)) {//is Hovered
 				hoveredComponent = lgc;
+				System.out.println(lgc.getName()+" hovered!");
 				lgc.onHover();//do default operations when hovered
 				
 				//get who is it
@@ -127,7 +132,6 @@ public class Controller {
 	public void updateAnimations() {
 		for(GraphicAnimation ga : animations) {
 			ga.update(deltaTime);
-			System.out.println(ga.getName()+" rot: "+((TextureAnimation) ga).getRotation());
 		}
 	}
 	
