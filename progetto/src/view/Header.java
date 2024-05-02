@@ -34,14 +34,13 @@ public class Header {
         
         //Home button
         txtBtn = new TextButton(10, 10, true, 0f, Color.PINK, Color.PINK,
-        		Color.PINK, 0, 40, "Kirizon", Color.WHITE, Color.RED, Color.DARKGREEN);
+        		Color.PINK, 0, 40, "Kirizon", Color.WHITE, Color.VIOLET, new Color(87, 10, 142, 255));
         
         //array of the buttons' categories
         categorie = new TextButton[nCategorie];
         for (int i = 0; i < nCategorie; i++) {
 			categorie[i] = new TextButton(txtBtn);
 			categorie[i].setPadding(5);
-			categorie[i].setColors(Color.VIOLET, Color.DARKPURPLE, Color.PINK, null);
 		}
         
         for (int i = 0; i < nCategorie; i++) {
