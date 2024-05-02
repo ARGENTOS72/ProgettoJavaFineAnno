@@ -2,33 +2,34 @@ package controller;
 
 import java.util.ArrayList;
 
-import com.raylib.java.core.Color;
 import com.raylib.java.core.rCore;
 import com.raylib.java.core.input.Mouse.MouseButton;
 import com.raylib.java.raymath.Vector2;
 
+import model.Db;
 import view.Button;
 import view.Finestra;
 import view.GraphicComponent;
 import view.Pannello;
 import view.Prodotto;
 import view.SearchBar;
-import view.TextButton;
 
 public class Controller {
 	private Pannello p;
+	private Db db;
 	private ArrayList<GraphicComponent> components;//GraphicComponents that has added action listener
 	private GraphicComponent hoveredComponent, lastHoveredComponent, focusedComponent, lastFocusedComponent;
 	private Vector2 mousePos;
 	private int scrollMultiplier;
 	
-	public Controller(Pannello p) {
+	public Controller(Pannello p, Db db) {
 		this.components = new ArrayList<>();
 		this.lastHoveredComponent = null;
 		this.hoveredComponent = null;
 		this.focusedComponent = null;
 		this.lastFocusedComponent = null;
 		this.p = p;
+		this.db = db;
 		scrollMultiplier=50;
 		
 		p.registraEventi(this);

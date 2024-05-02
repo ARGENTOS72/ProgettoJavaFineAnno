@@ -76,7 +76,7 @@ public class Pannello {
         prodottoConsigliatoHeight = screenHeight/3;
         
         //TEMP TODO prodotti temp
-        Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", 0);
+        Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", "test", 0);
         //p = new Prodotto(0, (prodottoConsigliatoY+prodottoConsigliatoHeight), prodottoWidth, 0f, texture, pp, 20, 15, 10, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
         
         for (int i = 0; i < 8; i++) {

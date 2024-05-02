@@ -1,7 +1,6 @@
 package view;
 
 import com.raylib.java.core.Color;
-import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
 
 import controller.Controller;
