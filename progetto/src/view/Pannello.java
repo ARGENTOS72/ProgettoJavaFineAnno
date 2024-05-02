@@ -1,12 +1,12 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.raylib.java.Raylib;
-import com.raylib.java.core.Color;
 import com.raylib.java.core.rCore;
 import com.raylib.java.core.camera.Camera2D;
 import com.raylib.java.raymath.Vector2;
-import com.raylib.java.shapes.Rectangle;
-import com.raylib.java.shapes.rShapes;
 import com.raylib.java.textures.Texture2D;
 
 import controller.Controller;
@@ -17,7 +17,7 @@ public class Pannello {
 
     private Header header;
     private HomePage homePage;
-    private SinglePoduct singlePoduct;
+    private ProductView productView;
     
     private Texture2D texture;
     private TextureButton textureBtn;
@@ -33,11 +33,13 @@ public class Pannello {
     
         texture = new Texture2D("textures/SearchIcon.png");
         
-        Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", 0);
+        String[] categorieTemp = {"Cacca", "Cacca"};
+        ArrayList<String> categorie = new ArrayList<String>(Arrays.asList(categorieTemp));
+        Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", categorie, 0);
         
         header = new Header(screenWidth, screenHeight, screenWidth, screenHeight/5, screenWidth/30, screenHeight/14, 6);
         homePage = new HomePage(screenWidth, screenHeight, header.getHeight(), screenHeight/2);
-        singlePoduct = new SinglePoduct(texture, pp, screenWidth, screenHeight, header.getHeight());
+        productView = new ProductView(texture, pp, screenWidth, screenHeight, header.getHeight());
         
         camera = new Camera2D(new Vector2(0,0), new Vector2(0,0), 0f, 1f);
         
@@ -47,8 +49,8 @@ public class Pannello {
     public void draw() {
     	ray.core.BeginMode2D(camera);
     	header.draw();
-    	//homePage.draw();
-        singlePoduct.draw();
+    	homePage.draw();
+        //productView.draw();
         ray.core.EndMode2D();
     }
     
@@ -61,6 +63,10 @@ public class Pannello {
     public void registraEventi(Controller c) {
     	header.registraEventiHeader(c);
         homePage.registraEventiHome(c);
-    	//singlePoduct.registraEventiProdotto(c);
+    	productView.registraEventiProdotto(c);
+    }
+
+    public void loadHomeProducts(ArrayList<Product> products) {
+        homePage.loadProducts(products);
     }
 }

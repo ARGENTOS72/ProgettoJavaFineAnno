@@ -1,12 +1,9 @@
 package view;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 
 import com.raylib.java.core.Color;
-import com.raylib.java.shapes.Rectangle;
-import com.raylib.java.shapes.rShapes;
 import com.raylib.java.textures.Texture2D;
 
 import controller.Controller;
@@ -33,11 +30,13 @@ public class HomePage {
 		
 		prodotti = new Prodotto[2][5];
 		
-		texture = new Texture2D("textures/SearchIcon.png");
+		texture = new Texture2D("textures/PlaceHolder.jpg");
 
 		prodottoConsigliato = new TextureButton(texture, 0, prodottoConsigliatoY, screenWidth, prodottoConsigliatoHeight, true, 0, 0, Color.LIGHTGRAY, Color.GRAY, Color.BLANK);
 		
-		Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", 0);
+		String[] categorieTemp = {"cacca", "culo"};
+		ArrayList<String> categorie = new ArrayList<String>(Arrays.asList(categorieTemp));
+		Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", categorie, 1);
 		
 		for (int i = 0; i < 2; i++)
 			for(int j = 0; j < 5; j++)
@@ -51,6 +50,8 @@ public class HomePage {
 			GraphicComponentAligner.alignX(new GraphicComponent[] {prodotti[0][i], prodotti[1][i]},
 				GraphicComponentAligner.CENTER, GraphicComponentAligner.DISTRIBUTE, 0, screenWidth,-1);
 		}
+
+		//texture = new Texture2D("textures/SearchIcon.png");
 	}
     
     public void draw() {
@@ -73,6 +74,25 @@ public class HomePage {
     		}
         }
     }
+
+	public void loadProducts(ArrayList<Product> products) {
+		for (int i = 0; i < 2; i++) {
+    		for (int j = 0; j < 5; j++) {
+				
+
+				prodotti[i][j] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, products.get((i * 5) + j), 20, 15, 10, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+			}
+		}
+
+		GraphicComponentAligner.alignY(prodotti[0], GraphicComponentAligner.UP, GraphicComponentAligner.PADDING,
+				(prodottoConsigliatoY+prodottoConsigliatoHeight+screenHeight/20), 10, screenHeight/20);
+		
+		for(int i = 0; i < 5; i++) {
+			prodotti[1][i].setY(prodotti[0][i].getY());
+			GraphicComponentAligner.alignX(new GraphicComponent[] {prodotti[0][i], prodotti[1][i]},
+				GraphicComponentAligner.CENTER, GraphicComponentAligner.DISTRIBUTE, 0, screenWidth,-1);
+		}
+	}
 
     public int getHomePageHeight() {
 		return prodottoConsigliatoHeight;

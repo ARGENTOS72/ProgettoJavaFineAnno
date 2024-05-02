@@ -1,10 +1,7 @@
 package view;
 
-import java.util.Iterator;
-
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
-import com.raylib.java.core.rCore;
 import com.raylib.java.shapes.Rectangle;
 import com.raylib.java.shapes.rShapes;
 import com.raylib.java.textures.Texture2D;

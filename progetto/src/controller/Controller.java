@@ -15,14 +15,13 @@ import view.ListenableGraphicComponent;
 import view.Pannello;
 import view.Prodotto;
 import view.SearchBar;
-import view.TextButton;
 import view.TextureAnimation;
 
 public class Controller {
 	private Pannello p;
 	private Db db;
-	private ArrayList<ListenableGraphicComponent> components;//GraphicComponents that has added  listener
-	private ArrayList<GraphicAnimation> animations;//GraphicAnimation that has added updater
+	private ArrayList<ListenableGraphicComponent> components; // GraphicComponents that has added listener
+	private ArrayList<GraphicAnimation> animations; // GraphicAnimation that has added updater
 	private ListenableGraphicComponent hoveredComponent, lastHoveredComponent, focusedComponent, lastFocusedComponent;
 	private Vector2 mousePos;
 	private float deltaTime;
@@ -42,92 +41,92 @@ public class Controller {
 		p.registraEventi(this);
 	}
 	
-	//Fundamental methods ----------------------------------------------------------------
-	//update controler
+	// Fundamental methods ----------------------------------------------------------------
+	// update controler
 	public void update() {
-		mousePos = rCore.GetMousePosition();//update mouse position
+		mousePos = rCore.GetMousePosition(); // update mouse position
 		deltaTime = rCore.GetFrameTime();
-		p.aggiornaCameraY(scrollMultiplier*rCore.GetMouseWheelMove()); //update scroll
+		p.aggiornaCameraY(scrollMultiplier*rCore.GetMouseWheelMove()); // update scroll
 		
-		handleComponentsActions();//do smth when a component is hovered or clicked
-		handleOutOfHover();//do smth when a component is not anymore hovered
-		handleOutOfFocus();//do smth when a component is not anymore on focus
+		handleComponentsActions(); // do smth when a component is hovered or clicked
+		handleOutOfHover(); // do smth when a component is not anymore hovered
+		handleOutOfFocus(); // do smth when a component is not anymore on focus
 
-		//update hovered & focused components
+		// update hovered & focused components
 		lastHoveredComponent = hoveredComponent;
 		hoveredComponent = null;
-		if((lastFocusedComponent == null && focusedComponent != null) ||
+
+		if ((lastFocusedComponent == null && focusedComponent != null) ||
 			(lastFocusedComponent != null && !lastFocusedComponent.equals(focusedComponent)))
 			lastFocusedComponent = focusedComponent;
 		
-		handleFocusedComponent();//do smth when a component is on focus
+		handleFocusedComponent(); // do smth when a component is on focus
 		
-		updateAnimations();//update all animations
+		updateAnimations(); // update all animations
 	}
 	
-	//onHover, onFocus
+	// onHover, onFocus
 	private void handleComponentsActions() {
 		for (ListenableGraphicComponent lgc : components) {
-			if (lgc.isHovered(mousePos)) {//is Hovered
+			if (lgc.isHovered(mousePos)) { // is Hovered
 				hoveredComponent = lgc;
-				lgc.onHover();//do default operations when hovered
+				lgc.onHover(); // do default operations when hovered
 				
 				//get who is it
 				if (lgc instanceof Button || lgc instanceof SearchBar || lgc instanceof Prodotto) {
 					if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
-						this.focusedComponent = lgc;// when clicking it gains focus
-					}
-					if(rCore.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT)) {
-						lgc.onClick(ListenableGraphicComponent.DOWN);
-						
+						this.focusedComponent = lgc; // when clicking it gains focus
 					}
 
+					if (rCore.IsMouseButtonDown(MouseButton.MOUSE_BUTTON_LEFT)) {
+						lgc.onClick(ListenableGraphicComponent.DOWN);
+					}
 				}
 			}
 		}
 		
-		//lose focus when clicking out of any GraphicComponent
-		if(hoveredComponent == null && Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
+		// lose focus when clicking out of any GraphicComponent
+		if (hoveredComponent == null && Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
 			focusedComponent = null;
 	}
 	
-	//out of hover
+	// out of hover
 	private void handleOutOfHover() {
 		if(lastHoveredComponent == null || lastHoveredComponent.equals(hoveredComponent)) return;
 		
-		//use default method outOfHover
+		// use default method outOfHover
 		lastHoveredComponent.outOfHover();
 		
-		//who is it
+		// who is it
 		// ...
 	}
 	
-	//out of focus
+	// out of focus
 	private void handleOutOfFocus() {
-		if(lastFocusedComponent == null || lastFocusedComponent.equals(focusedComponent)) return;
+		if (lastFocusedComponent == null || lastFocusedComponent.equals(focusedComponent)) return;
 		
-		//use default method outOfFocus
+		// use default method outOfFocus
 		lastFocusedComponent.outOfFocus();
 				
-		//who is it
-		//...
+		// who is it
+		// ...
 	}
 	
 	//onFocus
 	private void handleFocusedComponent() {
-		if(lastFocusedComponent == null) return;
+		if (lastFocusedComponent == null) return;
 		
-		//use default method onFocus
+		// use default method onFocus
 		lastFocusedComponent.onFocus();
 		
-		//who is it
+		// who is it
 		// ...
 	}
 	
 	public void updateAnimations() {
-		for(GraphicAnimation ga : animations) {
+		for (GraphicAnimation ga : animations) {
 			ga.update(deltaTime);
-			System.out.println(ga.getName()+" rot: "+((TextureAnimation) ga).getRotation());
+			System.out.println(ga.getName() + " rot: " + ((TextureAnimation) ga).getRotation());
 		}
 	}
 	
@@ -151,6 +150,7 @@ public class Controller {
 		for (int i = 0; i < components.size(); i++) {
 			if (components.get(i).getName().equals(lgcName)) {
 				components.remove(i);
+
 				break;
 			}
 		}
@@ -175,6 +175,7 @@ public class Controller {
 		for (int i = 0; i < animations.size(); i++) {
 			if (animations.get(i).getName().equals(gaName)) {
 				animations.remove(i);
+				
 				break;
 			}
 		}

@@ -24,6 +24,7 @@ public class Prodotto extends ListenableGraphicComponent {
 	public Prodotto(int x, int y, int width, float roundness, Texture2D img, Product p, int textFontSize, int priceFontSize, int padding, Color color, Color hoveredColor, Color clickedColor) {
 		super(x, y, width, width+textFontSize+priceFontSize+(padding*2), color, hoveredColor, clickedColor, null);
 		
+		this.padding = padding;
 		this.imgBounds = new Rectangle(0, 0, img.getWidth(), img.getHeight());
 		this.origin = new Vector2(0, 0);
 		this.roundness = roundness;

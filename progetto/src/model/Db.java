@@ -16,35 +16,11 @@ import java.util.HashSet;
 public class Db {
     private static Db instance;
     private static String fileName = "products.ser";
-    private ArrayList<Product> prodotti; 
+    private ArrayList<Product> prodotti;
+    private boolean loadedProducts;
 
-    @SuppressWarnings("unchecked")
     private Db() {
-    	File file = new File(fileName);
-        
-        try {
-            if (file.createNewFile()) {
-                prodotti = new ArrayList<Product>();
-            } else {
-                try {
-                    FileInputStream fileIn = new FileInputStream(fileName);
-                    ObjectInputStream in = new ObjectInputStream(fileIn);
-                    
-                    prodotti = (ArrayList<Product>) in.readObject();
-                    
-                    in.close();
-                    fileIn.close();
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-        
-                    System.exit(-1);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-
-            System.exit(-1);
-        }
+        this.loadedProducts = false;
     }
 
     /**
@@ -57,6 +33,39 @@ public class Db {
         }
 
         return instance;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void loadProducts() {
+        if (!loadedProducts) {
+            File file = new File(fileName);
+        
+            try {
+                if (file.createNewFile()) {
+                    prodotti = new ArrayList<Product>();
+                } else {
+                    try {
+                        FileInputStream fileIn = new FileInputStream(fileName);
+                        ObjectInputStream in = new ObjectInputStream(fileIn);
+                        
+                        prodotti = (ArrayList<Product>) in.readObject();
+                        
+                        in.close();
+                        fileIn.close();
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+            
+                        System.exit(-1);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                System.exit(-1);
+            }
+
+            loadedProducts = true;
+        }
     }
     
     /**
@@ -91,7 +100,9 @@ public class Db {
         HashSet<String> categorieProdotti = new HashSet<String>();
 
         for (Product prodotto : prodotti) {
-            categorieProdotti.add(prodotto.getCategoria());
+            for (String categoria : prodotto.getCategorie()) {
+                categorieProdotti.add(categoria);
+            }
         }
 
         return categorieProdotti;
@@ -106,18 +117,21 @@ public class Db {
         HashMap<String, ArrayList<Product>> prodottiPerCategoria = new HashMap<String, ArrayList<Product>>();
 
         for (Product prodotto : prodotti) {
-            String categoria = prodotto.getCategoria();
-            ArrayList<Product> prodottiPerCategoriaTemp = prodottiPerCategoria.get(categoria);
+            ArrayList<String> categorie = prodotto.getCategorie();
+            
+            for (String categoria : categorie) {
+                ArrayList<Product> prodottiPerCategoriaTemp = prodottiPerCategoria.get(categoria);
 
-            if (prodottiPerCategoriaTemp == null) {
-                ArrayList<Product> prodottiTemp = new ArrayList<Product>();
-                prodottiTemp.add(prodotto);
-                
-                prodottiPerCategoria.put(categoria, prodottiTemp);
-            } else {
-                prodottiPerCategoriaTemp.add(prodotto);
+                if (prodottiPerCategoriaTemp == null) {
+                    ArrayList<Product> prodottiTemp = new ArrayList<Product>();
+                    prodottiTemp.add(prodotto);
+                    
+                    prodottiPerCategoria.put(categoria, prodottiTemp);
+                } else {
+                    prodottiPerCategoriaTemp.add(prodotto);
 
-                prodottiPerCategoria.put(categoria, prodottiPerCategoriaTemp);
+                    prodottiPerCategoria.put(categoria, prodottiPerCategoriaTemp);
+                }
             }
         }
 
@@ -134,8 +148,14 @@ public class Db {
         ArrayList<Product> prodottiFiltrati = new ArrayList<Product>();
 
         for (Product prodotto : prodotti) {
-            if (prodotto.getNome().contains(query) || prodotto.getCategoria().equals(query)) {
+            if (prodotto.getNome().equalsIgnoreCase(query)) {
                 prodottiFiltrati.add(prodotto);
+            } else {
+                for (String categoria : prodotto.getCategorie()) {
+                    if (query.equalsIgnoreCase(categoria)) {
+                        prodottiFiltrati.add(prodotto);
+                    }
+                }
             }
         }
 
