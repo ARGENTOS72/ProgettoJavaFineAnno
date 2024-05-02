@@ -29,6 +29,8 @@ public class TextureAnimation extends GraphicAnimation {
 		this.texture = textureAnimation.getTexture();
 		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
 		this.origin = new Vector2(textureAnimation.getOrigin().x, textureAnimation.getOrigin().y);
+		
+		this.setAnimation(getDefaultAnimation());
 	}
 	
 	public TextureAnimation(Rectangle bounds, Color color, Texture2D texture, int padding, Vector2 origin, float roundsPerSecond, boolean backgroundVisible) {

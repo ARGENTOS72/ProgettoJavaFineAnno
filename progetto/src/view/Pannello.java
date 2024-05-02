@@ -15,8 +15,10 @@ import model.Product;
 public class Pannello {
     private Raylib ray;
 
+    private LoadingView loadingView;
     private Header header;
     private HomePage homePage;
+    private ProductView productView;
     private ProductView productView;
     
     private Texture2D texture;
@@ -37,6 +39,7 @@ public class Pannello {
         ArrayList<String> categorie = new ArrayList<String>(Arrays.asList(categorieTemp));
         Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", categorie, 0);
         
+        loadingView = new LoadingView(screenWidth, screenHeight);
         header = new Header(screenWidth, screenHeight, screenWidth, screenHeight/5, screenWidth/30, screenHeight/14, 6);
         homePage = new HomePage(screenWidth, screenHeight, header.getHeight(), screenHeight/2);
         productView = new ProductView(texture, pp, screenWidth, screenHeight, header.getHeight());
@@ -48,9 +51,12 @@ public class Pannello {
     //Draw Panel
     public void draw() {
     	ray.core.BeginMode2D(camera);
-    	header.draw();
-    	homePage.draw();
-        //productView.draw();
+    	
+    	loadingView.draw();
+//    	header.draw();
+    	//homePage.draw();
+//    	productView.draw();
+    	
         ray.core.EndMode2D();
     }
     
@@ -59,14 +65,15 @@ public class Pannello {
 		camera.target.y -= y;
 		camera.target.y = Math.max(0, camera.target.y);
     }
-
-    public void registraEventi(Controller c) {
-    	header.registraEventiHeader(c);
-        homePage.registraEventiHome(c);
-    	productView.registraEventiProdotto(c);
+    
+    public Camera2D getCamera() {
+    	return camera;
     }
 
-    public void loadHomeProducts(ArrayList<Product> products) {
-        homePage.loadProducts(products);
+    public void registraEventi(Controller c) {
+//    	header.registraEventiHeader(c);
+//        homePage.registraEventiHome(c);
+//    	productView.registraEventiProdotto(c);
+    	loadingView.registraEventi(c);
     }
 }

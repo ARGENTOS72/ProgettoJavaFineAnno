@@ -15,25 +15,12 @@ public class ListenableGraphicComponent extends GraphicComponent implements List
 	public ListenableGraphicComponent(ListenableGraphicComponent lgc) {
 		super(lgc.getX(), lgc.getY(), lgc.getWidth(), lgc.getHeight(), lgc.getColor());
 		
-		this.listener = new Listenable() {
-			@Override
-			public void outOfHover() { lgc.getInterationActions().outOfHover(); }
-			@Override
-			public void outOfFocus() { lgc.getInterationActions().outOfFocus(); }
-			@Override
-			public void onHover() { lgc.getInterationActions().onHover(); }			
-			@Override
-			public void onFocus() { lgc.getInterationActions().onFocus(); }
-			@Override
-			public void onClick(int modality) { lgc.getInterationActions().onClick(modality); }
-			@Override
-			public boolean isHovered(Vector2 mousePos) { return lgc.getInterationActions().isHovered(mousePos); }
-		};
-		
 		this.hoveredColor = lgc.getHoveredColor();
 		this.clickedColor = lgc.getClickedColor();
 		this.focussedColor = lgc.focussedColor;
 		this.currentColor = getColor();
+		
+		this.listener = getDefaultInterationAction();
 	}
 	
 	public ListenableGraphicComponent(Rectangle bounds, Color color, Color hoveredColor, Color clickedColor, Color focussedColor) {

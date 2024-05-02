@@ -15,6 +15,7 @@ public class TextButton extends Button {
 	// Constructors -----------------------------------------
 	public TextButton(TextButton txtBtn) {
 		super(txtBtn);
+		
 		this.text = txtBtn.getText();
 		this.fontSize = txtBtn.getFontSize();
 		this.padding = txtBtn.padding;
@@ -22,6 +23,8 @@ public class TextButton extends Button {
 		this.hoveredTextColor = txtBtn.getHoveredTextColor();
 		this.clickedTextColor = txtBtn.getClickedTextColor();
 		this.currentTextColor = textColor;
+		
+		this.setInterationAction(getDefaultInterationAction());
 	}
 	
 	public TextButton(Button btn, int padding, int fontSize, String text, Color textColor, Color hoverdTextColor, Color clickedTextColor) {
@@ -34,6 +37,8 @@ public class TextButton extends Button {
 		this.hoveredTextColor = hoverdTextColor;
 		this.clickedTextColor = clickedTextColor;
 		this.currentTextColor = textColor;
+		
+		this.setInterationAction(getDefaultInterationAction());
 	}
 	
 	public TextButton(int x, int y, boolean visible, float roundness, Color color, Color hoveredColor, Color clickedColor, int padding, int fontSize, String text, Color textColor, Color hoverdTextColor, Color clickedTextColor) {
@@ -46,7 +51,7 @@ public class TextButton extends Button {
 		this.clickedTextColor = clickedTextColor;
 		this.currentTextColor = textColor;
 		
-		setInterationAction(getDefaultInterationAction());
+		this.setInterationAction(getDefaultInterationAction());
 	}
 	
 	public TextButton(int x, int y, boolean visible, float roundness, Color color, int padding, int fontSize, String text, Color textColor) {

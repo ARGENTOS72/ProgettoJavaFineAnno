@@ -12,10 +12,7 @@ public class GraphicAnimation extends GraphicComponent implements Animable {
 	public GraphicAnimation(GraphicAnimation ga) {
 		super(ga.getX(), ga.getY(), ga.getWidth(), ga.getHeight(), ga.getColor());
 		
-		this.animation = new Animable() {
-			@Override
-			public void update(float deltaTime) { ga.getAnimation().update(deltaTime); }
-		};
+		this.animation = getDefaultAnimation();
 	}
 	
 	public GraphicAnimation(Rectangle bounds, Color color) {

@@ -22,7 +22,7 @@ public class Prodotto extends ListenableGraphicComponent {
 	
 	//Constructor ---------------------------
 	public Prodotto(int x, int y, int width, float roundness, Texture2D img, Product p, int textFontSize, int priceFontSize, int padding, Color color, Color hoveredColor, Color clickedColor) {
-		super(x, y, width, width+textFontSize+priceFontSize+(padding*2), color, hoveredColor, clickedColor, null);
+		super(x, y, width+(padding*2), width+textFontSize+priceFontSize+(padding*4), color, hoveredColor, clickedColor, null);
 		
 		this.padding = padding;
 		this.imgBounds = new Rectangle(0, 0, img.getWidth(), img.getHeight());
@@ -38,7 +38,7 @@ public class Prodotto extends ListenableGraphicComponent {
 	@Override
 	public void draw() {//TODO
 		Finestra.getRaylib().shapes.DrawRectangleRounded(getBounds(), roundness, 5, getCurrentColor());//background
-		rTextures.DrawTexturePro(img, imgBounds, new Rectangle(getX()+padding, getY()+padding, getWidth()-(padding*2), getWidth()-(padding*2)), origin, 0, Color.WHITE);//img
+		rTextures.DrawTexturePro(img, imgBounds, new Rectangle(getX()+padding, getY()+padding, getWidth()-(padding*2), getWidth()-(padding*2)), origin, 0f, Color.WHITE);//img
 		Finestra.getRaylib().text.DrawText(
 			p.getNome(),
 			(int) (getX()+((getWidth()/2)-(Finestra.getRaylib().text.MeasureText(p.getNome(), textFontSize)/2))),
