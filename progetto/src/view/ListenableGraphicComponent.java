@@ -3,200 +3,152 @@ package view;
 import com.raylib.java.core.Color;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
-import com.raylib.java.shapes.rShapes;
+import com.raylib.java.textures.Texture2D;
+import com.raylib.java.textures.rTextures;
 
 import controller.Controller;
 
-public class ListenableGraphicComponent extends GraphicComponent implements Listenable {
-	private Listenable listener;//in oreder to have settable Listenable methods
-	private Color hoveredColor, clickedColor, focussedColor, currentColor;
+public class TextureAnimation extends GraphicAnimation {
+	private Texture2D texture;
+	private Rectangle textureBounds;
+	private Vector2 origin;
+	private int padding;
+	private float rotation, roundsPerSecond;
+	private boolean backgroundVisible;
 	
-	//Constructor -------------------------------
-	public ListenableGraphicComponent(ListenableGraphicComponent lgc) {
-		super(lgc.getX(), lgc.getY(), lgc.getWidth(), lgc.getHeight(), lgc.getColor());
+	//Constructor --------------------------------------------
+	public TextureAnimation(TextureAnimation textureAnimation) {
+		super(textureAnimation);
 		
-		this.listener = new Listenable() {
-			@Override
-			public void outOfHover() { lgc.getInterationActions().outOfHover(); }
-			@Override
-			public void outOfFocus() { lgc.getInterationActions().outOfFocus(); }
-			@Override
-			public void onHover() { lgc.getInterationActions().onHover(); }			
-			@Override
-			public void onFocus() { lgc.getInterationActions().onFocus(); }
-			@Override
-			public void onClick(int modality) { lgc.getInterationActions().onClick(modality); }
-			@Override
-			public boolean isHovered(Vector2 mousePos) { return lgc.getInterationActions().isHovered(mousePos); }
-		};
+		setSize(getWidth()+(textureAnimation.getPadding()*2), getHeight()+(textureAnimation.getPadding()*2));
 		
-		this.hoveredColor = lgc.getHoveredColor();
-		this.clickedColor = lgc.getClickedColor();
-		this.focussedColor = lgc.focussedColor;
-		this.currentColor = getColor();
-	}
-	
-	public ListenableGraphicComponent(Rectangle bounds, Color color, Color hoveredColor, Color clickedColor, Color focussedColor) {
-		super(bounds, color);
-		this.currentColor = getColor();
-		this.hoveredColor = hoveredColor;
-		this.clickedColor = clickedColor;
-		this.focussedColor = focussedColor;
+		this.backgroundVisible = textureAnimation.isBackgroundVisible();
+		this.roundsPerSecond = textureAnimation.getRoundsPerSecond();
+		this.rotation = 0;
+		this.padding = textureAnimation.getPadding();
+		this.texture = textureAnimation.getTexture();
+		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
+		this.origin = new Vector2(textureAnimation.getOrigin().x, textureAnimation.getOrigin().y);
 		
-		this.listener = getDefaultInterationAction();
+		this.setAnimation(getDefaultAnimation());
 	}
 	
-	public ListenableGraphicComponent(int x, int y, int width, int height, Color color, Color hoveredColor, Color clickedColor, Color focussedColor) {
-		this(new Rectangle(x, y, width, height), color, hoveredColor, clickedColor, focussedColor);
-	}
-
-	public ListenableGraphicComponent(int x, int y, int width, int height, Color color) {
-		this(new Rectangle(x, y, width, height), color, null, null, null);
+	public TextureAnimation(Rectangle bounds, Color color, Texture2D texture, int padding, Vector2 origin, float roundsPerSecond, boolean backgroundVisible) {
+		super((int) bounds.getX(), (int) bounds.getY(), (int) bounds.getWidth(),
+				(int) bounds.getHeight(), color);
+		
+		setSize(getWidth()+(padding*2), getHeight()+(padding*2));
+		
+		this.backgroundVisible = backgroundVisible;
+		this.roundsPerSecond = roundsPerSecond;
+		this.rotation = 0;
+		this.padding = padding;
+		this.texture = texture;
+		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
+		this.origin = origin;
+		
+		setAnimation(getDefaultAnimation());
 	}
 	
-	//draw -----------------------------------------------
+	public TextureAnimation(int x, int y, int width, int height, Texture2D texture, float roundsPerSecond, boolean backgroundVisible) {
+		super(x+(width/2), y+(height/2), width, height, Color.WHITE);
+		
+		this.backgroundVisible = backgroundVisible;
+		this.roundsPerSecond = roundsPerSecond;
+		this.rotation = 0f;
+		this.padding = 10;
+		this.texture = texture;
+		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
+		
+		origin = new Vector2(width/2 , height/2);//origin has to be the center of bounds
+		
+		setAnimation(getDefaultAnimation());
+	}
+	
+	//draw -----------------------------------
 	@Override
 	public void draw() {
-		rShapes.DrawRectangleRec(getBounds(), currentColor);
+		if(backgroundVisible) Finestra.getRaylib().shapes.DrawRectangle(getX()-(getWidth()/2),
+				getY()-(getHeight()/2), getWidth(), getHeight(), getColor());
+		
+		rTextures.DrawTexturePro(texture, textureBounds, getBounds(), origin, rotation, getColor());
 	}
 	
-	//getters & setters ------------------------------------
-	public Color getHoveredColor() {
-		return hoveredColor;
+	//getters & setters -----------------------------
+	@Override
+	public int getX() {
+		return super.getX()-(super.getWidth()/2);
+	}
+	
+	@Override
+	public int getY() {
+		return super.getY()-(super.getHeight()/2);
+	}
+	
+	public Texture2D getTexture() {
+		return texture;
 	}
 
-	public Color getClickedColor() {
-		return clickedColor;
+	public Rectangle getTextureBounds() {
+		return textureBounds;
 	}
 
-	public Color getFocussedColor() {
-		return focussedColor;
-	}
-	
-	public Color getCurrentColor() {
-		return currentColor;
-	}
-	
-	public Color[] getColors() {
-		return new Color[] {getColor(), hoveredColor, clickedColor, focussedColor};
-	}
-	
-	public Listenable getInterationActions() {
-		return listener;
-	}
-	
-	public void setHoveredColor(Color hoveredColor) {
-		this.hoveredColor = hoveredColor;
+	public Vector2 getOrigin() {
+		return origin;
 	}
 
-	public void setClickedColor(Color clickedColor) {
-		this.clickedColor = clickedColor;
+	public int getPadding() {
+		return padding;
 	}
 
-	public void setFocussedColor(Color focussedColor) {
-		this.focussedColor = focussedColor;
+	public float getRotation() {
+		return rotation;
 	}
 	
-	public void setCurrentColor(Color currentColor) {
-		this.currentColor = currentColor;
+	public float getRoundsPerSecond() {
+		return roundsPerSecond;
 	}
 	
-	public void setColors(Color color, Color hoveredColor, Color clickedColor, Color focussedColor) {
-		setColor(color);
-		this.hoveredColor = hoveredColor;
-		this.clickedColor = clickedColor;
-		this.focussedColor = focussedColor;
-		this.currentColor = color;
+	public boolean isBackgroundVisible() {
+		return backgroundVisible;
+	}
+
+	public void setOrigin(Vector2 origin) {
+		this.origin = origin;
+	}
+
+	public void setRotation(float rotation) {
+		this.rotation = rotation;
 	}
 	
-	public void setInterationAction(Listenable listener) {
-		this.listener = listener;
+	public void setRoundsPerSecond(float roundPerSecond) {
+		this.roundsPerSecond = roundPerSecond;
 	}
 	
-	//implements --------------------------------------------------------------
+	public void setBackgroundVisible(boolean backgroundsVisible) {
+		this.backgroundVisible = backgroundsVisible;
+	}
+	
+	//default animation ------------------------
 	@Override
-	public void onHover() {
-		listener.onHover();
-	}
-	
-	@Override
-	public void outOfHover() {
-		listener.outOfHover();
-	}
-	
-	@Override
-	public void onFocus() {
-		listener.onFocus();
-	}
-	
-	@Override
-	public void outOfFocus() {
-		listener.outOfFocus();
-	}
-	
-	@Override
-	public void onClick(int modality) {
-		listener.onClick(modality);
-	}
-	
-	@Override
-	public boolean isHovered(Vector2 mousePos) {
-		return listener.isHovered(mousePos);
-	}
-	
-	//default Listenable -------------------------------------
-	public Listenable getDefaultInterationAction() {
-		return new Listenable() {
+	public Animable getDefaultAnimation() {
+		return new Animable() {
 			@Override
-			public void onHover() {
-				if(getHoveredColor() != null) setCurrentColor(getHoveredColor());
-			}
-			
-			@Override
-			public void outOfHover() {
-				setCurrentColor(getColor());
-			}
-			
-			@Override
-			public void onFocus() {
-				if(getFocussedColor() != null) setCurrentColor(getFocussedColor());
-			}
-			
-			@Override
-			public void outOfFocus() {
-				setCurrentColor(getColor());
-			}
-			
-			@Override
-			public void onClick(int modality) {
-				if(getClickedColor() != null && modality == DOWN) setCurrentColor(getClickedColor());
-			}
-			
-			@Override
-			public boolean isHovered(Vector2 mousePos) {
-				return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, getBounds());
+			public void update(float deltaTime) {
+				rotation+= (float)(roundsPerSecond*deltaTime);
 			}
 		};
 	}
 	
-	//add & remove listener ----------------------------------
-	//default operations to do when this Listenable Object need to add a listener
-	public void addListener(Controller c) {
-		c.addListenerTo(this);
-	}
-
-	//default operations to do when this Listenable Object need to remove a listener
-	public void removeListener(Controller c) {
-		c.removeListenerTo(this);
+	//add & remove updater ---------------------------------
+	@Override
+	public void addUpdater(Controller c) {
+		c.addUpdaterTo(this);
 	}
 	
-	//toString ---------------------------------------------
 	@Override
-	public String toString() {
-		return this.getClass().getSimpleName() + " {" +
-				"\n\tbounds [" + getX() + ", " + getY() + ", " + getWidth() + ", " + getHeight() +
-				"]\n\tcolors [normal: " + getColor() + ", hovered: " + hoveredColor + ", clicked: " + clickedColor +
-				"focussed: " + focussedColor +
-				"]\n}";
+	public void removeUpdater(Controller c) {
+		c.removeUpdaterTo(this);
 	}
+		
 }
