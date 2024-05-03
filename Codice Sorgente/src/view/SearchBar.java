@@ -5,7 +5,6 @@ import com.raylib.java.core.rCore;
 import com.raylib.java.core.input.Keyboard;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
-import com.raylib.java.text.rText;
 import com.raylib.java.textures.Texture2D;
 
 import controller.Controller;
@@ -17,13 +16,20 @@ public class SearchBar extends ListenableGraphicComponent {
 	private Color textColor, hoveredTextColor, clikcedTextColor, focussedTextColor, currentTextColor;
 	private float roundness;
 	private int borderThickness;
+	
+	//inner text field class vars
 	private char[] text;
     private byte maxChars;
     private byte nCurrenteLetters;
     private int fontSize, fontSpacing, padding;
-    private int key;
-    private int frameCounter;
-    private boolean cancel;
+    private int key;//used only in onFocus() <- could be also declared in method
+    private boolean cancel;//bool to avoid double canc for a single letter
+    
+    //textfield animation
+    private float timerTurboCanc, timerDrawAnimation;
+    private boolean turboCanc;
+    private char animationChar;
+    private boolean drawAnimation;
     
     //send button
     private TextureButton sendBtn;
@@ -31,16 +37,16 @@ public class SearchBar extends ListenableGraphicComponent {
     //Constructor -----------------------------------------------
     public SearchBar(int x, int y, int width, int height, float roundness, int borderThickness, byte maxChars, int fontSize,
     		Texture2D textureSendBtn)  {
-    	super(x, y, width, height, Color.WHITE, new Color(238, 238, 238, 255), null, Color.WHITE);
+    	super(x, y, width, height, Color.WHITE, new Color(238,238,238, 255), null, Color.WHITE);
     	
     	this.txtFieldBounds = getBounds();
     	this.txtFieldBounds.setWidth(getWidth()-getHeight());
     	
     	this.borderColor = Color.BLACK;
     	this.textColor = Color.GRAY;
-    	this.hoveredTextColor = new Color(87, 10, 142, 255);
+    	this.hoveredTextColor = Color.DARKGRAY;
     	this.clikcedTextColor = null;
-    	this.focussedTextColor = Color.BLACK;
+    	this.focussedTextColor = new Color(87, 10, 142, 255);
     	this.currentTextColor = textColor;
     	
     	this.roundness = roundness;
@@ -51,7 +57,7 @@ public class SearchBar extends ListenableGraphicComponent {
     	this.padding = (height - fontSize) / 2;
     	int sendBtnPadding = 5;
     	this.sendBtn = new TextureButton(textureSendBtn, (int)(x+txtFieldBounds.getWidth()), y, height-(sendBtnPadding*2), height-(sendBtnPadding*2), true,
-    			roundness, sendBtnPadding, Color.WHITE, new Color(238, 238, 238, 255), new Color(141, 255, 248, 255));
+    			roundness, sendBtnPadding, Color.WHITE, new Color(141, 255, 248, 255), Color.VIOLET);
     	
     	this.text = new char[maxChars];
         for (int i = 0; i < maxChars; i++) this.text[i] = ' ';
@@ -59,32 +65,48 @@ public class SearchBar extends ListenableGraphicComponent {
         this.nCurrenteLetters = 0;
         this.fontSize = fontSize;
         this.key = 0;
-        this.frameCounter = 0;
         this.cancel = true;
+        
+        this.timerTurboCanc = 0f;
+        this.timerDrawAnimation = 0f;
+        this.animationChar = '_';
+        this.drawAnimation = false;
+        this.turboCanc = false;
     }
     
     //draw -------------------------------------------------------
     @Override
     public void draw() {
-    	Finestra.getRaylib().shapes.DrawRectangleRounded(getBounds(), roundness, 5, getCurrentColor());//text field background
-    	Finestra.getRaylib().shapes.DrawRectangle(sendBtn.getX()-getHeight(), getY(), (int) (getHeight()*1.5), getHeight(), getCurrentColor());
-    	//...
+    	//text field background
+    	Finestra.getRaylib().shapes.DrawRectangleRounded(getBounds(), roundness, 5, getCurrentColor());
+    	Finestra.getRaylib().shapes.DrawRectangle(sendBtn.getX()-getHeight(), getY(), (int) (getHeight()*1.5),
+    		getHeight(), getCurrentColor());
     	
-    	Finestra.getRaylib().text.DrawTextEx(rText.GetFontDefault(), String.valueOf(text),
-    			new Vector2(getX()+padding, getY()+padding), fontSize, fontSpacing, currentTextColor);
+    	//draw text in textfield
+    	Finestra.getRaylib().text.DrawText(String.valueOf(text), getX()+padding, getY()+padding, fontSize,
+    		currentTextColor);
     	
+    	//draw animation char
+    	if(drawAnimation) Finestra.getRaylib().text.DrawText( String.valueOf(animationChar),
+    		getX()+padding+Finestra.getRaylib().text.MeasureText(getText(), fontSize)+2,
+    		getY()+padding, fontSize, currentTextColor);
+    	
+    	//draw placeholder (only if no char displayed & is not focessed)
+    	if(nCurrenteLetters == 0 && currentTextColor != focussedTextColor) {
+    		Finestra.getRaylib().text.DrawText("cerca un prodotto...",
+    			getX()+padding, getY()+padding, fontSize, textColor);
+    	}
+    	
+    	//draw send btn
     	sendBtn.draw();
     }
     
     //class methods ------------------------------------------------------
     public void resetSearchBar() {
-        if (nCurrenteLetters < maxChars) {
-            if (text[nCurrenteLetters] == '_') {
-                text[nCurrenteLetters] = ' ';
-            }
+        for(int i=0; i<maxChars; i++) {
+        	text[i] = ' ';
         }
-
-        frameCounter = 0;
+        nCurrenteLetters = 0;
     }
     
     //getters & setters ----------------------------------------------------
@@ -125,7 +147,11 @@ public class SearchBar extends ListenableGraphicComponent {
 	}
 
 	public String getText() {
-		return String.valueOf(text);
+		String res = "";
+		
+		for(int i=0; i<nCurrenteLetters; i++) res+= text[i];
+		
+		return res;
 	}
 
 	public int getMaxChars() {
@@ -264,7 +290,15 @@ public class SearchBar extends ListenableGraphicComponent {
 	}
 
 	public void setText(String text) {
-		this.text = text.toCharArray();
+		byte newLenght = (byte) text.length();
+		
+		if(newLenght <= maxChars) {
+			int i=0;
+			for(; i<newLenght; i++) this.text[i] = text.charAt(i);
+			for(; i<maxChars; i++) this.text[i] = ' ';
+			
+			nCurrenteLetters = newLenght;
+		}
 	}
 
 	public void setFontSize(int fontSize) {
@@ -315,13 +349,130 @@ public class SearchBar extends ListenableGraphicComponent {
     	if(focussedTextColor != null) currentTextColor = focussedTextColor;
     	
         key = Finestra.getRaylib().core.GetCharPressed();
-
+        float deltaTime = rCore.GetFrameTime();
+        
+        //if key is a printable ASCII char -> append it to text
         while (key > 0) {
+            if (key >= 32 && key <= 126 && nCurrenteLetters < maxChars) {
+            	//view animation char during writing
+            	drawAnimation = true;
+            	timerDrawAnimation = 0.001f;
+            	
+            	//add char
+                text[nCurrenteLetters] = (char) key;
+                nCurrenteLetters++;
+            }
+            
+            //if other char are queued, write'em all (if user type 2+ key simultaneously)
+            key = Finestra.getRaylib().core.GetCharPressed();
+        }
+        
+        //if backspace is down -> 1 canc / sec (if turbo 5 canc / sec)
+        if (rCore.IsKeyDown(Keyboard.KEY_BACKSPACE) &&
+        	(timerTurboCanc == 0f || cancel || (turboCanc && (int)(timerTurboCanc*10) % 1 == 0)) ) {
+        	cancel = false;
+
+            if (nCurrenteLetters > 0) nCurrenteLetters--;
+
+            text[nCurrenteLetters] = ' ';
+            
+//            if (nCurrenteLetters < maxChars - 1) {
+//                text[nCurrenteLetters + 1] = ' ';
+//            }
+        }
+        
+        //key n^268 = home = (diagonal arrow)
+        if(rCore.IsKeyDown(Keyboard.KEY_HOME) && rCore.IsKeyDown(Keyboard.KEY_BACKSPACE)) {
+        	//delete all
+        	resetSearchBar();
+        }
+        
+        if(rCore.IsKeyDown(Keyboard.KEY_BACKSPACE)) {
+        	timerTurboCanc+= deltaTime;
+        } else {
+        	timerTurboCanc = 0;//reset turbo
+        	turboCanc = false;
+        }
+        
+        if (Finestra.getRaylib().core.IsKeyReleased(Keyboard.KEY_BACKSPACE)) {
+            cancel = true;
+        }
+
+        if (Finestra.getRaylib().core.IsKeyPressed(Keyboard.KEY_ENTER)) {
+            if (nCurrenteLetters < maxChars && ((timerDrawAnimation / 50) % 2) == 0) {//?
+                text[nCurrenteLetters] = ' ';
+            }
+            
+            if (!String.copyValueOf(text).replaceAll(" +", "").equals("")) {
+                // Premi invio e controlla se ha spazi vuoti
+            }
+        } else {
+        	//toggle every sec animation char
+        	if(nCurrenteLetters == maxChars) drawAnimation = false;
+        	else if (timerDrawAnimation == 0f) {
+                drawAnimation = !drawAnimation;
+            }
+        }
+        
+        //update timer
+        timerDrawAnimation+= deltaTime;
+        
+        if(timerTurboCanc >= 0.5f) {
+        	timerTurboCanc = 0f;
+        	turboCanc = true;
+        }
+        
+        if(timerDrawAnimation >= 1f) {
+        	timerDrawAnimation = 0f;
+        }
+    }
+    
+    @Override
+	public void outOfFocus() {
+    	super.outOfFocus();
+		currentTextColor = textColor;
+	}
+    
+    @Override
+	public void onClick(int modality) {
+    	if(modality == DOWN) {
+			if(getClickedColor() != null) setCurrentColor(getClickedColor());
+			if(clikcedTextColor != null) currentTextColor = clikcedTextColor;
+		}
+	}
+    
+    @Override
+    public boolean isHovered(Vector2 mousePos) {
+        return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, txtFieldBounds);
+    }
+    
+    @Override
+    public void addListener(Controller c) {
+    	c.addListenerTo(this);
+    	c.addListenerTo(sendBtn);
+    }
+    
+    @Override
+	public void removeListener(Controller c) {
+		c.removeListenerTo(this);
+		c.removeListenerTo(sendBtn);
+	}
+}
+/*TODO: prev onFocus method HERE below
+	public void onFocus() {
+    	super.onFocus();
+    	if(focussedTextColor != null) currentTextColor = focussedTextColor;
+    	
+        key = Finestra.getRaylib().core.GetCharPressed();
+
+        //if key is a printable ASCII char -> append it to text
+        while (key > 0) {//? why while
+        	int tempKey = key;
             if ((key >= 32) && (key <= 125) && (nCurrenteLetters < maxChars)) {
                 text[nCurrenteLetters] = (char) key;
                 nCurrenteLetters++;
             }
-            if (key == 32) {
+            if (key == 32) {//?
                 frameCounter = 0;
             }
 
@@ -368,35 +519,4 @@ public class SearchBar extends ListenableGraphicComponent {
             frameCounter++;
         }
     }
-    
-    @Override
-	public void outOfFocus() {
-    	super.outOfFocus();
-		currentTextColor = textColor;
-	}
-    
-    @Override
-	public void onClick(int modality) {
-    	if(modality == DOWN) {
-			if(getClickedColor() != null) setCurrentColor(getClickedColor());
-			if(clikcedTextColor != null) currentTextColor = clikcedTextColor;
-		}
-	}
-    
-    @Override
-    public boolean isHovered(Vector2 mousePos) {
-        return Finestra.getRaylib().shapes.CheckCollisionPointRec(mousePos, txtFieldBounds);
-    }
-    
-    @Override
-    public void addListener(Controller c) {
-    	c.addListenerTo(this);
-    	c.addListenerTo(sendBtn);
-    }
-    
-    @Override
-	public void removeListener(Controller c) {
-		c.removeListenerTo(this);
-		c.removeListenerTo(sendBtn);
-	}
-}
+*/
