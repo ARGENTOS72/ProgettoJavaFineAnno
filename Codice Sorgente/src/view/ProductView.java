@@ -27,15 +27,15 @@ public class ProductView {
 		imgX = screenWidth/30;
 		
 		textX = (imgX*6)+(texture.width);
-		txtBtn = new TextButton(textX, imgY+texture.height, true, 0f, Color.PINK, Color.VIOLET,
-        		Color.PINK, 10, 40, "Acquista ora", Color.WHITE, Color.RED, Color.DARKGREEN);
+		txtBtn = new TextButton(textX, imgY+texture.height, true, 0f, Color.VIOLET, Color.PINK,
+        		Color.PINK, 10, 40, "Acquista ora", Color.WHITE, Color.WHITE, new Color(87, 10, 142, 255));
 	}
     
     public void draw() {
     	Finestra.getRaylib().textures.DrawTexture(texture, imgX, imgY, Color.BLACK);
     	Finestra.getRaylib().text.DrawText(prodotto.getNome(), textX, imgY , 50, Color.BLACK);
     	Finestra.getRaylib().text.DrawText(prodotto.getDescrizione(), textX, imgY+txtBtn.getHeight(), 40, Color.DARKGRAY);
-    	Finestra.getRaylib().shapes.DrawRectangle(textX, imgY+(txtBtn.getHeight()*2), screenWidth/3, screenHeight/200, Color.BLACK);
+    	Finestra.getRaylib().shapes.DrawRectangle(textX, imgY+(txtBtn.getHeight()*2), screenWidth/3, screenHeight/200, new Color(87, 10, 142, 255));
     	Finestra.getRaylib().text.DrawText(String.valueOf(prodotto.getPrezzo()+" $"), textX, imgY+(txtBtn.getHeight()*4), 50, Color.BLACK);
     	Finestra.getRaylib().text.DrawText(String.valueOf("Codice prodotto: "+prodotto.getCodiceProdotto()), textX, imgY+(txtBtn.getHeight()*5), 30, Color.DARKGRAY);
     	Finestra.getRaylib().text.DrawText(String.valueOf("Quantita' disponibile: "+prodotto.getQuantita()), textX, imgY+(txtBtn.getHeight()*8), 40, Color.DARKGRAY);
