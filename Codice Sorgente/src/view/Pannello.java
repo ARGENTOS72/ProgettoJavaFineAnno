@@ -52,7 +52,8 @@ public class Pannello {
     //Draw Panel
     public void draw() {
     	ray.core.BeginMode2D(camera);
-    	
+	Finestra.getRaylib().core.ClearBackground(new Color(141, 255, 248, 255));
+	    
     	//loadingView.draw();
     	header.draw();
     	homePage.draw();
