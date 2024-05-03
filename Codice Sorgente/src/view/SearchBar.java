@@ -31,16 +31,16 @@ public class SearchBar extends ListenableGraphicComponent {
     //Constructor -----------------------------------------------
     public SearchBar(int x, int y, int width, int height, float roundness, int borderThickness, byte maxChars, int fontSize,
     		Texture2D textureSendBtn)  {
-    	super(x, y, width, height, Color.WHITE, new Color(238,238,238, 255), null, Color.WHITE);
+    	super(x, y, width, height, Color.WHITE, new Color(238, 238, 238, 255), null, Color.WHITE);
     	
     	this.txtFieldBounds = getBounds();
     	this.txtFieldBounds.setWidth(getWidth()-getHeight());
     	
     	this.borderColor = Color.BLACK;
     	this.textColor = Color.GRAY;
-    	this.hoveredTextColor = Color.DARKGRAY;
+    	this.hoveredTextColor = new Color(87, 10, 142, 255);
     	this.clikcedTextColor = null;
-    	this.focussedTextColor = new Color(87, 10, 142, 255);
+    	this.focussedTextColor = Color.BLACK;
     	this.currentTextColor = textColor;
     	
     	this.roundness = roundness;
@@ -51,7 +51,7 @@ public class SearchBar extends ListenableGraphicComponent {
     	this.padding = (height - fontSize) / 2;
     	int sendBtnPadding = 5;
     	this.sendBtn = new TextureButton(textureSendBtn, (int)(x+txtFieldBounds.getWidth()), y, height-(sendBtnPadding*2), height-(sendBtnPadding*2), true,
-    			roundness, sendBtnPadding, Color.WHITE, new Color(141, 255, 248, 255), Color.VIOLET);
+    			roundness, sendBtnPadding, Color.WHITE, new Color(238, 238, 238, 255), new Color(141, 255, 248, 255));
     	
     	this.text = new char[maxChars];
         for (int i = 0; i < maxChars; i++) this.text[i] = ' ';
