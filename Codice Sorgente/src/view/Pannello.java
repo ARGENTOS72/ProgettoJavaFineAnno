@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.raylib.java.Raylib;
 import com.raylib.java.core.rCore;
+import com.raylib.java.core.Color;
 import com.raylib.java.core.camera.Camera2D;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.textures.Texture2D;
