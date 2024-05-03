@@ -47,11 +47,11 @@ public class HomePage {
 		Prodotto[] p2 = new Prodotto[(int) Math.floor((float) nProdotti / 2)];
 		
 		for (int i = 0; i < p1.length; i++) {
-			p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, product, 40, 30, 50, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+			p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, product, 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
 		}
 		
 		for (int i = 0; i < p2.length; i++) {
-			p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, product, 40, 30, 50, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+			p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, product, 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
 		}
 		
 		Prodotto temp[][] = new Prodotto[][] {p1, p2};
@@ -72,8 +72,6 @@ public class HomePage {
 		
 		footY += (prodottoConsigliatoY+prodottoConsigliatoHeight+(padding*2)) + ((prodotti[0][0].getHeight()+(padding*2))*prodotti[0].length);
 		foot = new Foot(footY, screenWidth, screenHeight);
-
-		//texture = new Texture2D("textures/SearchIcon.png");
 	}
     
     public void draw() {
