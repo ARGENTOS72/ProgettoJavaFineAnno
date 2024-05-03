@@ -46,11 +46,11 @@ public class HomePage {
 				Prodotto[] p2 = new Prodotto[(int) Math.floor((float)(nProdotti)/2)];
 				
 				for (int i = 0; i < p1.length; i++) {
-					p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, pp, 40, 30, 50, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+					p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, pp, 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
 				}
 				
 				for (int i = 0; i < p2.length; i++) {
-					p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, pp, 40, 30, 50, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+					p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, pp, 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
 				}
 				
 				Prodotto temp[][] = new Prodotto[][] {p1, p2};
@@ -70,12 +70,9 @@ public class HomePage {
 		
 		footY += (prodottoConsigliatoY+prodottoConsigliatoHeight+(padding*2)) + ((prodotti[0][0].getHeight()+(padding*2))*prodotti[0].length);
 		foot = new Foot(footY, screenWidth, screenHeight);
-
-		//texture = new Texture2D("textures/SearchIcon.png");
 	}
     
     public void draw() {
-    	Finestra.getRaylib().core.ClearBackground(new Color(141, 255, 248, 255));
     	prodottoConsigliato.draw();
     	for (int i = 0; i < 2; i++) {
      		for(int j = 0; j < prodotti[i].length; j++) {
