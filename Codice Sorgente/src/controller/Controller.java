@@ -71,10 +71,9 @@ public class Controller {
 	// onHover, onFocus
 	private void handleComponentsActions() {
 		for (ListenableGraphicComponent lgc : components) {
-			System.out.println(lgc.getName()+" checking...");
 			if (lgc.isHovered(mousePos)) {//is Hovered
 				hoveredComponent = lgc;
-				System.out.println(lgc.getName()+" hovered!");
+				
 				lgc.onHover();//do default operations when hovered
 				
 				//get who is it
@@ -139,6 +138,7 @@ public class Controller {
 		if (lgc == null)
 			throw new ControllerException(
 					"Cannot add listener to null " + GraphicComponent.class.getSimpleName());
+					
 		if (lgc.getName() == null)
 			throw new ControllerException(
 					"Cannot add listener to " + GraphicComponent.class.getSimpleName() + " with null name");
@@ -164,6 +164,7 @@ public class Controller {
 		if (ga == null)
 			throw new ControllerException(
 					"Cannot add updater to null " + GraphicComponent.class.getSimpleName());
+
 		if (ga.getName() == null)
 			throw new ControllerException(
 					"Cannot add updater to " + GraphicComponent.class.getSimpleName() + " with null name");

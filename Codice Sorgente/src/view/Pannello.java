@@ -40,7 +40,7 @@ public class Pannello {
         
         loadingView = new LoadingView(screenWidth, screenHeight);
         header = new Header(screenWidth, screenHeight, screenWidth, screenHeight/5, screenWidth/30, screenHeight/14, 6);
-        //homePage = new HomePage(screenWidth, screenHeight, header.getHeight(), screenHeight/2, );
+        homePage = new HomePage(screenWidth, screenHeight, header.getHeight(), screenHeight/2, 10);
         productView = new ProductView(texture, pp, screenWidth, screenHeight, header.getHeight());
         
         camera = new Camera2D(new Vector2(0,0), new Vector2(0,0), 0f, 1f);
@@ -51,9 +51,9 @@ public class Pannello {
     public void draw() {
     	ray.core.BeginMode2D(camera);
     	
-    	loadingView.draw();
-//    	header.draw();
-    	//homePage.draw();
+    	//loadingView.draw();
+    	header.draw();
+    	homePage.draw();
 //    	productView.draw();
     	
         ray.core.EndMode2D();
@@ -69,14 +69,14 @@ public class Pannello {
     	return camera;
     }
 
-    public void loadHomeProducts(ArrayList<String> products) {
+    public void loadHomeProducts(ArrayList<Product> products) {
         homePage.loadHomeProducts(products);
     }
 
     public void registraEventi(Controller c) {
-//    	header.registraEventiHeader(c);
-//        homePage.registraEventiHome(c);
+       	header.registraEventiHeader(c);
+        homePage.registraEventiHome(c);
 //    	productView.registraEventiProdotto(c);
-    	loadingView.registraEventi(c);
+    	//loadingView.registraEventi(c);
     }
 }

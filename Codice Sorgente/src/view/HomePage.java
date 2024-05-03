@@ -17,6 +17,7 @@ public class HomePage {
     private int screenWidth;
     private int screenHeight;
     private TextureButton prodottoConsigliato;
+	private int nProdotti;
     private int padding;
     private int footY;
     private Texture2D texture;
@@ -26,10 +27,11 @@ public class HomePage {
 		super();
 		this.prodottoConsigliatoY = prodottoConsigliatoY;
 		this.prodottoConsigliatoHeight = prodottoConsigliatoHeight;
-		this.prodottoWidth = screenWidth/5;
+		this.prodottoWidth = screenWidth / 5;
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
-		padding = screenHeight/20;
+		padding = screenHeight / 20;
+		this.nProdotti = nProdotti;
 		this.texture = new Texture2D("textures/SearchIcon.png");
 		prodotti = new Prodotto[2][5];
 		
@@ -37,36 +39,36 @@ public class HomePage {
 
 		prodottoConsigliato = new TextureButton(texture, 0, prodottoConsigliatoY, screenWidth, prodottoConsigliatoHeight, true, 0, 0, Color.LIGHTGRAY, Color.GRAY, Color.BLANK);
 		
-		String[] categorieTemp = {"cacca", "culo"};
-		ArrayList<String> categorie = new ArrayList<String>(Arrays.asList(categorieTemp));
-		Product pp = new Product(911.01, "Kiriko 2", "semplice carta das sedere", categorie, 1);
-		
+		String[] tempCat = {"a", "s"};
+		Product product = new Product(10, "hak", "hak", new ArrayList<String>(Arrays.asList(tempCat)), 10);
+
 		//Matrix creation
-				Prodotto[] p1 = new Prodotto[(int) Math.ceil((float)(nProdotti)/2)];
-				Prodotto[] p2 = new Prodotto[(int) Math.floor((float)(nProdotti)/2)];
-				
-				for (int i = 0; i < p1.length; i++) {
-					p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, pp, 40, 30, 50, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
-				}
-				
-				for (int i = 0; i < p2.length; i++) {
-					p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, pp, 40, 30, 50, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
-				}
-				
-				Prodotto temp[][] = new Prodotto[][] {p1, p2};
-				
-				prodotti = temp;
-				
-				GraphicComponentAligner.alignY(prodotti[0], GraphicComponentAligner.UP, GraphicComponentAligner.PADDING,
-						(prodottoConsigliatoY+prodottoConsigliatoHeight+(padding*2)), 10, padding);
-				
-				for(int i = 0; i < prodotti[1].length; i++) {
-						prodotti[1][i].setY(prodotti[0][i].getY());
-						GraphicComponentAligner.alignX(new GraphicComponent[] {prodotti[0][i], prodotti[1][i]},
-							GraphicComponentAligner.CENTER, GraphicComponentAligner.DISTRIBUTE, 0, screenWidth,-1);
-				}
-				
-				if(nProdotti %2 != 0) prodotti[0][prodotti[0].length-1].setX(prodotti[0][0].getX());
+		Prodotto[] p1 = new Prodotto[(int) Math.ceil((float) nProdotti / 2)];
+		Prodotto[] p2 = new Prodotto[(int) Math.floor((float) nProdotti / 2)];
+		
+		for (int i = 0; i < p1.length; i++) {
+			p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, product, 40, 30, 50, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+		}
+		
+		for (int i = 0; i < p2.length; i++) {
+			p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, product, 40, 30, 50, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+		}
+		
+		Prodotto temp[][] = new Prodotto[][] {p1, p2};
+		
+		prodotti = temp;
+		
+		GraphicComponentAligner.alignY(prodotti[0], GraphicComponentAligner.UP, GraphicComponentAligner.PADDING,
+				(prodottoConsigliatoY+prodottoConsigliatoHeight+(padding*2)), 10, padding);
+		
+		for (int i = 0; i < prodotti[1].length; i++) {
+			prodotti[1][i].setY(prodotti[0][i].getY());
+			
+			GraphicComponentAligner.alignX(new GraphicComponent[] {prodotti[0][i], prodotti[1][i]},
+				GraphicComponentAligner.CENTER, GraphicComponentAligner.DISTRIBUTE, 0, screenWidth,-1);
+		}
+		
+		if (nProdotti % 2 != 0) prodotti[0][prodotti[0].length - 1].setX(prodotti[0][0].getX());
 		
 		footY += (prodottoConsigliatoY+prodottoConsigliatoHeight+(padding*2)) + ((prodotti[0][0].getHeight()+(padding*2))*prodotti[0].length);
 		foot = new Foot(footY, screenWidth, screenHeight);
@@ -76,17 +78,49 @@ public class HomePage {
     
     public void draw() {
     	Finestra.getRaylib().core.ClearBackground(new Color(141, 255, 248, 255));
+
     	prodottoConsigliato.draw();
+
     	for (int i = 0; i < 2; i++) {
-     		for(int j = 0; j < prodotti[i].length; j++) {
+     		for (int j = 0; j < prodotti[i].length; j++) {
  	        	prodotti[i][j].draw();
      		}
-         }
+        }
+
     	foot.draw();
     }
 
-	public void loadHomeProducts(ArrayList<String> products) {
-		throw new UnsupportedOperationException("Unimplemented method 'run'");
+	public void loadHomeProducts(ArrayList<Product> products) {
+		//Matrix creation
+		Prodotto[] p1 = new Prodotto[(int) Math.ceil((float) nProdotti / 2)];
+		Prodotto[] p2 = new Prodotto[(int) Math.floor((float) nProdotti / 2)];
+		
+		for (int i = 0; i < p1.length; i++) {
+			p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, products.get(i), 40, 30, 50, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+		}
+		
+		for (int i = 0; i < p2.length; i++) {
+			p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, products.get(p1.length + i), 40, 30, 50, Color.VIOLET, Color.DARKPURPLE, Color.PINK);
+		}
+		
+		Prodotto temp[][] = new Prodotto[][] {p1, p2};
+		
+		prodotti = temp;
+		
+		GraphicComponentAligner.alignY(prodotti[0], GraphicComponentAligner.UP, GraphicComponentAligner.PADDING,
+				(prodottoConsigliatoY+prodottoConsigliatoHeight+(padding*2)), 10, padding);
+		
+		for (int i = 0; i < prodotti[1].length; i++) {
+			prodotti[1][i].setY(prodotti[0][i].getY());
+			
+			GraphicComponentAligner.alignX(new GraphicComponent[] {prodotti[0][i], prodotti[1][i]},
+				GraphicComponentAligner.CENTER, GraphicComponentAligner.DISTRIBUTE, 0, screenWidth,-1);
+		}
+		
+		if (nProdotti % 2 != 0) prodotti[0][prodotti[0].length - 1].setX(prodotti[0][0].getX());
+		
+		footY += (prodottoConsigliatoY+prodottoConsigliatoHeight+(padding*2)) + ((prodotti[0][0].getHeight()+(padding*2))*prodotti[0].length);
+		foot = new Foot(footY, screenWidth, screenHeight);
 	}
     
     public void registraEventiHome(Controller c) {
@@ -94,11 +128,13 @@ public class HomePage {
     	prodottoConsigliato.addListener(c);
     	
     	for (int i = 0; i < 2; i++) {
-    		for(int j = 0; j < prodotti[i].length; j++) {
+    		for (int j = 0; j < prodotti[i].length; j++) {
 	        	prodotti[i][j].setName("prodotto"+(i+1));
+
 				prodotti[i][j].addListener(c);
     		}
         }
+
     	foot.registraEventiFoot(c);
     }
 

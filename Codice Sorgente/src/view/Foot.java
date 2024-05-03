@@ -1,7 +1,5 @@
 package view;
 
-import java.net.CookieHandler;
-
 import com.raylib.java.core.Color;
 
 import controller.Controller;
@@ -25,7 +23,6 @@ public class Foot {
 		txtBtn = new TextButton(0, footY, true, 0f, Color.VIOLET, new Color(87, 10, 142, 255),
         		Color.PINK, 10, 40, "Torna in testa", Color.WHITE, Color.WHITE, new Color(87, 10, 142, 255));
 		txtBtn.setLocation(screenWidth-(txtBtn.getWidth()+padding), footY+footHeight-(padding));
-		System.out.println("Viola A "+Color.PINK.getA()+" R "+Color.PINK.getR()+"G"+Color.PINK.getG()+"B"+Color.PINK.getB());
 	}
 
 	public void draw() {

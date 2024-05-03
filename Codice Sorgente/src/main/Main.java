@@ -1,14 +1,11 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.Semaphore;
 
 import controller.Controller;
 import controller.WaitProducts;
 import model.Db;
 import model.LoadProducts;
-import model.Product;
 import view.Finestra;
 
 public class Main {
