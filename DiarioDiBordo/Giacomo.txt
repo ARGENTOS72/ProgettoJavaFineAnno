@@ -2,12 +2,12 @@ Diario di Bordo
 
 09/04/2024 10:20 - 11:00 | Inizio progetto, Creazione finestra e pannello princpale;
 16/04/2024 22:00 - 23:00 | Inizio creazione home page, header;
-18/04/2024 9:15 - 10:56 | Inizio Creazione Header, searchBar, Home Button, aggiunta i bottoni delle categorie;
-22/04/2024 | Classe Pannello: Aggiunta dei listeners per i bottoni cateogie, padding temporaneo ai bottoni, creazione prodotto consigliato temporaneo;
-23/04/2024 | Classe Pannello: Implementato scorrimento dello schermo e posizionamento temporaneo dei prodotti nella home;
-26/04/2024 | Classe Controller: Implementato scorrimento con apposito moltiplicatore per la velocità e modifica a Pannello;
-27/04/2024 | Creazione delle classi HomePage e Header e implementazione nel Pannello;
-29/04/2024 | Classe HomePage: Creazione matrice per allinento dei prodotti; Classe Header: Ordinamento dei pulsanti categorie;
-01/05/2024 | Creazione classe SingleProduct (Rinominata poi in ProductView); Aggiustamenti a Pannello, Header e HomePage;
-02/05/2025 | Creazione classi Foot e ProductSearched; Modifica ai colori di Header e SearchBar; Classi HomePage e ProductSearched: Ordinamento dei prodotti;
-03/05/2025 | Modifica ai colori di SearchBar, HomePage, Foot, ProductView, ProductSearched; Classe Foot: Riposizionamento dei pulsante; Classe Pannello: Aggiunto sfondo; 
+18/04/2024 9:15 - 10:55 | Inizio Creazione temportanea di Header, searchBar, Home Button, e aggiunta dei bottoni delle categorie;
+22/04/2024 12:05 - 13:50 | Classe Pannello: Aggiunta dei listeners per i bottoni cateogie, padding temporaneo ai bottoni, creazione prodotto consigliato temporaneo;
+23/04/2024 12:05 - 13:50 | Classe Pannello: Implementato scorrimento dello schermo e posizionamento temporaneo dei prodotti nella home;
+26/04/2024 16:00 - 17:00 | Classe Controller: Implementato scorrimento con apposito moltiplicatore per la velocità e modifica a Pannello;
+27/04/2024 21:00 - 23:00 | Creazione delle classi HomePage e Header e implementazione nel Pannello;
+29/04/2024 12:05 - 13:50 | Classe HomePage: Creazione matrice per allinento dei prodotti; Classe Header: Ordinamento dei pulsanti categorie;
+01/05/2024 16:05 - 19:00 | Creazione classe SingleProduct (Rinominata poi in ProductView); Aggiustamenti a Pannello, Header e HomePage;
+02/05/2025 9:05 - 10:55 | 22:00 - 23:20 | Creazione classi Foot e ProductSearched; Modifica ai colori di Header e SearchBar; Classi HomePage e ProductSearched: Ordinamento dei prodotti;
+03/05/2025 16:05 - 18:00 | Modifica ai colori di SearchBar, HomePage, Foot, ProductView, ProductSearched; Classe Foot: Riposizionamento dei pulsante; Classe Pannello: Aggiunto sfondo; 
