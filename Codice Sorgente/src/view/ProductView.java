@@ -10,36 +10,29 @@ import model.Product;
 public class ProductView {
 	private Texture2D texture;
     private TextButton txtBtn;
+    private TextureButton backBtn;
 	private TextWrap productDescription;
     private Product prodotto;
-	private TextureButton backBtn;
-    private int screenWidth;
-    private int screenHeight;
-    private int textX;
-    private int imgY;
-    private int imgX;
+    private int screenWidth, screenHeight;
+    private int textX, imgY, imgX;
 	
-    public ProductView(Texture2D texture, Product prodotto, int screenWidth, int screenHeight, int headerHeight) {
+    public ProductView(int screenWidth, int screenHeight, int headerHeight) {
 		super();
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
-		this.texture = texture;
-		this.prodotto = prodotto;
 		imgY = headerHeight + (screenHeight / 15);
 		imgX = screenWidth / 30;
-		
-		textX = imgX * 6 + texture.width;
 
-		txtBtn = new TextButton(textX, imgY+texture.height, true, 0f, Color.PINK, Color.VIOLET,
+		txtBtn = new TextButton(-1, imgY+(-1), true, 0f, Color.PINK, Color.VIOLET,
         		Color.PINK, 10, 40, "Acquista ora", Color.WHITE, Color.RED, Color.DARKGREEN);
-		txtBtn.setName("acquista");
+		txtBtn.setName("productview.acquista");
 
-		productDescription = new TextWrap(null, 40, new Rectangle(textX, imgY + txtBtn.getHeight(), screenWidth / 3, 200), Color.BLACK);
+		productDescription = new TextWrap(null, 40, -1, imgY + txtBtn.getHeight(), screenWidth / 3, 200, Color.BLACK);
 		
 		int backBtnWidth = 75;
 		int backBtnHeight = 75;
 		backBtn = new TextureButton(new Texture2D("textures/BackArrow.png"), this.screenWidth - backBtnWidth - 40, this.screenHeight - backBtnHeight - 40, backBtnWidth, backBtnHeight, true, 20, 10, Color.SKYBLUE, Color.BLUE, Color.VIOLET);
-		backBtn.setName("back");
+		backBtn.setName("productview.back");
 	}
     
     public void draw() {
@@ -54,20 +47,32 @@ public class ProductView {
 		backBtn.draw();
 	}
     
-    public void registraEventiProdotto(Controller c) {
+    public void registraEventi(Controller c) {
     	txtBtn.addListener(c);
     	backBtn.addListener(c);
     }
 
-	public void rimuoviEventiProdotto(Controller c) {
+	public void rimuoviEventi(Controller c) {
     	txtBtn.removeListener(c);
     	backBtn.removeListener(c);
 	}
     
 	public void setProdotto(Product prodotto) {
 		this.prodotto = prodotto;
-
-		productDescription.setDescription(prodotto.getDescrizione());
+		productDescription.setText(prodotto.getDescrizione());
+		
+		//get its texture
+		this.texture = new Texture2D("textures/"+prodotto.getNome()+".png");
+		
+		//load default img if it does not exist
+		if(texture == null) this.texture = Finestra.getPlaceHolderTexture();
+		
+		//adjust graphics
+		textX = imgX * 6 + texture.width;
+		txtBtn.setLocation(textX, imgY+texture.height);
+		productDescription.setLocation(textX, imgY + txtBtn.getHeight());
 	}
-}
-
+	
+	public int getHeight() {
+		return screenHeight;
+	}
