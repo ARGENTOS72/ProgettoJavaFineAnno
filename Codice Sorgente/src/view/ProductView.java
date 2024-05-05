@@ -76,3 +76,4 @@ public class ProductView {
 	public int getHeight() {
 		return screenHeight;
 	}
+}
