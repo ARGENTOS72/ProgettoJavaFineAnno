@@ -1,7 +1,5 @@
 package view;
 
-import java.net.CookieHandler;
-
 import com.raylib.java.core.Color;
 
 import controller.Controller;
@@ -24,7 +22,7 @@ public class Foot {
 		
 		txtBtn = new TextButton(0, footY, true, 0f, Color.PINK, new Color(87, 10, 142, 255),
         		Color.PINK, 10, 40, "Torna in testa", Color.WHITE, Color.WHITE, new Color(87, 10, 142, 255));
-		txtBtn.setLocation(screenWidth-(txtBtn.getWidth()+padding), footY);
+		txtBtn.setLocation(screenWidth - txtBtn.getWidth() + padding, footY);
 		GraphicComponentAligner.centerX(txtBtn, 0, screenWidth);
 		txtBtn.setName("testa");
 	}
@@ -33,10 +31,10 @@ public class Foot {
 		Finestra.getRaylib().shapes.DrawRectangle(0, footY, screenWidth, footHeight, new Color(204, 87, 155, 255));
 		txtBtn.draw();
 		Finestra.getRaylib().text.DrawText("Kirizon", padding, footY+padding , 50, Color.WHITE);
-		Finestra.getRaylib().shapes.DrawRectangle(padding, footY+padding+(padding/2), screenWidth-(padding*2), screenHeight/200, new Color(87, 10, 142, 255));
-		Finestra.getRaylib().text.DrawText("Gabriele Bardin", padding, footY+(padding*2), 30, Color.WHITE);
-		Finestra.getRaylib().text.DrawText("Tomas Matteo Maceira Maurino", padding, footY+(padding*3), 30, Color.WHITE);
-		Finestra.getRaylib().text.DrawText("Giacomo Pasqualini", padding,  footY+(padding*4), 30, Color.WHITE);
+		Finestra.getRaylib().shapes.DrawRectangle(padding, footY + padding + padding / 2, screenWidth - padding * 2, screenHeight/200, new Color(87, 10, 142, 255));
+		Finestra.getRaylib().text.DrawText("Gabriele Bardin", padding, footY + padding * 2, 30, Color.WHITE);
+		Finestra.getRaylib().text.DrawText("Tomas Matteo Maceira Maurino", padding, footY + padding * 3, 30, Color.WHITE);
+		Finestra.getRaylib().text.DrawText("Giacomo Pasqualini", padding,  footY + padding * 4, 30, Color.WHITE);
 	}
 	
 	public void registraEventiFoot(Controller c) {

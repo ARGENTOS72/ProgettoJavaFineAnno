@@ -25,12 +25,12 @@ public class LoadingView {
         
         this.loadingTexture = new Texture2D("textures/loading.png");
         
-        this.loadingAnimation = new TextureAnimation(screenWidth/2-(loadingAnimationDim/2),
-        		screenHeight/2-(loadingAnimationDim/2), loadingAnimationDim, loadingAnimationDim, 
+        this.loadingAnimation = new TextureAnimation(this.screenWidth / 2 - loadingAnimationDim / 2,
+        		this.screenHeight / 2 - loadingAnimationDim / 2, loadingAnimationDim, loadingAnimationDim, 
         		loadingTexture, 300f, false);
         loadingAnimation.setName("loadingAnimation");
         
-        this.loadingText = new TextAnimation(100, loadingAnimation.getY()+loadingAnimation.getHeight()+30,
+        this.loadingText = new TextAnimation(100, loadingAnimation.getY() + loadingAnimation.getHeight() + 30,
         		Color.WHITE, false, "Loading", 30, 10, Color.BLACK);
         
         loadingText.setName("loadingText");

@@ -37,8 +37,8 @@ public class Pannello {
         texture = new Texture2D("textures/SearchIcon.png");
         
         loadingView = new LoadingView(screenWidth, screenHeight);
-        header = new Header(screenWidth, screenHeight, screenWidth, screenHeight/5, screenWidth/30, screenHeight/14, 6);
-        homePage = new HomePage(screenWidth, screenHeight, header.getHeight(), screenHeight/2, 10);
+        header = new Header(screenWidth, screenHeight, screenWidth, screenHeight / 5, screenWidth / 30, screenHeight / 14, 6);
+        homePage = new HomePage(screenWidth, screenHeight, header.getHeight(), screenHeight / 2, 10);
         productView = new ProductView(texture, null, screenWidth, screenHeight, header.getHeight());
         productsSearched = new ProductsSearched(header.getHeight(), screenWidth, screenHeight);
        
@@ -50,7 +50,7 @@ public class Pannello {
     //Draw Panel
     public void draw() {
     	ray.core.BeginMode2D(camera);
-	Finestra.getRaylib().core.ClearBackground(new Color(141, 255, 248, 255));
+	    ray.core.ClearBackground(new Color(141, 255, 248, 255));
 	    
     	//loadingView.draw();
     	header.draw();
@@ -93,7 +93,7 @@ public class Pannello {
         homePage.rimuoviEventiHome(c);
         productsSearched.rimuoviEventiProductsSearched(c);
 
-        camera.target.y = 0;
+        resetCameraY();
     }
 
     public void showHomePage(Controller c) {
@@ -102,20 +102,30 @@ public class Pannello {
         productView.rimuoviEventiProdotto(c);
         homePage.registraEventiHome(c);
         productsSearched.rimuoviEventiProductsSearched(c);
-    
-        camera.target.y = 0;
+        
+        resetCameraY();
     }
 
     public void showProductsSearched(ArrayList<Product> prodotti, Controller c) {
+        productsSearched.rimuoviEventiProductsSearched(c); // Reload
+        
         productsSearched.loadSearchedProdotti(prodotti);
-
+        
         currentView = CurrentView.ProductsSearched;
 
         productView.rimuoviEventiProdotto(c);
         homePage.rimuoviEventiHome(c);
         productsSearched.registraEventiProductsSearched(c);
 
+        resetCameraY();
+    }
+
+    public void resetCameraY() {
         camera.target.y = 0;
+    }
+
+    public void loadCategorie(ArrayList<String> categorie) {
+        header.loadCategorie(categorie);
     }
 
     public String getQuery() {
@@ -136,14 +146,28 @@ public class Pannello {
         homePage.loadHomeProducts(products);
     }
 
+    public void aggiornaProdotto() {
+        
+    }
+
     public void registraEventi(Controller c) {
        	header.registraEventiHeader(c);
         homePage.registraEventiHome(c);
-        //productView.registraEventiProdotto(c);
-    	//loadingView.registraEventi(c);
     }
 
     public int getHomePageNProdotti() {
         return homePage.getNProdotti();
+    }
+
+    public int getCodiceProdotto() {
+        return productView.codiceProdotto();
+    }
+
+    public int getQuantitaProdotto() {
+        return productView.quantitaProdotto();
+    }
+
+    public void disabilitaBottoneAcquista(Controller c) {
+        productView.disabilitaBottoneAcquista(c);
     }
 }

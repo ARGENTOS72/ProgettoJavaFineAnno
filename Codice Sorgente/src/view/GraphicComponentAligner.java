@@ -171,7 +171,6 @@ public interface GraphicComponentAligner {
 			int sumH = 0;
 			
 			for(GraphicComponent gc : gcArr) sumH+= gc.getHeight();
-			System.out.println(sumH);
 			int totGapH = height - sumH;
 			
 			int totSpaces = ((grow) ? -1 : 1);

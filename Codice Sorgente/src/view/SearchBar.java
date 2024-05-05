@@ -458,7 +458,7 @@ public class SearchBar extends ListenableGraphicComponent {
 		c.removeListenerTo(sendBtn);
 	}
 }
-/*TODO: prev onFocus method HERE below
+/*NOTE: prev onFocus method HERE below
 	public void onFocus() {
     	super.onFocus();
     	if(focussedTextColor != null) currentTextColor = focussedTextColor;

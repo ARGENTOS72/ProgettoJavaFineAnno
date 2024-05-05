@@ -24,7 +24,7 @@ public class Finestra {
     public void draw() {
         ray.core.BeginDrawing();
         ray.core.ClearBackground(Color.WHITE);
-
+        
         pannello.draw();
 
         ray.core.EndDrawing();

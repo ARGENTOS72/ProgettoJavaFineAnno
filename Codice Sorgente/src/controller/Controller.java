@@ -24,6 +24,7 @@ public class Controller {
 	private ArrayList<GraphicAnimation> animations; // GraphicAnimation that has added updater
 	private ListenableGraphicComponent hoveredComponent, lastHoveredComponent, focusedComponent, lastFocusedComponent;
 	private LastView lastView;
+	private String lastQuery;
 	private Vector2 mousePos;
 	private float deltaTime;
 	private int scrollMultiplier;
@@ -35,9 +36,10 @@ public class Controller {
 		this.hoveredComponent = null;
 		this.focusedComponent = null;
 		this.lastFocusedComponent = null;
+		this.lastQuery = null;
 		this.p = p;
 		this.db = db;
-		scrollMultiplier=50;
+		scrollMultiplier = 50;
 		lastView = LastView.HomePage;
 		
 		p.registraEventi(this);
@@ -48,10 +50,12 @@ public class Controller {
 	public void update() {
 		//update mouse position
 		mousePos = Finestra.getRaylib().core.GetScreenToWorld2D(rCore.GetMousePosition(), p.getCamera());
+		
 		//get deltatime
 		deltaTime = rCore.GetFrameTime();
+
 		//update scroll
-		p.aggiornaCameraY(scrollMultiplier*rCore.GetMouseWheelMove());
+		p.aggiornaCameraY(scrollMultiplier * rCore.GetMouseWheelMove());
 		
 		handleComponentsActions(); // do smth when a component is hovered or clicked
 		handleOutOfHover(); // do smth when a component is not anymore hovered
@@ -73,54 +77,89 @@ public class Controller {
 	// onHover, onFocus
 	private void handleComponentsActions() {
 		for (ListenableGraphicComponent lgc : components) {
-			if (lgc.isHovered(mousePos)) {//is Hovered
+			if (lgc.isHovered(mousePos)) { // is Hovered
 				hoveredComponent = lgc;
 				
-				lgc.onHover();//do default operations when hovered
+				lgc.onHover(); // do default operations when hovered
 
-				for (int i = 0; i < p.getHomePageNProdotti(); i++) {
-					if (lgc.getName().equals("prodotto" + i)) {
-						if (Finestra.getRaylib().core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT)) {
-							p.showProduct(db.getProdotti().get(i), this);
-
-							return;
-						}
-					}
-				}
-
-				if (lgc.getName().equals("back")) {
-					if (Finestra.getRaylib().core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT)) {
+				if (Finestra.getRaylib().core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT)) {
+					if (lgc.getName().equals("back")) {
 						switch (lastView) {
 							case LastView.HomePage: {
 								p.showHomePage(this);
 								
 								break;
 							}
-
+	
 							case LastView.ProductsSearched: {
-								
+								if (lastQuery.startsWith("categoria-")) {
+									p.showProductsSearched(db.prodottoCategoria(lastQuery.substring(10)), this);
+								} else {
+									p.showProductsSearched(db.cercaProdotti(lastQuery), this);
+								}
 								
 								break;
 							}
 						}
-
-						break;
+	
+						return;
 					}
-				}
+	
+					if (lgc.getName().equals("searchBar.sendBtn")) {
+						String query = p.getQuery();
+						
+						lastQuery = query;
 
-				if (lgc.getName().equals("searchBar.sendBtn")) {
-					if (Finestra.getRaylib().core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT)) {
-						String query = p.getQuery().stripTrailing();
-						StringBuffer sb = new StringBuffer(query);
-						sb.deleteCharAt(sb.length() - 1);
+						p.showProductsSearched(db.cercaProdotti(query), this);
+						lastView = LastView.ProductsSearched;
 
-						p.showProductsSearched(db.cercaProdotti(sb.toString()), this);
+						return;
+					}
+	
+					if (lgc.getName().equals("home")) {
+						if (lastView == LastView.ProductsSearched) {
+							p.showHomePage(this);
+						
+							lastView = LastView.HomePage;
+	
+							return;
+						}
+					}
 
-						break;
+					if (lgc.getName().equals("testa")) {
+						p.resetCameraY();
+					}
+
+					if (lgc.getName().equals("acquista")) {
+						db.cambiaQuantita(p.getCodiceProdotto(), -1);
+						
+						if (p.getQuantitaProdotto() == 0) {
+							p.disabilitaBottoneAcquista(this);
+						}
+					}
+
+					for (int i = 0; i < db.nProdotti(); i++) {
+						if (lgc.getName().equals("prodotto" + i)) {
+							p.showProduct(db.getProdotti().get(i), this);
+	
+							return;
+						}
+					}
+
+					for (String categorie : db.categorieProdotti()) {
+						if (lgc.getName().equals(categorie)) {
+							p.showProductsSearched(db.prodottoCategoria(categorie), this);
+
+							lastQuery = "categoria-" + categorie;
+
+							lastView = LastView.ProductsSearched;
+
+							return;
+						} 
 					}
 				}
 				
-				//get who is it
+				// get who is it
 				if (lgc instanceof Button || lgc instanceof SearchBar || lgc instanceof Prodotto) {
 					if (Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT)) {
 						this.focusedComponent = lgc; // when clicking it gains focus

@@ -21,6 +21,14 @@ public class Db {
 
     private Db() {
         this.loadedProducts = false;
+        File file = new File(fileName);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        prodotti = new ArrayList<Product>();
     }
 
     /**
@@ -67,6 +75,10 @@ public class Db {
             loadedProducts = true;
         }
     }
+
+    public int nProdotti() {
+        return prodotti.size();
+    }
     
     /**
      * 
@@ -87,8 +99,6 @@ public class Db {
     			prodotto.cambiaQuantita(quantita);
     		}
     	}
-    	
-    	// Exception
     }
 
     /**
@@ -106,6 +116,27 @@ public class Db {
         }
 
         return categorieProdotti;
+    }
+
+    /**
+     * 
+     * @param categoriaQuery
+     * @return
+     */
+    public ArrayList<Product> prodottoCategoria(String categoriaQuery) {
+        ArrayList<Product> products = new ArrayList<Product>();
+
+        for (Product prodotto : prodotti) {
+            for (String categoria : prodotto.getCategorie()) {
+                if (categoriaQuery.equals(categoria)) {
+                    products.add(prodotto);
+                    
+                    break;
+                }
+            }
+        }
+
+        return products;
     }
 
     /**
@@ -148,16 +179,11 @@ public class Db {
         ArrayList<Product> prodottiFiltrati = new ArrayList<Product>();
 
         for (Product prodotto : prodotti) {
-            if (prodotto.getNome().equalsIgnoreCase(query)) {
+            if (prodotto.getNome().contains(query)) {
                 prodottiFiltrati.add(prodotto);
             } else {
                 for (String categoria : prodotto.getCategorie()) {
-                    System.out.println(categoria + "9");
-                    System.out.println(query + "9");
-
-                    if (query.equalsIgnoreCase(categoria)) {
-                        System.out.println("NEgri");
-                        
+                    if (query.contains(categoria)) {
                         prodottiFiltrati.add(prodotto);
                     }
                 }

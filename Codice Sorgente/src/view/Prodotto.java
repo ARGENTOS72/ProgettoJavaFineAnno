@@ -3,7 +3,6 @@ package view;
 import com.raylib.java.core.Color;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
-import com.raylib.java.text.rText;
 import com.raylib.java.textures.Texture2D;
 import com.raylib.java.textures.rTextures;
 
@@ -111,5 +110,17 @@ public class Prodotto extends ListenableGraphicComponent {
 	@Override
 	public void removeListener(Controller c) {
 		c.removeListenerTo(this);
+	}
+
+	@Override
+	public String toString() {
+		return "Prodotto { i:" + imgBounds
+		+ ", o: " + origin
+		+ ", r:" + roundness
+		+ ", t:" + textFontSize
+		+ ", pr:" + priceFontSize
+		+ ", pa:" + padding
+		+ ", pro:" + p
+		+ " }" ;
 	}
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
 import model.Db;
@@ -31,6 +32,7 @@ public class WaitProducts implements Runnable {
         }
 
         pannello.loadHomeProducts(db.getProdotti());
+        pannello.loadCategorie(new ArrayList<String>(db.categorieProdotti()));
 
         produttore.release();
     }

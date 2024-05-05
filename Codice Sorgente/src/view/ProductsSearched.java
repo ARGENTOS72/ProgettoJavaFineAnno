@@ -51,6 +51,8 @@ public class ProductsSearched {
     }
 
 	public void loadSearchedProdotti(ArrayList<Product> products) {
+		prodotti = null;
+
 		int nProdotti = products.size();
 
 		if (nProdotti > 0) {
@@ -59,10 +61,14 @@ public class ProductsSearched {
 			
 			for (int i = 0; i < p1.length; i++) {
 				p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, products.get(i), 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
+			
+				p1[i].setName("prodotto" + products.get(i).getCodiceProdotto());
 			}
 			
 			for (int i = 0; i < p2.length; i++) {
 				p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, products.get(p1.length + i), 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
+			
+				p2[i].setName("prodotto" + products.get(p1.length + i).getCodiceProdotto());
 			}
 			
 			Prodotto temp[][] = new Prodotto[][] {p1, p2};
@@ -80,13 +86,13 @@ public class ProductsSearched {
 						GraphicComponentAligner.CENTER, GraphicComponentAligner.DISTRIBUTE, 0, screenWidth, -1);
 				}
 			}
-			
+
 			if (nProdotti % 2 != 0) prodotti[0][prodotti[0].length - 1].setX(prodotti[0][0].getX());
 			
-			footY += (headerHeight + padding * 2) + ((prodotti[0][0].getHeight() + padding * 2) * prodotti[0].length);
+			footY = (headerHeight + padding * 2) + ((prodotti[0][0].getHeight() + padding * 2) * prodotti[0].length);
 			foot = new Foot(footY, screenWidth, screenHeight);
 		} else {
-			footY += (headerHeight + padding * 2);
+			footY = (headerHeight + padding * 2);
 			foot = new Foot(footY, screenWidth, screenHeight);
 		}
 	}
@@ -97,7 +103,6 @@ public class ProductsSearched {
 				if (prodotti[i] != null) {
 					for (int j = 0; j < prodotti[i].length; j++) {
 						if (prodotti[i][j] != null) {
-							prodotti[i][j].setName("prodotto" + (i + 1));
 							prodotti[i][j].addListener(c);
 						}
 					}

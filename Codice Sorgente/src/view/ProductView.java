@@ -30,7 +30,7 @@ public class ProductView {
 		
 		textX = imgX * 6 + texture.width;
 
-		txtBtn = new TextButton(textX, imgY+texture.height, true, 0f, Color.PINK, Color.VIOLET,
+		txtBtn = new TextButton(textX, imgY + texture.height, true, 0f, Color.PINK, Color.VIOLET,
         		Color.PINK, 10, 40, "Acquista ora", Color.WHITE, Color.RED, Color.DARKGREEN);
 		txtBtn.setName("acquista");
 
@@ -68,6 +68,20 @@ public class ProductView {
 		this.prodotto = prodotto;
 
 		productDescription.setDescription(prodotto.getDescrizione());
+	}
+
+	public int codiceProdotto() {
+		return prodotto.getCodiceProdotto();
+	}
+
+	public int quantitaProdotto() {
+		return prodotto.getQuantita();
+	}
+
+	public void disabilitaBottoneAcquista(Controller c) {
+		txtBtn.setColors(Color.PINK, null, null, null);
+		txtBtn.setTextColors(Color.WHITE, null, null);
+		txtBtn.removeListener(c);
 	}
 }
 
