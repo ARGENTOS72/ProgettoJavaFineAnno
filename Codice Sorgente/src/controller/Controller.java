@@ -98,7 +98,7 @@ public class Controller {
 								break;
 							}
 	
-							case LastView.ProductsSearched: {
+							case ProductsSearched: {
 								if (lastQuery.startsWith("categoria-")) {
 									p.showProductsSearched(db.prodottoCategoria(lastQuery.substring(10)), this);
 								} else {
@@ -112,7 +112,7 @@ public class Controller {
 						return;
 					}
 
-					if (lgc.getName().equals("searchBar.sendBtn")) {
+					if (lgc.getName().equals("header.searchBar.sendBtn")) {
 						String query = p.getQuery();
 						
 						lastQuery = query;
@@ -123,7 +123,7 @@ public class Controller {
 						return;
 					}
 	
-					if (lgc.getName().equals("home")) {
+					if (lgc.getName().equals("header.logo")) {
 						if (lastView == LastView.ProductsSearched) {
 							p.showHomePage(this);
 						
@@ -133,7 +133,7 @@ public class Controller {
 						}
 					}
 
-					if (lgc.getName().equals("footer.testa")) {
+					if (lgc.getName().equals("footer.gotoHead")) {
 						p.resetCameraY();
 					}
 

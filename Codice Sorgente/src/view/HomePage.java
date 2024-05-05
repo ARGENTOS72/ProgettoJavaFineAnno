@@ -22,6 +22,7 @@ public class HomePage {
     
     private int padding;
     private Texture2D texture;
+	private boolean loadedTextures;
     
     public HomePage(int screenWidth, int screenHeight, int prodottoConsigliatoY, int prodottoConsigliatoHeight, int nProdotti) {
 		super();
@@ -37,7 +38,7 @@ public class HomePage {
 		
 		texture = new Texture2D("textures/PlaceHolder.jpg");
 		
-		prodottoConsigliato = new TextureButton(texture, 0, prodottoConsigliatoY, screenWidth, prodottoConsigliatoHeight, true, 0, 0, Color.LIGHTGRAY, Color.GRAY, Color.BLANK);
+		prodottoConsigliato = new TextureButton(texture, 0, prodottoConsigliatoY, this.screenWidth, prodottoConsigliatoHeight, true, 0, 0, Color.LIGHTGRAY, Color.GRAY, Color.BLANK);
 		prodottoConsigliato.setName("ProdottoConsigliato");
 
 		String[] tempCat = {"a", "s"};
@@ -76,9 +77,25 @@ public class HomePage {
 		}
 		
 		if (nProdotti % 2 != 0) prodotti[0][prodotti[0].length - 1].setX(prodotti[0][0].getX());
+	
+		loadedTextures = false;
 	}
     
     public void draw() {
+		if (!loadedTextures) {
+			for (int i = 0; i < 2; i++) {
+				for (int j = 0; j < prodotti[i].length; j++) {
+					File file = new File("textures/" + prodotti[i][j].getP().getNome() + ".png");
+					
+					if (file.exists()) {
+						prodotti[i][j].setImg(new Texture2D("textures/" + prodotti[i][j].getP().getNome() + ".png"));
+					}
+				}
+			}
+
+			loadedTextures = true;
+		}
+
     	prodottoConsigliato.draw();
 
     	for (int i = 0; i < 2; i++) {
@@ -94,16 +111,6 @@ public class HomePage {
 				Product product = products.get(i * 2 + j);
 
 				prodotti[i][j].setP(product);
-
-				File file = new File(product.getNome() + ".png");
-				
-				if (file.exists()) {
-					Texture2D texture = new Texture2D(product.getNome() + ".png");
-
-					prodotti[i][j].setImg(texture);
-				} else {
-					prodotti[i][j].setImg(new Texture2D());
-				}
 			}
 		}
 	}

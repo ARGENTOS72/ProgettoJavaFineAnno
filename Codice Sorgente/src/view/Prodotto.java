@@ -43,7 +43,7 @@ public class Prodotto extends ListenableGraphicComponent {
 		
 		Finestra.getRaylib().text.DrawText(
 			p.getNome(),
-			(int) (getX() + ((getWidth() / 2)-(Finestra.getRaylib().text.MeasureText(p.getNome(), textFontSize) / 2))),
+			(int) (getX() + ((getWidth() / 2) - (Finestra.getRaylib().text.MeasureText(p.getNome(), textFontSize) / 2))),
 			getY() + getWidth(),
 			textFontSize, Color.BLACK
 		); // text
@@ -99,6 +99,9 @@ public class Prodotto extends ListenableGraphicComponent {
 
 	public void setImg(Texture2D img) {
 		this.img = img;
+
+		imgBounds.setWidth(img.width);
+		imgBounds.setHeight(img.height);
 	}
 	
 	//superclass overrides ---------------------------------------------------

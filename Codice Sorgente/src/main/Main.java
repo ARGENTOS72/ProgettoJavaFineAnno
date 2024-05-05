@@ -18,7 +18,7 @@ public class Main {
         Db db = Db.getInstace();
         Controller controller = new Controller(finestra, db);
         LoadProducts loadProducts = new LoadProducts(db, produttore, consumatore);
-        WaitProducts waitProducts = new WaitProducts(db, produttore, consumatore, finestra.getPannello());
+        WaitProducts waitProducts = new WaitProducts(db, produttore, consumatore, finestra.getPannello(), controller);
 
         while (!Finestra.getRaylib().core.WindowShouldClose()) {
             finestra.draw();

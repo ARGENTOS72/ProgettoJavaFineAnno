@@ -21,19 +21,12 @@ public class Db {
 
     private Db() {
         this.loadedProducts = false;
-        File file = new File(fileName);
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        prodotti = new ArrayList<Product>();
     }
 
     /**
+     * Ritorna la istanza statica della stessa classe
      * 
-     * @return
+     * @return l'istanza della classe
      */
     public static Db getInstace() {
         if (instance == null) {
@@ -43,6 +36,9 @@ public class Db {
         return instance;
     }
 
+    /*
+     * Carica una volta i prodotti all'interno di un array
+     */
     @SuppressWarnings("unchecked")
     public void loadProducts() {
         if (!loadedProducts) {
@@ -81,17 +77,19 @@ public class Db {
     }
     
     /**
+     * Aggiunge un prodotto all'interno dell'array della classe
      * 
-     * @param prodotto
+     * @param prodotto che verrà aggiunto all'array
      */
     public void aggiungiProdotto(Product prodotto) {
     	prodotti.add(prodotto);
     }
     
     /**
+     * Cambia la quantità di un prodotto passandoli il codice
      * 
-     * @param codiceProdotto
-     * @param quantita
+     * @param codiceProdotto del prodotto da modificare
+     * @param quantita da aggiungere al prodotto
      */
     public void cambiaQuantita(int codiceProdotto, int quantita) {
     	for (Product prodotto : prodotti) {
@@ -119,9 +117,10 @@ public class Db {
     }
 
     /**
+     * Cerca tutti i prodotti di una certa categoria
      * 
-     * @param categoriaQuery
-     * @return
+     * @param categoriaQuery la categoria da ricercare
+     * @return ritorna tutti i prodotti della categoria
      */
     public ArrayList<Product> prodottoCategoria(String categoriaQuery) {
         ArrayList<Product> products = new ArrayList<Product>();
@@ -194,7 +193,7 @@ public class Db {
     }
     
     /**
-     * 
+     * Salva i prodotti all'interno del file
      */
     public void salvaProdotti() {
     	try {
@@ -210,10 +209,6 @@ public class Db {
         }
     }
 
-    /**
-     * 
-     * @return
-     */
     public ArrayList<Product> getProdotti() {
         return prodotti;
     }

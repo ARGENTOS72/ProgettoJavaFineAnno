@@ -40,7 +40,7 @@ public class Pannello {
         productView = new ProductView(screenWidth, screenHeight, header.getHeight());
         productsSearched = new ProductsSearched(header.getHeight(), screenWidth, screenHeight);
        
-        currentView = CurrentView.HomePage;
+        currentView = CurrentView.Loading;
         
         //init camera
 	    camera = new Camera2D(new Vector2(0, 0), new Vector2(0, 0), 0f, 1f);
@@ -51,9 +51,6 @@ public class Pannello {
     public void draw() {
     	ray.core.BeginMode2D(camera);
 	    ray.core.ClearBackground(new Color(141, 255, 248, 255));
-	    
-    	//loadingView.draw();
-    	header.draw();
 
         switch (currentView) {
             case Loading: {
@@ -95,33 +92,39 @@ public class Pannello {
 
         currentView = CurrentView.ProductView;
 
-        productView.registraEventiProdotto(c);
-        homePage.rimuoviEventiHome(c);
-        productsSearched.rimuoviEventiProductsSearched(c);
+        productView.registraEventi(c);
+        homePage.rimuoviEventi(c);
+        productsSearched.rimuoviEventi(c);
 
         resetCameraY();
+    }
+
+    public void registraHeaderFooter(Controller c) {
+        header.registraEventiHeader(c);
+        footer.registraEventiFoot(c);
+        loadingView.cancellaEventi(c);
     }
 
     public void showHomePage(Controller c) {
         currentView = CurrentView.HomePage;
 
-        productView.rimuoviEventiProdotto(c);
-        homePage.registraEventiHome(c);
-        productsSearched.rimuoviEventiProductsSearched(c);
+        productView.rimuoviEventi(c);
+        homePage.registraEventi(c);
+        productsSearched.rimuoviEventi(c);
         
         resetCameraY();
     }
 
     public void showProductsSearched(ArrayList<Product> prodotti, Controller c) {
-        productsSearched.rimuoviEventiProductsSearched(c); // Reload
+        productsSearched.rimuoviEventi(c); // Reload
         
         productsSearched.loadSearchedProdotti(prodotti);
         
         currentView = CurrentView.ProductsSearched;
 
-        productView.rimuoviEventiProdotto(c);
-        homePage.rimuoviEventiHome(c);
-        productsSearched.registraEventiProductsSearched(c);
+        productView.rimuoviEventi(c);
+        homePage.rimuoviEventi(c);
+        productsSearched.registraEventi(c);
 
         resetCameraY();
     }
@@ -154,8 +157,7 @@ public class Pannello {
     }
 
     public void registraEventi(Controller c) {
-       	header.registraEventiHeader(c);
-        homePage.registraEventiHome(c);
+        loadingView.registraEventi(c);
     }
 
     public int getHomePageNProdotti() {

@@ -1,8 +1,10 @@
 package view;
 
 import com.raylib.java.core.Color;
+import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
 import com.raylib.java.textures.Texture2D;
+import com.raylib.java.textures.rTextures;
 
 import controller.Controller;
 import model.Product;
@@ -23,11 +25,12 @@ public class ProductView {
 		imgY = headerHeight + (screenHeight / 15);
 		imgX = screenWidth / 30;
 
-		txtBtn = new TextButton(-1, imgY+(-1), true, 0f, Color.PINK, Color.VIOLET,
+		txtBtn = new TextButton(screenWidth / 2 + 100, imgY + 530, true, 0f, Color.PINK, Color.VIOLET,
         		Color.PINK, 10, 40, "Acquista ora", Color.WHITE, Color.RED, Color.DARKGREEN);
 		txtBtn.setName("productview.acquista");
 
-		productDescription = new TextWrap(null, 40, -1, imgY + txtBtn.getHeight(), screenWidth / 3, 200, Color.BLACK);
+		productDescription = new TextWrap(null, 40, screenWidth / 2 + 100, imgY + txtBtn.getHeight(), screenWidth / 3, 200, Color.BLACK);
+		textX = screenWidth / 2 + 100;
 		
 		int backBtnWidth = 75;
 		int backBtnHeight = 75;
@@ -36,7 +39,7 @@ public class ProductView {
 	}
     
     public void draw() {
-    	Finestra.getRaylib().textures.DrawTexture(texture, imgX, imgY, Color.BLACK);
+    	rTextures.DrawTexturePro(texture, new Rectangle(0, 0, texture.width, texture.height), new Rectangle(imgX * 2, imgY * 2, screenWidth / 2, screenHeight / 2), new Vector2(imgX, imgY), 0f, Color.WHITE);
     	Finestra.getRaylib().text.DrawText(prodotto.getNome(), textX, imgY , 50, Color.BLACK);
     	Finestra.getRaylib().text.DrawText(String.format("%.2f$", prodotto.getPrezzo()), textX, imgY + txtBtn.getHeight() * 5, 50, Color.BLACK);
     	Finestra.getRaylib().text.DrawText(String.valueOf("Codice prodotto: " + prodotto.getCodiceProdotto()), textX, imgY + txtBtn.getHeight() * 6, 30, Color.DARKGRAY);
@@ -61,16 +64,11 @@ public class ProductView {
 		this.prodotto = prodotto;
 		productDescription.setText(prodotto.getDescrizione());
 		
-		//get its texture
-		this.texture = new Texture2D("textures/"+prodotto.getNome()+".png");
+		// get its texture
+		this.texture = new Texture2D("textures/" + prodotto.getNome() + ".png");
 		
-		//load default img if it does not exist
-		if(texture == null) this.texture = Finestra.getPlaceHolderTexture();
-		
-		//adjust graphics
-		textX = imgX * 6 + texture.width;
-		txtBtn.setLocation(textX, imgY+texture.height);
-		productDescription.setLocation(textX, imgY + txtBtn.getHeight());
+		// load default img if it does not exist
+		if (texture == null) this.texture = Finestra.getPlaceHolderTexture();
 	}
 
 	public int codiceProdotto() {

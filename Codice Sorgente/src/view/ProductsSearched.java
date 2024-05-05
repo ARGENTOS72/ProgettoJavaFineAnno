@@ -26,7 +26,7 @@ public class ProductsSearched {
 		this.screenHeight = screenHeight;
 		this.prodottoWidth = screenWidth / 5;
 		this.texture = new Texture2D("textures/SearchIcon.png");
-		this.padding = screenHeight / 20;
+		this.padding = this.screenHeight / 20;
 		
 		prodotti = null;
 	}

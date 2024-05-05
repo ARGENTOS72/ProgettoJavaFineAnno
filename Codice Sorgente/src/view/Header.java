@@ -34,7 +34,6 @@ public class Header {
         //Home button
         txtBtn = new TextButton(10, 10, true, 0f, Color.PINK, Color.PINK,
         		Color.PINK, 0, 40, "Kirizon", Color.WHITE, Color.VIOLET, new Color(87, 10, 142, 255));
-        txtBtn.setName("home");
         txtBtn.setName("header.logo");
 
         //array of the buttons' categories

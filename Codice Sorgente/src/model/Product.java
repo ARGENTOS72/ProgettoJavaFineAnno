@@ -3,6 +3,9 @@ package model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Classe che verrà utilizza per gestire i prodotti via file
+ */
 public class Product implements Serializable {
 	private static final long serialVersionUID = 1234567L;
 	private double prezzo;
@@ -24,6 +27,11 @@ public class Product implements Serializable {
 		codiceUnico += 1;
 	}
 	
+	/**
+	 * Aggiungi la quantità al prodotto
+	 * 
+	 * @param quantita che verrà aggiunta alla quantità
+	 */
 	public void cambiaQuantita(int quantita) {
 		this.quantita += quantita;
 	}

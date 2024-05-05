@@ -2,6 +2,9 @@ package model;
 
 import java.util.concurrent.Semaphore;
 
+/**
+ * Class that will be used to load the products
+ */
 public class LoadProducts implements Runnable {
     private Db db;
     private Semaphore produttore;
