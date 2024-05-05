@@ -8,6 +8,7 @@ import com.raylib.java.raymath.Vector2;
 
 import model.Db;
 import view.Button;
+import view.LastView;
 import view.Finestra;
 import view.GraphicAnimation;
 import view.GraphicComponent;
@@ -15,7 +16,6 @@ import view.ListenableGraphicComponent;
 import view.Pannello;
 import view.Prodotto;
 import view.SearchBar;
-import view.TextureAnimation;
 
 public class Controller {
 	private Pannello p;
@@ -23,6 +23,7 @@ public class Controller {
 	private ArrayList<ListenableGraphicComponent> components; // GraphicComponents that has added listener
 	private ArrayList<GraphicAnimation> animations; // GraphicAnimation that has added updater
 	private ListenableGraphicComponent hoveredComponent, lastHoveredComponent, focusedComponent, lastFocusedComponent;
+	private LastView lastView;
 	private Vector2 mousePos;
 	private float deltaTime;
 	private int scrollMultiplier;
@@ -37,6 +38,7 @@ public class Controller {
 		this.p = p;
 		this.db = db;
 		scrollMultiplier=50;
+		lastView = LastView.HomePage;
 		
 		p.registraEventi(this);
 	}
@@ -75,6 +77,48 @@ public class Controller {
 				hoveredComponent = lgc;
 				
 				lgc.onHover();//do default operations when hovered
+
+				for (int i = 0; i < p.getHomePageNProdotti(); i++) {
+					if (lgc.getName().equals("prodotto" + i)) {
+						if (Finestra.getRaylib().core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT)) {
+							p.showProduct(db.getProdotti().get(i), this);
+
+							return;
+						}
+					}
+				}
+
+				if (lgc.getName().equals("back")) {
+					if (Finestra.getRaylib().core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT)) {
+						switch (lastView) {
+							case LastView.HomePage: {
+								p.showHomePage(this);
+								
+								break;
+							}
+
+							case LastView.ProductsSearched: {
+								
+								
+								break;
+							}
+						}
+
+						break;
+					}
+				}
+
+				if (lgc.getName().equals("searchBar.sendBtn")) {
+					if (Finestra.getRaylib().core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT)) {
+						String query = p.getQuery().stripTrailing();
+						StringBuffer sb = new StringBuffer(query);
+						sb.deleteCharAt(sb.length() - 1);
+
+						p.showProductsSearched(db.cercaProdotti(sb.toString()), this);
+
+						break;
+					}
+				}
 				
 				//get who is it
 				if (lgc instanceof Button || lgc instanceof SearchBar || lgc instanceof Prodotto) {
@@ -97,12 +141,12 @@ public class Controller {
 	// out of hover
 	private void handleOutOfHover() {
 		if(lastHoveredComponent == null || lastHoveredComponent.equals(hoveredComponent)) return;
-		
+
 		// use default method outOfHover
 		lastHoveredComponent.outOfHover();
 		
-		// who is it
 		// ...
+		// who is it
 	}
 	
 	// out of focus
@@ -138,7 +182,7 @@ public class Controller {
 		if (lgc == null)
 			throw new ControllerException(
 					"Cannot add listener to null " + GraphicComponent.class.getSimpleName());
-					
+
 		if (lgc.getName() == null)
 			throw new ControllerException(
 					"Cannot add listener to " + GraphicComponent.class.getSimpleName() + " with null name");

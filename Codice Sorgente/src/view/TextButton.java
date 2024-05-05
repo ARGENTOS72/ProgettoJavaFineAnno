@@ -154,7 +154,7 @@ public class TextButton extends Button {
 	
 	//default Listenable ------------------------------------------
 	@Override
-	public Listenable getDefaultInterationAction() {//TODO
+	public Listenable getDefaultInterationAction() {
 		Listenable superDefault = super.getDefaultInterationAction();
 		
 		return new Listenable() {
@@ -163,11 +163,13 @@ public class TextButton extends Button {
 				superDefault.onHover();
 				if(hoveredTextColor != null) currentTextColor = hoveredTextColor;
 			}
+
 			@Override
 			public void outOfHover() {
 				superDefault.outOfHover();
 				currentTextColor = textColor;
 			}
+
 			@Override
 			public void onClick(int modality) {
 				if(modality == DOWN) {
@@ -175,10 +177,13 @@ public class TextButton extends Button {
 					if(clickedTextColor != null) currentTextColor = clickedTextColor;
 				}
 			}
+
 			@Override
 			public void onFocus() { superDefault.onFocus(); }
+
 			@Override
 			public void outOfFocus() { superDefault.outOfFocus(); }
+			
 			@Override
 			public boolean isHovered(Vector2 mousePos) { return superDefault.isHovered(mousePos); }
 		};

@@ -22,7 +22,8 @@ public class Foot {
 		
 		txtBtn = new TextButton(0, footY, true, 0f, Color.VIOLET, new Color(87, 10, 142, 255),
         		Color.PINK, 10, 40, "Torna in testa", Color.WHITE, Color.WHITE, new Color(87, 10, 142, 255));
-		txtBtn.setLocation(screenWidth-(txtBtn.getWidth()+padding), footY+footHeight-(padding));
+		txtBtn.setLocation(screenWidth - txtBtn.getWidth() + padding, footY + footHeight - padding);
+		txtBtn.setName("testa");
 	}
 
 	public void draw() {
@@ -36,7 +37,10 @@ public class Foot {
 	}
 	
 	public void registraEventiFoot(Controller c) {
-		txtBtn.setName("testa");
 		txtBtn.addListener(c);
 	}
+
+	public void rimuoviEventiFoot(Controller c) {
+		txtBtn.removeListener(c);
+	} 
 }

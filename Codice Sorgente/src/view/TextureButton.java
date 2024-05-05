@@ -17,7 +17,7 @@ public class TextureButton extends Button {
 	//Constructor --------------------------------------------
 	public TextureButton(TextureButton textureBtn) {
 		super(textureBtn);
-		setSize(getWidth()+(textureBtn.getPadding()*2), getHeight()+(textureBtn.getPadding()*2));
+		setSize(getWidth() + textureBtn.getPadding() * 2, getHeight() + textureBtn.getPadding() * 2);
 		this.padding = textureBtn.getPadding();
 		this.texture = textureBtn.getTexture();
 		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
@@ -26,7 +26,7 @@ public class TextureButton extends Button {
 	
 	public TextureButton(Button btn, Texture2D texture, int padding, Vector2 origin) {
 		super(btn);
-		setSize(getWidth()+(padding*2), getHeight()+(padding*2));
+		setSize(getWidth() + padding * 2, getHeight() + padding * 2);
 		this.padding = padding;
 		this.texture = texture;
 		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
@@ -35,7 +35,7 @@ public class TextureButton extends Button {
 	
 	public TextureButton(Texture2D texture, Rectangle bounds, boolean visible, float roundness, int padding, Color color, Color hoveredColor, Color clickedColor) {
 		super(bounds, visible, roundness, color, hoveredColor, clickedColor);
-		setSize(getWidth()+(padding*2), getHeight()+(padding*2));
+		setSize(getWidth() + padding * 2, getHeight() + padding * 2);
 		this.padding = padding;
 		this.texture = texture;
 		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
@@ -44,7 +44,7 @@ public class TextureButton extends Button {
 	
 	public TextureButton(Texture2D texture, int x, int y, int width, int height, boolean visible, float roundness, int padding, Color color, Color hoveredColor, Color clickedColor) {
 		super(x, y, width, height, visible, roundness, color, hoveredColor, clickedColor);
-		setSize(getWidth()+(padding*2), getHeight()+(padding*2));
+		setSize(getWidth() + padding * 2, getHeight() + padding * 2);
 		this.padding = padding;
 		this.texture = texture;
 		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
@@ -57,7 +57,7 @@ public class TextureButton extends Button {
 	
 	//use only for sponsored product (keep aspect ratio of a wide img)
 	public TextureButton(int x, int y, int width, Texture2D texture) {
-		super(new Rectangle(x, y, width, texture.height*(width / texture.width)), false, 0f, Color.WHITE);
+		super(new Rectangle(x, y, width, texture.height * (width / texture.width)), false, 0f, Color.WHITE);
 		this.textureBounds = new Rectangle(0, 0, texture.width, texture.height);
 		this.origin = new Vector2(0, 0);
 		this.padding = 0;
@@ -90,7 +90,7 @@ public class TextureButton extends Button {
 	}
 
 	public void setPadding(int padding) {
-		setSize(getWidth()-(this.padding*2)+(padding*2), getHeight()-(this.padding*2)+(padding*2));
+		setSize(getWidth() - this.padding * 2 + padding * 2, getHeight() - this.padding * 2 + padding * 2);
 		this.padding = padding;
 	}
 	

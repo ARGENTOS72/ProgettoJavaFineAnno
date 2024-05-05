@@ -152,7 +152,12 @@ public class Db {
                 prodottiFiltrati.add(prodotto);
             } else {
                 for (String categoria : prodotto.getCategorie()) {
+                    System.out.println(categoria + "9");
+                    System.out.println(query + "9");
+
                     if (query.equalsIgnoreCase(categoria)) {
+                        System.out.println("NEgri");
+                        
                         prodottiFiltrati.add(prodotto);
                     }
                 }

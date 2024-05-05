@@ -50,7 +50,7 @@ public class SearchBar extends ListenableGraphicComponent {
     	this.fontSpacing = 2;
     	this.padding = (height - fontSize) / 2;
     	int sendBtnPadding = 5;
-    	this.sendBtn = new TextureButton(textureSendBtn, (int)(x+txtFieldBounds.getWidth()), y, height-(sendBtnPadding*2), height-(sendBtnPadding*2), true,
+    	this.sendBtn = new TextureButton(textureSendBtn, (int) (x + txtFieldBounds.getWidth()), y, height - sendBtnPadding * 2, height - sendBtnPadding * 2, true,
     			roundness, sendBtnPadding, Color.WHITE, new Color(141, 255, 248, 255), Color.VIOLET);
     	
     	this.text = new char[maxChars];
@@ -294,7 +294,7 @@ public class SearchBar extends ListenableGraphicComponent {
     @Override
 	public void setName(String name) {
 		super.setName(name);
-		sendBtn.setName(name+".sendBtn");
+		sendBtn.setName(name + ".sendBtn");
 	}
 
 	@Override

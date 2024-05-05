@@ -3,6 +3,7 @@ package view;
 import com.raylib.java.core.Color;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.shapes.Rectangle;
+import com.raylib.java.text.rText;
 import com.raylib.java.textures.Texture2D;
 import com.raylib.java.textures.rTextures;
 
@@ -22,7 +23,7 @@ public class Prodotto extends ListenableGraphicComponent {
 	
 	//Constructor ---------------------------
 	public Prodotto(int x, int y, int width, float roundness, Texture2D img, Product p, int textFontSize, int priceFontSize, int padding, Color color, Color hoveredColor, Color clickedColor) {
-		super(x, y, width+(padding*2), width+textFontSize+priceFontSize+(padding*4), color, hoveredColor, clickedColor, null);
+		super(x, y, width + (padding * 2), width + textFontSize + priceFontSize + (padding * 4), color, hoveredColor, clickedColor, null);
 		
 		this.padding = padding;
 		this.imgBounds = new Rectangle(0, 0, img.getWidth(), img.getHeight());
@@ -36,24 +37,27 @@ public class Prodotto extends ListenableGraphicComponent {
 	
 	//draw ----------------------------------------------
 	@Override
-	public void draw() {//TODO
-		Finestra.getRaylib().shapes.DrawRectangleRounded(getBounds(), roundness, 5, getCurrentColor());//background
-		rTextures.DrawTexturePro(img, imgBounds, new Rectangle(getX()+padding, getY()+padding, getWidth()-(padding*2), getWidth()-(padding*2)), origin, 0f, Color.WHITE);//img
+	public void draw() {
+		Finestra.getRaylib().shapes.DrawRectangleRounded(getBounds(), roundness, 5, getCurrentColor()); // background
+		
+		rTextures.DrawTexturePro(img, imgBounds, new Rectangle(getX() + padding, getY() + padding, getWidth() - (padding * 2), getWidth() - (padding * 2)), origin, 0f, Color.WHITE); // img
+		
 		Finestra.getRaylib().text.DrawText(
 			p.getNome(),
-			(int) (getX()+((getWidth()/2)-(Finestra.getRaylib().text.MeasureText(p.getNome(), textFontSize)/2))),
-			getY()+getWidth(),
+			(int) (getX() + ((getWidth() / 2)-(Finestra.getRaylib().text.MeasureText(p.getNome(), textFontSize) / 2))),
+			getY() + getWidth(),
 			textFontSize, Color.BLACK
-		);//text
+		); // text
+		
 		Finestra.getRaylib().text.DrawText(
-			String.valueOf(p.getPrezzo()+"$"),
-			(int) (getX()+((getWidth()/2)-(Finestra.getRaylib().text.MeasureText(String.valueOf(p.getPrezzo()+"$"), priceFontSize)/2))),
-			(int) (getY()+getWidth()+textFontSize+padding),
+			String.format("%.2f$", p.getPrezzo()),
+			(int) (getX() + ((getWidth() / 2) - (Finestra.getRaylib().text.MeasureText(String.format("%.2f$", p.getPrezzo()), priceFontSize) / 2))),
+			(int) (getY() + getWidth() + textFontSize + padding),
 			priceFontSize, Color.BLACK
-		);//price
+		); // price
 	}
 	
-	//getters & setters ----------------------------- TODO
+	//getters & setters -----------------------------
 	public Rectangle getImgBounds() {
 		return imgBounds;
 	}
@@ -92,6 +96,10 @@ public class Prodotto extends ListenableGraphicComponent {
 
 	public void setP(Product p) {
 		this.p = p;
+	}
+
+	public void setImg(Texture2D img) {
+		this.img = img;
 	}
 	
 	//superclass overrides ---------------------------------------------------

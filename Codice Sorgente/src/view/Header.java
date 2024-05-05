@@ -28,11 +28,13 @@ public class Header {
         texture = new Texture2D("textures/SearchIcon.png");
         searchBar = new SearchBar(barPosX, barPosY, screenWidth-(screenWidth/30)*2, 60, 0.5f, 3, (byte) 80, 
         		32, texture);
+        searchBar.setName("searchBar");
         
         //Home button
         txtBtn = new TextButton(10, 10, true, 0f, Color.PINK, Color.PINK,
         		Color.PINK, 0, 40, "Kirizon", Color.WHITE, Color.VIOLET, new Color(87, 10, 142, 255));
-        
+        txtBtn.setName("textBtn");
+
         //array of the buttons' categories
         categorie = new TextButton[nCategorie];
         for (int i = 0; i < nCategorie; i++) {
@@ -42,6 +44,7 @@ public class Header {
         
         for (int i = 0; i < nCategorie; i++) {
         	categorie[i].setLocation(0, headerHeight-categorie[0].getHeight());
+            categorie[i].setName("categoria" + (i + 1));
 		}
         
         //center-grow alignment of categories btn 
@@ -58,14 +61,10 @@ public class Header {
     }
  
     public void registraEventiHeader(Controller c) {
-    	txtBtn.setName("textBtn");
         txtBtn.addListener(c);
-        
-        searchBar.setName("searchBar");
         searchBar.addListener(c);
         
         for (int i = 0; i < categorie.length; i++) {
-        	categorie[i].setName("categoria "+(i+1));
 			categorie[i].addListener(c);
         }
     }
@@ -82,4 +81,7 @@ public class Header {
 		return nCategorie;
 	}
     
+    public String getQuery() {
+        return searchBar.getText();
+    }
 }
