@@ -70,7 +70,6 @@ public class TextButton extends Button {
 	
 	// Draw -----------------------------------------------------------------
 	public void draw() {
-		
 		super.draw();
 		Finestra.getRaylib().text.DrawText(text, centerX, getY() + padding, fontSize, currentTextColor);
 	}
@@ -110,6 +109,26 @@ public class TextButton extends Button {
 	
 	public int getCenterX() {
 		return centerX;
+	}
+	
+	@Override
+	public void setBounds(int x, int y, int width, int height) {
+		setX(x);
+		setY(y);
+		setWidth(width);
+		setHeight(height);
+	}
+	
+	@Override
+	public void setLocation(int x, int y) {
+		setX(x);
+		setY(y);
+	}
+	
+	@Override
+	public void setSize(int width, int height) {
+		setWidth(width);
+		setHeight(height);
 	}
 	
 	@Override
