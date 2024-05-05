@@ -1,0 +1,36 @@
+Diario di Bordo
+
+09/04/2024 10:20 - 11:00 | Inizio progetto, Creazione progetto su github;
+11/04/2024 9:59 - 12:59 | Creazione classe Button.java
+13/04/2024 22:00 - 00:49 | Aggiunto classi GraphicComponent, SearchBar e Controller e sue Exceptions
+                           Aggiornate le classi Button, Pannello, Finestra
+                           Spostato il game loop nel Main
+15/04/2024 22:14 - 23:14 | Aggiunta possibilità nel Controller di ascoltare i GraphicComponent con onHover, offHover, onFocus, offFocus
+16/04/2024 23:30 - 00:19 | Aggiornata la SearchBar
+16/04/2024 10:05 - 12:08 | Aggiornata la SearchBar
+17/04/2024 10:10 - 11:43 | Aggiornato il progetto: README.md
+18/04/2024 22:00 - 00:00 | Aggiornato il Controller per supportare l'aggiornamento di GraphicComponent, aggiornato GraphicComponent, Button, Pannello
+                           Aggiunto classi TextButton e TextureButton
+                           Corretto nomi di metodi di SearchBar
+23/04/2024 22:00 - 00:42 | Migliorato il sistema di rilevazione di onFocus sulla classe Controller
+                           Aggiornata classe Product, Button, GraphicComponent, Pannello, SearchBar, TextButton, TextureButton
+                           Creata classe Prodotto (versione grafica di Product) (incompleto)
+23/04/2024 09:20 - 12:00 | Aggiornata classe Prodotto
+25/04/2024 23:00 - 00:20 | Migliorato sostanzialmente GraphicComponent
+                           Aggiornato Button, SearchBar, TextButton, TextureButton a causa del miglioramento di GraphicComponent, aggiornato Pannello, Prodotto
+                           Creazione Interfaccia GraphicComponentAligner per allineare facilmente array di GraphicComponent
+29/04/2024 15:00 - 15:20 | Corretta l'interfaccia GraphicComponentAligner
+30/04/2024 10:00 - 12:07 | Create Interfaccie Animable e Listenable e classi che implementano Animable come GraphicAnimation, TextureAnimation
+                           Aggiornato il Controller, Button, Prodotto, SearchBar, TextButton, TextureButton per supportare nuove interfaccie
+                           Creato ListenableGraphicComponent, copia di GraphicComponent, GraphicComponent ora ha metodi basici non Listenable
+1/05/2024 10:00 - 12:43 | Corretto colori di TextureButton
+                          Aggiornato TextureAnimation
+1/05/2024 17:00 - 17:55 | Aggiunta funzionalità di callback: ora i metodi implementati da Listenable e Animable sono personalizzabili
+                          Aggiornate classi coinvolte
+                          Aggiunti LoadingView e rinominata SingleProduct con ProductView 
+2/05/2024 09:00 - 10:54 | Aggiornati GraphicAnimation, ListenableGraphicComponent, Prodotto, TextButton, TextureAnimation, Controller, LoadingView, Pannnello
+                          Creato TextAnimation, folder sul progetto attuali oltre codice sorgente
+4/05/2024 19:00 - 00:01 | Migliorata la cancellazione e animazione della SearchBar
+5/05/2024 14:00 - 14:31 | Aggiornato TextButton
+5/05/2024 17:00 - 23:59 | Aggiornato Controller, Finestra, Header, HomePage, Pannello ProductSearched, ProductSearched, ProductView, TextButton, TextWrap, Main
+                          Aggiunta texture per il pointer
