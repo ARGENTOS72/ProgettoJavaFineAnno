@@ -137,7 +137,7 @@ public class Controller {
 						p.resetCameraY();
 					}
 
-					if (lgc.getName().equals("acquista")) {
+					if (lgc.getName().equals("productview.acquista")) {
 						db.cambiaQuantita(p.getCodiceProdotto(), -1);
 						
 						if (p.getQuantitaProdotto() == 0) {
