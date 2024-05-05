@@ -1,5 +1,6 @@
 package view;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import com.raylib.java.core.Color;
@@ -14,7 +15,6 @@ public class ProductsSearched {
 	private Prodotto[][] prodotti;
 	private int prodottoWidth;
 	
-    private Texture2D texture;
     private int headerHeight;
     
 	private int padding;
@@ -25,7 +25,6 @@ public class ProductsSearched {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.prodottoWidth = screenWidth / 5;
-		this.texture = new Texture2D("textures/SearchIcon.png");
 		this.padding = this.screenHeight / 20;
 		
 		prodotti = null;
@@ -56,13 +55,35 @@ public class ProductsSearched {
 		Prodotto[] p2 = new Prodotto[(int) Math.floor((float) nProdotti / 2)];
 		
 		for (int i = 0; i < p1.length; i++) {
-			p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, products.get(i), 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
+			Product prodotto = products.get(i);
+
+			File file = new File("textures/" + prodotto.getNome() + ".png");
+			Texture2D texture; 
+
+			if (file.exists()) {
+				texture = new Texture2D("textures/" + prodotto.getNome() + ".png");
+			} else {
+				texture = Finestra.getPlaceHolderTexture();
+			}
+
+			p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, prodotto, 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
 		
 			p1[i].setName("prodotto" + products.get(i).getCodiceProdotto());
 		}
 		
 		for (int i = 0; i < p2.length; i++) {
-			p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, products.get(p1.length + i), 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
+			Product prodotto = products.get(p1.length + i);
+
+			File file = new File("textures/" + prodotto.getNome() + ".png");
+			Texture2D texture; 
+
+			if (file.exists()) {
+				texture = new Texture2D("textures/" + prodotto.getNome() + ".png");
+			} else {
+				texture = Finestra.getPlaceHolderTexture();
+			}
+
+			p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, prodotto, 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
 		
 			p2[i].setName("prodotto" + products.get(p1.length + i).getCodiceProdotto());
 		}

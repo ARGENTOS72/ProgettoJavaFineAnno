@@ -111,6 +111,9 @@ public class Pannello {
         productView.rimuoviEventi(c);
         homePage.registraEventi(c);
         productsSearched.rimuoviEventi(c);
+
+        footer.setOffsetY(homePage.getHeight());
+        maxCameraHeight = footer.getHeight() - screenHeight;
         
         resetCameraY();
     }
@@ -125,6 +128,9 @@ public class Pannello {
         productView.rimuoviEventi(c);
         homePage.rimuoviEventi(c);
         productsSearched.registraEventi(c);
+
+        footer.setOffsetY(productsSearched.getHeight());
+        maxCameraHeight = footer.getHeight() - screenHeight;
 
         resetCameraY();
     }
