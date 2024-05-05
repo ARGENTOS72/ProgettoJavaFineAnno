@@ -113,6 +113,12 @@ public class TextButton extends Button {
 	}
 	
 	@Override
+	public void setX(int x) {
+		super.setX(x);
+		centerX= x+padding;
+	}
+	
+	@Override
 	public void setWidth(int width) {
 		super.setWidth(width);
 		this.centerX = getX() + ((width/2) - (Finestra.getRaylib().text.MeasureText(text, fontSize)/2));
