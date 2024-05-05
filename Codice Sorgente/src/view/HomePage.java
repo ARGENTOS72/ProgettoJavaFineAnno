@@ -11,18 +11,17 @@ import controller.Controller;
 import model.Product;
 
 public class HomePage {
+	private int screenWidth, screenHeight;
+	
+	private TextureButton prodottoConsigliato;
+	private int prodottoConsigliatoY, prodottoConsigliatoHeight;
+	
 	private Prodotto[][] prodotti;
-	private int prodottoConsigliatoY;
-    private int prodottoConsigliatoHeight;
-    private int prodottoWidth;
-    private int screenWidth;
-    private int screenHeight;
-    private TextureButton prodottoConsigliato;
 	private int nProdotti;
+    private int prodottoWidth;
+    
     private int padding;
-    private int footY;
     private Texture2D texture;
-	private Foot foot;
     
     public HomePage(int screenWidth, int screenHeight, int prodottoConsigliatoY, int prodottoConsigliatoHeight, int nProdotti) {
 		super();
@@ -33,12 +32,12 @@ public class HomePage {
 		this.screenWidth = screenWidth;
 		padding = this.screenHeight / 20;
 		this.nProdotti = nProdotti;
-		this.texture = new Texture2D("textures/SearchIcon.png");
+
 		prodotti = new Prodotto[2][5];
 		
 		texture = new Texture2D("textures/PlaceHolder.jpg");
-
-		prodottoConsigliato = new TextureButton(texture, 0, prodottoConsigliatoY, this.screenWidth, prodottoConsigliatoHeight, true, 0, 0, Color.LIGHTGRAY, Color.GRAY, Color.BLANK);
+		
+		prodottoConsigliato = new TextureButton(texture, 0, prodottoConsigliatoY, screenWidth, prodottoConsigliatoHeight, true, 0, 0, Color.LIGHTGRAY, Color.GRAY, Color.BLANK);
 		prodottoConsigliato.setName("ProdottoConsigliato");
 
 		String[] tempCat = {"a", "s"};
@@ -77,9 +76,6 @@ public class HomePage {
 		}
 		
 		if (nProdotti % 2 != 0) prodotti[0][prodotti[0].length - 1].setX(prodotti[0][0].getX());
-		
-		footY += (prodottoConsigliatoY + prodottoConsigliatoHeight + padding * 2) + ((prodotti[0][0].getHeight() + padding * 2) * prodotti[0].length);
-		foot = new Foot(footY, screenWidth, screenHeight);
 	}
     
     public void draw() {
@@ -90,8 +86,6 @@ public class HomePage {
  	        	prodotti[i][j].draw();
      		}
         }
-
-    	foot.draw();
     }
 
 	public void loadHomeProducts(ArrayList<Product> products) {
@@ -114,32 +108,25 @@ public class HomePage {
 		}
 	}
     
-    public void registraEventiHome(Controller c) {
+    public void registraEventi(Controller c) {
     	prodottoConsigliato.addListener(c);
     	
-    	for (int i = 0; i < 2; i++) {
-    		for (int j = 0; j < prodotti[i].length; j++) {
+    	for (int i = 0; i < 2; i++) 
+    		for (int j = 0; j < prodotti[i].length; j++) 
 				prodotti[i][j].addListener(c);
-    		}
-        }
-
-    	foot.registraEventiFoot(c);
     }
 
-	public void rimuoviEventiHome(Controller c) {
+	public void rimuoviEventi(Controller c) {
 		prodottoConsigliato.removeListener(c);
 
-		for (int i = 0; i < 2; i++) {
-    		for (int j = 0; j < prodotti[i].length; j++) {
+		for (int i = 0; i < 2; i++)
+    		for (int j = 0; j < prodotti[i].length; j++) 
 				prodotti[i][j].removeListener(c);
-			}
-		}
-
-		foot.rimuoviEventiFoot(c);
 	}
 
-    public int getHomePageHeight() {
-		return prodottoConsigliatoHeight;
+    public int getHeight() {
+		return (prodottoConsigliatoY + prodottoConsigliatoHeight + padding * 2) +
+				((prodotti[0][0].getHeight() + padding * 2) * prodotti[0].length);
     }
 
 	public int getProdottoConsigliatoY() {
