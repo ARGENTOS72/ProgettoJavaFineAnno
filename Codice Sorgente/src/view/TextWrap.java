@@ -7,23 +7,25 @@ import com.raylib.java.text.Font;
 import com.raylib.java.text.rText;
 
 public class TextWrap {
-    private String descrizione;
+	private Rectangle bounds;
+    private String text;
+    private Color color;
     private int fontSize;
-    private Rectangle recBounds;
-    private Color tint;
 
-    public TextWrap(String descrizione, int fontSize, Rectangle recBounds, Color tint) {
-        this.descrizione = descrizione;
+    //Constructor ---------------------------
+    public TextWrap(String text, int fontSize, int x, int y, int width, int height, Color color) {
+        this.text = text;
         this.fontSize = fontSize;
-        this.recBounds = recBounds;
-        this.tint = tint;
+        this.bounds = new Rectangle(x, y, width, height);
+        this.color = color;
     }
 
+    //draw ------------------------
 	public void draw() {
         Font font = rText.GetFontDefault();
         int spacing = 2;
 
-        int length = rText.TextLength(descrizione);  // Total length in bytes of the text, scanned by codepoints in loop
+        int length = rText.TextLength(text);  // Total length in bytes of the text, scanned by codepoints in loop
 
 		float textOffsetY = 0;          // Offset between lines (on line break '\n')
 		float textOffsetX = 0.0f;       // Offset X to next character to draw
@@ -39,7 +41,7 @@ public class TextWrap {
 		for (int i = 0, k = 0; i < length; i++, k++) {
 			// Get next codepoint from byte string and glyph index in font
 			int codepointByteCount = 0;
-			int codepoint = rText.GetCodepoint(descrizione.substring(i).toCharArray(), codepointByteCount);
+			int codepoint = rText.GetCodepoint(text.substring(i).toCharArray(), codepointByteCount);
 			codepointByteCount = rText.getCPBC();
 			int index = rText.GetGlyphIndex(font, codepoint);
 
@@ -63,7 +65,7 @@ public class TextWrap {
 			if (state) {
 				if (codepoint == ' ' || codepoint == '\t' || codepoint == '\n') endLine = i;
 
-				if ((textOffsetX + glyphWidth) > recBounds.width) {
+				if ((textOffsetX + glyphWidth) > bounds.width) {
 					endLine = (endLine < 1)? i : endLine;
 					if (i == endLine) endLine -= codepointByteCount;
 					if ((startLine + codepointByteCount) == endLine) endLine = (i - codepointByteCount);
@@ -87,11 +89,11 @@ public class TextWrap {
 			} else {
 				if (codepoint != '\n') {
 					// When text overflows rectangle height limit, just stop drawing
-					if ((textOffsetY + font.baseSize * scaleFactor) > recBounds.height) break;
+					if ((textOffsetY + font.baseSize * scaleFactor) > bounds.height) break;
 
 					// Draw current character glyph
 					if ((codepoint != ' ') && (codepoint != '\t')) {
-						Finestra.getRaylib().text.DrawTextCodepoint(font, codepoint, new Vector2(recBounds.x + textOffsetX, recBounds.y + textOffsetY), fontSize, tint);
+						Finestra.getRaylib().text.DrawTextCodepoint(font, codepoint, new Vector2(bounds.x + textOffsetX, bounds.y + textOffsetY), fontSize, color);
 					}
 				}
 
@@ -111,7 +113,93 @@ public class TextWrap {
 		}
     }
 
-    public void setDescription(String descrizione) {
-        this.descrizione = descrizione;
-    }
+	//getters & setters -------------------------
+	public Rectangle getBounds() {
+		return bounds;
+	}
+	
+	public Vector2 getLocation() {
+		return new Vector2(bounds.x, bounds.y);
+	}
+	
+	public Vector2 getSize() {
+		return new Vector2(bounds.width, bounds.height);
+	}
+	
+	public int getX() {
+		return (int) bounds.x;
+	}
+	
+	public int getY() {
+		return (int) bounds.y;
+	}
+	
+	public int getWidth() {
+		return (int) bounds.width;
+	}
+	
+	public int getHeight() {
+		return (int) bounds.height;
+	}
+	
+	public String getText() {
+		return text;
+	}
+
+	public int getFontSize() {
+		return fontSize;
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public void setFontSize(int fontSize) {
+		this.fontSize = fontSize;
+	}
+
+	public void setBounds(Rectangle bounds) {
+		this.bounds = bounds;
+	}
+	
+	public void setBounds(int x, int y, int width, int height) {
+		bounds.x = x;
+		bounds.y = y;
+		bounds.width = width;
+		bounds.height = height;
+	}
+	
+	public void setLocation(int x, int y) {
+		bounds.x = x;
+		bounds.y = y;
+	}
+	
+	public void setSize(int width, int height) {
+		bounds.width = width;
+		bounds.height = height;
+	}
+	
+	public void setX(int x) {
+		bounds.x = x;
+	}
+	
+	public void setY(int y) {
+		bounds.y = y;
+	}
+	
+	public void setWidth(int width) {
+		bounds.width = width;
+	}
+	
+	public void setHeight(int height) {
+		bounds.height = height;
+	}
+
+	public void setTint(Color color) {
+		this.color = color;
+	}
 }

@@ -18,6 +18,7 @@ import view.Prodotto;
 import view.SearchBar;
 
 public class Controller {
+	private Finestra f;
 	private Pannello p;
 	private Db db;
 	private ArrayList<ListenableGraphicComponent> components; // GraphicComponents that has added listener
@@ -29,7 +30,7 @@ public class Controller {
 	private float deltaTime;
 	private int scrollMultiplier;
 	
-	public Controller(Pannello p, Db db) {
+	public Controller(Finestra f, Db db) {
 		this.components = new ArrayList<>();
 		this.animations = new ArrayList<>();
 		this.lastHoveredComponent = null;
@@ -37,7 +38,8 @@ public class Controller {
 		this.focusedComponent = null;
 		this.lastFocusedComponent = null;
 		this.lastQuery = null;
-		this.p = p;
+		this.f = f;
+		this.p = f.getPannello();
 		this.db = db;
 		scrollMultiplier = 50;
 		lastView = LastView.HomePage;
@@ -49,8 +51,13 @@ public class Controller {
 	// update controler
 	public void update() {
 		//update mouse position
-		mousePos = Finestra.getRaylib().core.GetScreenToWorld2D(rCore.GetMousePosition(), p.getCamera());
+		mousePos = rCore.GetMousePosition();
+		mousePos.x += (float) (mousePos.x*(double)(Finestra.unscaledScreenHeight) / (double)(rCore.GetScreenHeight()));
+		mousePos.y += (float) (mousePos.y*(double)(Finestra.unscaledScreenWidth) / (double)(rCore.GetScreenWidth()));
 		
+		f.setMousePos((int) mousePos.x, (int) mousePos.y);
+		
+		mousePos = Finestra.getRaylib().core.GetScreenToWorld2D(mousePos, p.getCamera());
 		//get deltatime
 		deltaTime = rCore.GetFrameTime();
 
@@ -83,9 +90,9 @@ public class Controller {
 				lgc.onHover(); // do default operations when hovered
 
 				if (Finestra.getRaylib().core.IsMouseButtonReleased(MouseButton.MOUSE_BUTTON_LEFT)) {
-					if (lgc.getName().equals("back")) {
+					if (lgc.getName().equals("productview.back")) {
 						switch (lastView) {
-							case LastView.HomePage: {
+							case HomePage: {
 								p.showHomePage(this);
 								
 								break;
@@ -104,7 +111,7 @@ public class Controller {
 	
 						return;
 					}
-	
+
 					if (lgc.getName().equals("searchBar.sendBtn")) {
 						String query = p.getQuery();
 						
@@ -126,7 +133,7 @@ public class Controller {
 						}
 					}
 
-					if (lgc.getName().equals("testa")) {
+					if (lgc.getName().equals("footer.testa")) {
 						p.resetCameraY();
 					}
 
@@ -175,6 +182,10 @@ public class Controller {
 		// lose focus when clicking out of any GraphicComponent
 		if (hoveredComponent == null && Finestra.getRaylib().core.IsMouseButtonPressed(MouseButton.MOUSE_BUTTON_LEFT))
 			focusedComponent = null;
+		
+		//change pointer
+		if(hoveredComponent == null) f.setPointerMode(Finestra.NORMAL);
+		else f.setPointerMode(Finestra.ONHOVER);
 	}
 	
 	// out of hover

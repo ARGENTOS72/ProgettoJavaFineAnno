@@ -16,7 +16,7 @@ public class Main {
 
         Finestra finestra = new Finestra();
         Db db = Db.getInstace();
-        Controller controller = new Controller(finestra.getPannello(), db);
+        Controller controller = new Controller(finestra, db);
         LoadProducts loadProducts = new LoadProducts(db, produttore, consumatore);
         WaitProducts waitProducts = new WaitProducts(db, produttore, consumatore, finestra.getPannello());
 
