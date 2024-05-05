@@ -83,8 +83,6 @@ public class HomePage {
 	}
     
     public void draw() {
-    	Finestra.getRaylib().core.ClearBackground(new Color(141, 255, 248, 255));
-
     	prodottoConsigliato.draw();
 
     	for (int i = 0; i < 2; i++) {

@@ -9,13 +9,14 @@ import controller.Controller;
 public class TextButton extends Button {
 	// label
 	private String text;
-	private int fontSize, padding;
+	private int fontSize, padding, centerX;
 	private Color textColor, hoveredTextColor, clickedTextColor, currentTextColor;
 	
 	// Constructors -----------------------------------------
 	public TextButton(TextButton txtBtn) {
 		super(txtBtn);
 		
+		this.centerX = txtBtn.getCenterX();
 		this.text = txtBtn.getText();
 		this.fontSize = txtBtn.getFontSize();
 		this.padding = txtBtn.padding;
@@ -29,7 +30,10 @@ public class TextButton extends Button {
 	
 	public TextButton(Button btn, int padding, int fontSize, String text, Color textColor, Color hoverdTextColor, Color clickedTextColor) {
 		super(btn);
+		
 		setSize(Finestra.getRaylib().text.MeasureText(text, fontSize)+(padding*2), fontSize+(padding*2));
+		
+		this.centerX = getX() + padding;
 		this.padding = padding;
 		this.fontSize = fontSize;
 		this.text = text;
@@ -43,6 +47,8 @@ public class TextButton extends Button {
 	
 	public TextButton(int x, int y, boolean visible, float roundness, Color color, Color hoveredColor, Color clickedColor, int padding, int fontSize, String text, Color textColor, Color hoverdTextColor, Color clickedTextColor) {
 		super(new Rectangle(x, y, Finestra.getRaylib().text.MeasureText(text, fontSize)+(padding*2), fontSize+(padding*2)), visible, roundness, color, hoveredColor, clickedColor);
+		
+		this.centerX = getX() + padding;
 		this.padding = padding;
 		this.fontSize = fontSize;
 		this.text = text;
@@ -55,17 +61,18 @@ public class TextButton extends Button {
 	}
 	
 	public TextButton(int x, int y, boolean visible, float roundness, Color color, int padding, int fontSize, String text, Color textColor) {
-		this(x, y, visible, roundness, textColor, null, null, padding, fontSize, text, textColor, null, null);
+		this(x, y, visible, roundness, color, null, null, padding, fontSize, text, textColor, null, null);
 	}
 	
 	public TextButton(int x, int y, Color color, int fontSize, String text, Color textColor) {
-		this(x, y, true, 0, textColor, null, null, 0, fontSize, text, textColor, null, null);
+		this(x, y, true, 0, color, null, null, 0, fontSize, text, textColor, null, null);
 	}
 	
 	// Draw -----------------------------------------------------------------
 	public void draw() {
+		
 		super.draw();
-		Finestra.getRaylib().text.DrawText(text, getX() + padding, getY() + padding, fontSize, currentTextColor);
+		Finestra.getRaylib().text.DrawText(text, centerX, getY() + padding, fontSize, currentTextColor);
 	}
 	
 	//getters & setters ----------------------------------------------------------------
@@ -100,6 +107,23 @@ public class TextButton extends Button {
 	public Color[] getTextColors() {
 		return new Color[] {textColor, hoveredTextColor, clickedTextColor};
 	}
+	
+	public int getCenterX() {
+		return centerX;
+	}
+	
+	@Override
+	public void setX(int x) {
+		super.setX(x);
+		centerX= x+padding;
+	}
+	
+	@Override
+	public void setWidth(int width) {
+		super.setWidth(width);
+		this.centerX = getX() + ((width/2) - (Finestra.getRaylib().text.MeasureText(text, fontSize)/2));
+	}
+	
 	public void setText(String text) {
 		this.text = text;
 		autoSetWidth();

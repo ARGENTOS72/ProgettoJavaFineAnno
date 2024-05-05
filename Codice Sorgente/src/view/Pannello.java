@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.raylib.java.Raylib;
 import com.raylib.java.core.rCore;
+import com.raylib.java.core.Color;
 import com.raylib.java.core.camera.Camera2D;
 import com.raylib.java.raymath.Vector2;
 import com.raylib.java.textures.Texture2D;
@@ -49,7 +50,9 @@ public class Pannello {
     //Draw Panel
     public void draw() {
     	ray.core.BeginMode2D(camera);
-
+	Finestra.getRaylib().core.ClearBackground(new Color(141, 255, 248, 255));
+	    
+    	//loadingView.draw();
     	header.draw();
 
         switch (currentView) {
