@@ -1,0 +1,64 @@
+Caso d'uso 1
+Titolo: Pressione del tasto home.
+Attore Protagonista: Utente.
+Ambito: Il sistema informativo così come può essere percepito dall'esterno.
+Livello: Livello di dettaglio vicino alla percezione dell'utente.
+Racconto:
+1. L'utente preme il tasto home.
+2. L'utente viene portato alla pagina home.
+
+Caso d'uso 2
+Titolo: Ritorno in cima alla pagina.
+Attore Protagonista: Utente.
+Ambito: Il sistema informativo così come può essere percepito dall'esterno.
+Livello: Livello di dettaglio vicino alla percezione dell'utente.
+Racconto:
+1. L'utente quando di trova nel piè di pagina (footer) preme il tasto torna in testa.
+2. L'utente viene riportato nella testa della pagina.
+
+Caso d'uso 3
+Titolo: Ricerca di un prodotto.
+Attore Protagonista: Utente.
+Ambito: Il sistema informativo così come può essere percepito dall'esterno.
+Livello: Livello di dettaglio vicino alla percezione dell'utente.
+Racconto:
+1. L'utente inserisce il nome o una caratteristica del prodotto che vuole cercare nella barra di ricerca.
+2. L'utente preme il tasto di ricerca.
+3. L'utente viene portato nella pagina in cui vengono mostrati tutti i prodotti relativi alla ricerca.
+
+Caso d'uso 4
+Titolo: Ricerca di una categoria.
+Attore Protagonista: Utente.
+Ambito: Il sistema informativo così come può essere percepito dall'esterno.
+Livello: Livello di dettaglio vicino alla percezione dell'utente.
+Racconto:
+1. L'utente preme il tasto della categoria che vuole cercare.
+2. L'utente viene portato nella pagina in cui vengono mostrati tutti i prodotti appartenenti a quella categoria.
+
+Caso d'uso 5
+Titolo: Visualizzazione di un prodotto;
+Attore Protagonista: Utente.
+Ambito: Il sistema informativo così come può essere percepito dall'esterno.
+Livello: Livello di dettaglio vicino alla percezione dell'utente.
+Racconto:
+1. L'utente preme il prodotto che vuole visualizzare.
+2. L'utente viene portato nella pagina in cui viene mostrato quel prodotto.
+
+Caso d'uso 6
+Titolo: Visualizzazione del prodotto consigliato;
+Attore Protagonista: Utente.
+Ambito: Il sistema informativo così come può essere percepito dall'esterno.
+Livello: Livello di dettaglio vicino alla percezione dell'utente.
+Racconto:
+1. L'utente preme il prodotto consigliato.
+2. L'utente viene portato nella pagina in cui viene mostrato il prodotto consigliato.
+
+Caso d'uso 7
+Titolo: Acquista un prodotto;
+Attore Protagonista: Utente.
+Ambito: Il sistema informativo così come può essere percepito dall'esterno.
+Livello: Livello di dettaglio vicino alla percezione dell'utente.
+Racconto:
+1. L'utente preme il pulsante per acquistare un prodotto.
+2. La quantità di quel prodotto viene diminuita.
+3. Se la quantità è nulla non può essere acquistato. 
