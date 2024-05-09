@@ -68,7 +68,7 @@ public class ProductView {
 		this.texture = new Texture2D("textures/" + prodotto.getNome() + ".png");
 		
 		// load default img if it does not exist
-		if (texture == null) this.texture = Finestra.getPlaceHolderTexture();
+		if (texture.id<= 0) this.texture = Finestra.getPlaceHolderTexture();
 	}
 
 	public int codiceProdotto() {
