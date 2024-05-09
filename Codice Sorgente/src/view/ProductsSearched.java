@@ -31,7 +31,7 @@ public class ProductsSearched {
 	}
     
     public void draw() {
-    	if (prodotti != null) {
+    	if (prodotti[0].length > 0) {
 			for (int i = 0; i < 2; i++) {
 				if (prodotti[i] != null) {
 				  	for (int j = 0; j < prodotti[i].length; j++) {
@@ -42,7 +42,9 @@ public class ProductsSearched {
 			   }
 		   }
 		} else {
-			Finestra.getRaylib().text.DrawText("Non sono presenti prodotti con questa ricerca", 10, headerHeight + padding / 2, 40, Color.BLACK);
+			Finestra.getRaylib().text.DrawText("Non sono presenti prodotti con questa ricerca",
+				(Finestra.unscaledScreenWidth/2)-(Finestra.getRaylib().text.MeasureText("Non sono presenti prodotti con questa ricerca", 40)/2),
+				headerHeight + padding / 2, 40, Color.VIOLET);
 		}
     }
 
@@ -141,5 +143,9 @@ public class ProductsSearched {
 		((prodotti[0][0].getHeight() + padding * 2) * prodotti[0].length);
 		
 		return headerHeight + padding * 2;
+	}
+	
+	public void setHeaderHeight(int headerHeight) {
+		this.headerHeight = headerHeight;
 	}
 }
