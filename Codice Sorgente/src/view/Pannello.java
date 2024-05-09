@@ -26,6 +26,7 @@ public class Pannello {
 
     private CurrentView currentView;
     
+    //Constructor -----------------------
     public Pannello() {
     	//init vars
         this.ray = Finestra.getRaylib();
@@ -47,7 +48,7 @@ public class Pannello {
 	    maxCameraHeight = footer.getHeight() - screenHeight;
     }
     
-    //Draw Panel
+    //Draw Panel -----------------------------------------
     public void draw() {
     	ray.core.BeginMode2D(camera);
 	    ray.core.ClearBackground(new Color(141, 255, 248, 255));
@@ -87,6 +88,7 @@ public class Pannello {
         ray.core.EndMode2D();
     }
 
+    //show --------------------------------------------
     public void showProduct(Product prodotto, Controller c) {
         productView.setProdotto(prodotto);
 
@@ -96,13 +98,10 @@ public class Pannello {
         homePage.rimuoviEventi(c);
         productsSearched.rimuoviEventi(c);
 
+        footer.setOffsetY(Math.max(homePage.getHeight(), Finestra.unscaledScreenHeight));
+        maxCameraHeight = footer.getHeight() - screenHeight;
+        
         resetCameraY();
-    }
-
-    public void registraHeaderFooter(Controller c) {
-        header.registraEventiHeader(c);
-        footer.registraEventiFoot(c);
-        loadingView.cancellaEventi(c);
     }
 
     public void showHomePage(Controller c) {
@@ -111,8 +110,8 @@ public class Pannello {
         productView.rimuoviEventi(c);
         homePage.registraEventi(c);
         productsSearched.rimuoviEventi(c);
-
-        footer.setOffsetY(homePage.getHeight());
+        
+        footer.setOffsetY(Math.max(homePage.getHeight(), Finestra.unscaledScreenHeight));
         maxCameraHeight = footer.getHeight() - screenHeight;
         
         resetCameraY();
@@ -129,10 +128,17 @@ public class Pannello {
         homePage.rimuoviEventi(c);
         productsSearched.registraEventi(c);
 
-        footer.setOffsetY(productsSearched.getHeight());
+        footer.setOffsetY(Math.max(productsSearched.getHeight(), Finestra.unscaledScreenHeight));
+        productsSearched.setHeaderHeight(header.getHeight());
         maxCameraHeight = footer.getHeight() - screenHeight;
 
         resetCameraY();
+    }
+    
+    public void registraHeaderFooter(Controller c) {
+        header.registraEventiHeader(c);
+        footer.registraEventiFoot(c);
+        loadingView.cancellaEventi(c);
     }
 
     public void resetCameraY() {
