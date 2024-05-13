@@ -52,17 +52,11 @@ public class Controller {
 	public void update() {
 		//update mouse position
 		mousePos = rCore.GetMousePosition();
-		mousePos.x = (float) (mousePos.x*((double)(Finestra.unscaledScreenHeight) / (double)(rCore.GetScreenHeight())));
-		mousePos.y = (float) (mousePos.y*((double)(Finestra.unscaledScreenWidth) / (double)(rCore.GetScreenWidth())));
-		
-		//costrains to pointer: stay in screen
-//		mousePos.x = Math.min(Math.max(mousePos.x, 0), (float)(rCore.GetScreenWidth())-1f);
-//		mousePos.x = Math.min(mousePos.x, (float)(rCore.GetScreenWidth())-1f);
-//		mousePos.x = Math.max(mousePos.x, 0);
-//		mousePos.y = Math.min(mousePos.y, (float)(rCore.GetScreenHeight())-1f);
-//		mousePos.y = Math.max(mousePos.y, 0);
-		
-		f.setMousePos((int) mousePos.x, (int) mousePos.y);
+
+		mousePos.x = (float) (mousePos.x*((double)(Finestra.unscaledScreenWidth) / (double)(Finestra.screenWidth)));
+		mousePos.y = (float) (mousePos.y*((double)(Finestra.unscaledScreenHeight) / (double)(Finestra.screenHeight)));
+
+		f.setMousePos((int)mousePos.x, (int)mousePos.y);
 		
 		mousePos = Finestra.getRaylib().core.GetScreenToWorld2D(mousePos, p.getCamera());
 
