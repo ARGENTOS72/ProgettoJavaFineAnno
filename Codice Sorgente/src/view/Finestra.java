@@ -13,7 +13,7 @@ public class Finestra {
 	private static Raylib ray;
 	
 	//scren resolution used in Pannello
-	public static int unscaledScreenWidth, unscaledScreenHeight;
+	public static int unscaledScreenWidth, unscaledScreenHeight, screenWidth, screenHeight;
 	
 	//unscaled resolution screen vars
 	public Rectangle unscaledScreenBounds;
@@ -40,10 +40,14 @@ public class Finestra {
     public Finestra() {
         ray = new Raylib(0, 0, "Kiriko Amazon");
         ray.core.ToggleFullscreen();
+        
+        screenWidth = rCore.GetScreenWidth();
+        screenHeight= rCore.GetScreenHeight();
+        
         ray.core.SetTargetFPS(60);
         ray.core.HideCursor();
         
-        screenBounds = new Rectangle(0, 0, rCore.GetScreenWidth(), rCore.GetScreenHeight());
+        screenBounds = new Rectangle(0, 0, screenWidth, screenHeight);
         
         unscaledScreenWidth = 1920;
         unscaledScreenHeight = 1080;
@@ -71,7 +75,6 @@ public class Finestra {
     public void draw() {
     	//draw to unscled screen
     	ray.core.BeginTextureMode(unscaledScreen);
-    	
     	ray.core.ClearBackground(Color.WHITE);
         
     	pannello.draw();
@@ -82,7 +85,6 @@ public class Finestra {
     	
     	//adapt unscaledscreen to the current screen
         ray.core.BeginDrawing();
-
         rTextures.DrawTexturePro(unscaledScreen.getTexture(), unscaledScreenBounds, screenBounds,
         	origin, 0f, Color.WHITE);
 
