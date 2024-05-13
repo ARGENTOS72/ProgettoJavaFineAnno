@@ -62,7 +62,7 @@ public class Controller {
 //		mousePos.y = Math.min(mousePos.y, (float)(rCore.GetScreenHeight())-1f);
 //		mousePos.y = Math.max(mousePos.y, 0);
 		
-		f.setMousePos(mousePos.x, mousePos.y);
+		f.setMousePos((int) mousePos.x, (int) mousePos.y);
 		
 		mousePos = Finestra.getRaylib().core.GetScreenToWorld2D(mousePos, p.getCamera());
 
@@ -143,6 +143,8 @@ public class Controller {
 
 					if (lgc.getName().equals("footer.gotoHead")) {
 						p.resetCameraY();
+
+						return;
 					}
 
 					if (lgc.getName().equals("productview.acquista")) {
@@ -151,6 +153,14 @@ public class Controller {
 						if (p.getQuantitaProdotto() == 0) {
 							p.disabilitaBottoneAcquista(this);
 						}
+
+						return;
+					}
+
+					if (lgc.getName().equals("prodottoConsigliato")) {
+						p.showProduct(p.getProdottoConsigliato(), this);
+						
+						return;
 					}
 
 					for (int i = 0; i < db.nProdotti(); i++) {

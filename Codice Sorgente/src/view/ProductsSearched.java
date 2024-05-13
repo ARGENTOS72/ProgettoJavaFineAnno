@@ -31,7 +31,7 @@ public class ProductsSearched {
 	}
     
     public void draw() {
-    	if (prodotti[0].length > 0) {
+    	if (prodotti != null) {
 			for (int i = 0; i < 2; i++) {
 				if (prodotti[i] != null) {
 				  	for (int j = 0; j < prodotti[i].length; j++) {
@@ -40,7 +40,7 @@ public class ProductsSearched {
 						}
 					}
 			   }
-		   }
+		    }
 		} else {
 			Finestra.getRaylib().text.DrawText("Non sono presenti prodotti con questa ricerca",
 				(Finestra.unscaledScreenWidth/2)-(Finestra.getRaylib().text.MeasureText("Non sono presenti prodotti con questa ricerca", 40)/2),
@@ -141,7 +141,7 @@ public class ProductsSearched {
 	}
 	
 	public int getHeight() {
-		if (prodotti == null) return 60;
+		if (prodotti == null) return 10;
 
 		if (prodotti[0].length > 0) return (headerHeight + padding * 2) +
 		((prodotti[0][0].getHeight() + padding * 2) * prodotti[0].length);

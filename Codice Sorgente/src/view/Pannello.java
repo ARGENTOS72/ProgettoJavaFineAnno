@@ -172,6 +172,10 @@ public class Pannello {
         loadingView.registraEventi(c);
     }
 
+    public void setProdottoConsigliato(Product prodotto) {
+        homePage.setProdottoConsigliato(prodotto);
+    }
+
     public int getHomePageNProdotti() {
         return homePage.getNProdotti();
     }
@@ -182,6 +186,10 @@ public class Pannello {
 
     public int getQuantitaProdotto() {
         return productView.quantitaProdotto();
+    }
+
+    public Product getProdottoConsigliato() {
+        return homePage.getProdottoConsigliato();
     }
 
     public void disabilitaBottoneAcquista(Controller c) {

@@ -51,7 +51,9 @@ public class ProductView {
 	}
     
     public void registraEventi(Controller c) {
-    	txtBtn.addListener(c);
+		if (prodotto.getQuantita() != 0) {
+			txtBtn.addListener(c);
+		}
     	backBtn.addListener(c);
     }
 
@@ -63,12 +65,17 @@ public class ProductView {
 	public void setProdotto(Product prodotto) {
 		this.prodotto = prodotto;
 		productDescription.setText(prodotto.getDescrizione());
-		
+
 		// get its texture
 		this.texture = new Texture2D("textures/" + prodotto.getNome() + ".png");
 		
 		// load default img if it does not exist
 		if (texture.id<= 0) this.texture = Finestra.getPlaceHolderTexture();
+
+		if (prodotto.getQuantita() != 0) {
+			txtBtn.setColors(Color.PINK, Color.VIOLET, Color.PINK, null);
+			txtBtn.setTextColors(Color.WHITE, Color.RED, Color.DARKGREEN);
+		}
 	}
 
 	public int codiceProdotto() {

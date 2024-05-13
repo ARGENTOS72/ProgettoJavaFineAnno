@@ -13,7 +13,8 @@ import model.Product;
 public class HomePage {
 	private int screenWidth, screenHeight;
 	
-	private TextureButton prodottoConsigliato;
+	private TextureButton prodottoConsigliatoButton;
+	private Product prodottoConsigliato;
 	private int prodottoConsigliatoY, prodottoConsigliatoHeight;
 	
 	private Prodotto[][] prodotti;
@@ -21,7 +22,6 @@ public class HomePage {
     private int prodottoWidth;
     
     private int padding;
-    private Texture2D texture;
 	private boolean loadedTextures;
     
     public HomePage(int screenWidth, int screenHeight, int prodottoConsigliatoY, int prodottoConsigliatoHeight, int nProdotti) {
@@ -36,10 +36,9 @@ public class HomePage {
 
 		prodotti = new Prodotto[2][5];
 		
-		texture = new Texture2D("textures/PlaceHolder.jpg");
-		
-		prodottoConsigliato = new TextureButton(texture, 0, prodottoConsigliatoY, this.screenWidth, prodottoConsigliatoHeight, true, 0, 0, Color.LIGHTGRAY, Color.GRAY, Color.BLANK);
-		prodottoConsigliato.setName("ProdottoConsigliato");
+		prodottoConsigliatoButton = new TextureButton(Finestra.getPlaceHolderTexture(), 0, prodottoConsigliatoY, this.screenWidth, prodottoConsigliatoHeight, true, 0, 0, Color.LIGHTGRAY, Color.GRAY, Color.BLANK);
+		prodottoConsigliatoButton.setName("prodottoConsigliato");
+		prodottoConsigliato = new Product(0, null, null, null, 0);
 
 		String[] tempCat = {"a", "s"};
 		Product product = new Product(10, "hak", "hak", new ArrayList<String>(Arrays.asList(tempCat)), 10);
@@ -49,11 +48,11 @@ public class HomePage {
 		Prodotto[] p2 = new Prodotto[(int) Math.floor((float) nProdotti / 2)];
 		
 		for (int i = 0; i < p1.length; i++) {
-			p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, product, 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
+			p1[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, Finestra.getPlaceHolderTexture(), product, 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
 		}
 		
 		for (int i = 0; i < p2.length; i++) {
-			p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, texture, product, 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
+			p2[i] = new Prodotto(0, 0, prodottoWidth, 0.4f, Finestra.getPlaceHolderTexture(), product, 40, 30, 50, Color.WHITE, new Color(255, 182, 224, 255), Color.PINK);
 		}
 		
 		Prodotto temp[][] = new Prodotto[][] {p1, p2};
@@ -93,10 +92,18 @@ public class HomePage {
 				}
 			}
 
+			Texture2D texture = new Texture2D("textures/" + prodottoConsigliato.getNome() + ".png");
+
+			if (texture.id <= 0) { // Non esiste
+				prodottoConsigliatoButton.setTexture(Finestra.getPlaceHolderTexture());
+			} else {
+				prodottoConsigliatoButton.setTexture(texture);
+			}
+
 			loadedTextures = true;
 		}
 
-    	prodottoConsigliato.draw();
+    	prodottoConsigliatoButton.draw();
 
     	for (int i = 0; i < 2; i++) {
      		for (int j = 0; j < prodotti[i].length; j++) {
@@ -116,7 +123,7 @@ public class HomePage {
 	}
     
     public void registraEventi(Controller c) {
-    	prodottoConsigliato.addListener(c);
+    	prodottoConsigliatoButton.addListener(c);
     	
     	for (int i = 0; i < 2; i++) 
     		for (int j = 0; j < prodotti[i].length; j++) 
@@ -124,7 +131,7 @@ public class HomePage {
     }
 
 	public void rimuoviEventi(Controller c) {
-		prodottoConsigliato.removeListener(c);
+		prodottoConsigliatoButton.removeListener(c);
 
 		for (int i = 0; i < 2; i++)
     		for (int j = 0; j < prodotti[i].length; j++) 
@@ -135,6 +142,14 @@ public class HomePage {
 		return (prodottoConsigliatoY + prodottoConsigliatoHeight + padding * 2) +
 				((prodotti[0][0].getHeight() + padding * 2) * prodotti[0].length);
     }
+
+	public void setProdottoConsigliato(Product prodottoConsigliato) {
+		this.prodottoConsigliato = prodottoConsigliato;
+	}
+
+	public Product getProdottoConsigliato() {
+		return prodottoConsigliato;
+	}
 
 	public int getProdottoConsigliatoY() {
 		return prodottoConsigliatoY;

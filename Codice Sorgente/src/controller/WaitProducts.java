@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
 
 import model.Db;
+import model.Product;
 import view.Pannello;
 
 public class WaitProducts implements Runnable {
@@ -33,8 +34,11 @@ public class WaitProducts implements Runnable {
             e.printStackTrace();
         }
 
-        pannello.loadHomeProducts(db.getProdotti());
+        ArrayList<Product> prodotti = db.getProdotti();
+
+        pannello.loadHomeProducts(prodotti);
         pannello.loadCategorie(new ArrayList<String>(db.categorieProdotti()));
+        pannello.setProdottoConsigliato(prodotti.get(10 + (int) (Math.random() * (prodotti.size() - 10))));
         pannello.showHomePage(c);
         pannello.registraHeaderFooter(c);
 
