@@ -62,7 +62,7 @@ public class HomePage {
 
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < prodotti[i].length; j++) {
-				prodotti[i][j].setName("prodotto" + (i * 2 + j));
+				prodotti[i][j].setName("prodotto" + (i * prodotti[0].length + j));
 			}
 		}
 		
@@ -108,7 +108,7 @@ public class HomePage {
 	public void loadHomeProducts(ArrayList<Product> products) {
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < prodotti[i].length; j++) {
-				Product product = products.get(i * 2 + j);
+				Product product = products.get(i * prodotti[0].length + j);
 
 				prodotti[i][j].setP(product);
 			}

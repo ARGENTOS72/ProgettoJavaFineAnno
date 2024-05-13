@@ -88,13 +88,15 @@ public class ProductsSearched {
 			p2[i].setName("prodotto" + products.get(p1.length + i).getCodiceProdotto());
 		}
 		
-		Prodotto temp[][] = new Prodotto[][] {p1, p2};
+		if (p1.length != 0) {
+			Prodotto temp[][] = new Prodotto[][] {p1, p2};
 		
-		prodotti = temp;
+			prodotti = temp;
 		
-		GraphicComponentAligner.alignY(prodotti[0], GraphicComponentAligner.UP, GraphicComponentAligner.PADDING,
-				(this.headerHeight + padding * 2), 10, padding);
-		
+			GraphicComponentAligner.alignY(prodotti[0], GraphicComponentAligner.UP, GraphicComponentAligner.PADDING,
+					(this.headerHeight + padding * 2), 10, padding);
+		}
+
 		if (nProdotti > 2) {
 			for(int i = 0; i < prodotti[1].length; i++) {
 				prodotti[1][i].setY(prodotti[0][i].getY());
@@ -137,6 +139,8 @@ public class ProductsSearched {
 	}
 	
 	public int getHeight() {
+		if (prodotti == null) return 60;
+
 		if (prodotti[0].length > 0) return (headerHeight + padding * 2) +
 		((prodotti[0][0].getHeight() + padding * 2) * prodotti[0].length);
 		

@@ -28,6 +28,12 @@ public class LoadProducts implements Runnable {
             e.printStackTrace();
         }
 
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         db.loadProducts();
 
         consumatore.release();

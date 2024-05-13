@@ -33,12 +33,6 @@ public class WaitProducts implements Runnable {
             e.printStackTrace();
         }
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         pannello.loadHomeProducts(db.getProdotti());
         pannello.loadCategorie(new ArrayList<String>(db.categorieProdotti()));
         pannello.showHomePage(c);
