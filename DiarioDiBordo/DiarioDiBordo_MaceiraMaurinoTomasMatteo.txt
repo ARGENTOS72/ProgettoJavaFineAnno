@@ -1,1 +1,14 @@
+Diario di bordo
 
+09/04/2024 10:20 - 11:00 | Inizio progetto
+11/04/2024 10:25 - 13:26 | Aggiunta del Main, Finestra e Pannello usando raylib 
+16/04/2024 20:30 - 22:17 | Migliorato la classe SearchBar e aggiunto la prima versione della classe DB
+17/04/2024 11:20 - 12:10 | Migliorato la classe SearchBar e cambiato totalmente la classe DB
+20/04/2024 20:00 - 21:37 | Migliorato la classe DB
+23/04/2024 10:10 - 11:50 | Migliorato la classe DB e migliorato classe Product
+02/05/2024 09:15 - 11:25 | Modificato il controller per l'uso del DB
+02/05/2024 21:15 - 23:20 | Aggiunto produttore e consumatore per il caricamento dal DB al caricamento alla view e migliorato la class DB
+03/05/2024 17:20 - 20:21 | Loading the products into the view with textures
+05/05/2024 08:34 - 14:44 | Connesso tutti i bottoni alla propria funzionalità e connesso la view con il DB quasi totalmente
+05/05/2024 16:40 - 22:50 | Connesso totalmente la view con il DB e aggiustato qualche errore della view e aggiunta di immagini
+05/05/2024 23:07 - 23:59 | Sistemato conflitti con il merge, aggiunto java doc e sistemato loading di textures

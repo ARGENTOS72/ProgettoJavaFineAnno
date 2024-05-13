@@ -35,4 +35,3 @@ Racconto nello specifico delle ore spese per ricreare il progetto
 
 ## Relazione di gruppo
 Presentazione del progetto comprendente la descrizione dell’applicazione Java e tutta la documentazione del progetto.
-[link della presentazione in Google Slides](https://docs.google.com/presentation/d/1a8MHRcElSamPC4Bwb304wKcxjU2h5Nb49pIpwJj9y8Y/edit?usp=sharing)
