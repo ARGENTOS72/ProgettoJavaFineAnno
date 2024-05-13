@@ -99,7 +99,7 @@ public class ProductsSearched {
 					(this.headerHeight + padding * 2), 10, padding);
 		}
 
-		if (nProdotti > 2) {
+		if (nProdotti > 1) {
 			for(int i = 0; i < prodotti[1].length; i++) {
 				prodotti[1][i].setY(prodotti[0][i].getY());
 
